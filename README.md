@@ -1,4 +1,4 @@
-# covid_mutation_detector
+# COVID-19 Mutation Detector
 
 ## cluster_sequences.py
 
