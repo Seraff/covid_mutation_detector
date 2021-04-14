@@ -2,6 +2,7 @@
 # @Date    : 2021-04-14
 # @Author  : Serafim Nenarokov (serafim.nenarokov@gmail.com)
 
+import os
 import argparse
 import re
 import pathlib
@@ -28,6 +29,9 @@ def parse_arguments():
     parser.add_argument("-f", "--fasta",
                         required=True,
                         help="Input fasta file (.fasta)")
+    parser.add_argument("-o", "--output_folder_path",
+                        required=True,
+                        help="Folder for output files (will be created if doesn't exist)")
     return parser.parse_args()
 
 
@@ -83,7 +87,11 @@ def main():
 
     clusters.sort(key=lambda x: len(x), reverse=True)
 
-    with open('clusters.txt', 'w') as out_f:
+    pathlib.Path(args.output_folder_path).mkdir(parents=True, exist_ok=True)
+    txt_path = os.path.join(args.output_folder_path, 'clusters.txt')
+    json_path = os.path.join(args.output_folder_path, 'clusters.json')
+
+    with open(txt_path, 'w') as out_f:
         for i, cluster in enumerate(clusters):
             out_f.write(f"Cluster {i+1}\n")
 
@@ -92,7 +100,7 @@ def main():
 
     result = {'clusters': []}
 
-    with open('clusters.json', 'w') as out_f:
+    with open(json_path, 'w') as out_f:
         for i, cluster in enumerate(clusters):
             min_X_seq = None
 
@@ -110,7 +118,6 @@ def main():
             result['clusters'].append(entry)
 
         out_f.write(json.dumps(result, indent=4))
-
 
 
 if __name__ == '__main__':
