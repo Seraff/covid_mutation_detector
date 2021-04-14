@@ -9,4 +9,4 @@ Example:
 Notes:
 
 - folder provided with `-o` option will be created if it doesn't exist
-- fasta file provided with `-f` option should be aligned fasta file from the output of `nextalign` program (it can contain `-` gaps)
+- fasta file provided with `-f` option should be aligned protein fasta file from the output of `nextalign` program (it can contain `-` gaps)
