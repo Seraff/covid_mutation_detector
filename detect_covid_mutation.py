@@ -10,6 +10,7 @@ import pathlib
 
 from Bio import SeqIO
 from lib.nextaligner import Nextaligner
+from cluster_sequences import Clusterizer
 
 ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))))
 TMP_PATH = os.path.join(ROOT_PATH, "tmp")
@@ -50,6 +51,15 @@ def main():
         exit(1)
 
     # align sequences with Nextaligner
+
+    clusterizer = Clusterizer(fasta_path)
+    clusterizer.perform()
+    clusters = clusterizer.get_cluster_info_list()
+
+    for cluster in clusters:
+        pass
+
+    mutation_detector = MutationDetector()
 
     # run cluster_sequences.py, get JSON [{ id: 'blabla', seqs: ['MTITA...', ...]}]
     # detect and apply mutations to clusters, get a list of mutations per cluster
