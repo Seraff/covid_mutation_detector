@@ -13,6 +13,7 @@ from lib.nextaligner import Nextaligner
 
 ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))))
 TMP_PATH = os.path.join(ROOT_PATH, "tmp")
+REFERENCE_PATH = os.path.join(ROOT_PATH, "data", "sars_cov_reference_prot.fasta")
 NEXTALIGN_BIN_PATH = os.getenv('NEXTALIGN_PATH') or 'nextalign'
 
 def parse_arguments():
@@ -48,20 +49,12 @@ def main():
         print("Fasta file is not a file")
         exit(1)
 
+    # align sequences with Nextaligner
 
+    # run cluster_sequences.py, get JSON [{ id: 'blabla', seqs: ['MTITA...', ...]}]
+    # detect and apply mutations to clusters, get a list of mutations per cluster
 
-    # with open(fasta_path) as fasta_f:
-    #     for record in SeqIO.parse(fasta_f):
-
-        #   - run nexalign
-        #   - build a set of mutations
-        #   - if empty:
-        #     - assign "NO MUTATIONS"
-        #   - else:
-        #     - if in set:
-        #       - assign "MUTATION"
-        #     - else:
-        #       - assign "NEW MUTATION"
+    # compare mutations with known mutations
 
 
 if __name__ == '__main__':
