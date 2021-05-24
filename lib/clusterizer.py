@@ -11,7 +11,6 @@ from Bio import SeqIO
 MASK_SYMBOL = 'X'
 GAP_SYMBOL = '-'
 
-
 class Clusterizer:
     def __init__(self, fasta_path):
         self.fasta_path = fasta_path
@@ -20,7 +19,15 @@ class Clusterizer:
 
     def perform(self):
         with open(self.fasta_path) as fasta_f:
+            processed_seq_headers = []
+
             for record in SeqIO.parse(fasta_f, 'fasta'):
+                if record.id in processed_seq_headers:
+                    continue
+
+                if self._sequence_is_trimmed(record.seq):
+                    continue
+
                 seq_str = str(record.seq).upper()
 
                 seq_str = self._remove_gaps(seq_str)
@@ -37,7 +44,7 @@ class Clusterizer:
                 if not cluster_found:
                     self.clusters.append([record])
 
-        print(f"Found {len(self.clusters)} clusters")
+                processed_seq_headers.append(record.id)
 
         self.clusters.sort(key=lambda x: len(x), reverse=True)
 
@@ -46,22 +53,14 @@ class Clusterizer:
             return False
 
         pathlib.Path(output_folder_path).mkdir(parents=True, exist_ok=True)
-        txt_path = os.path.join(output_folder_path, 'clusters.txt')
+        csv_path = os.path.join(output_folder_path, 'clusters.csv')
         json_path = os.path.join(output_folder_path, 'clusters.json')
 
-        # making cluster output file:
-        # Cluster <id>
-        # <sequence> - <seq id>
-        # ...
-
-        with open(txt_path, 'w') as out_f:
+        with open(csv_path, 'w') as out_f:
+            out_f.write("cluster_id,seq_id,seq")
             for i, cluster in enumerate(self.clusters):
-                out_f.write(f"Cluster {i+1}\n")
-
                 for record in cluster:
-                    out_f.write(f"{str(record.seq)} - {record.id}\n")
-
-
+                    out_f.write(f"{i+1},{record.id},{str(record.seq)}\n")
 
         result = {'clusters': self.get_cluster_info_list()}
 
@@ -71,7 +70,7 @@ class Clusterizer:
     def get_cluster_info_list(self):
         '''
         making list with clusters, in each cluster id and seq belong to
-        a guy with smallest amount of X
+        a sequence with smallest amount of X
         '''
 
         result = []
@@ -89,16 +88,26 @@ class Clusterizer:
                     if sec_X_cnt < str(min_X_seq.seq).count(MASK_SYMBOL):
                         min_X_seq = seq
 
-            entry = {'id': min_X_seq.id,
+            all_seqs = [s.id for s in cluster]
+
+            entry = {
+                     'name': f"Cluster {i}",
+                     'seq_id': min_X_seq.id,
                      'seq': self._remove_gaps(str(min_X_seq.seq)),
-                     'orig_seq': str(min_X_seq.seq)}
+                     'orig_seq': str(min_X_seq.seq),
+                     'all_seq_ids': all_seqs,
+                     'size': len(cluster)}
             result.append(entry)
 
         return result
 
+
     def _belongs_to_one_cluster(self, query, target):
         if query == target:
             return True
+
+        if len(query) != len(target):
+            return False
 
         for i, aa in enumerate(query):
             query_aa = query[i].upper()
@@ -111,6 +120,14 @@ class Clusterizer:
                 return False
 
         return True
+
+    def _sequence_is_trimmed(self, seq):
+        '''
+        Checks, if sequence looks like
+        FPRGQGVPINTNSSPDD------------------------
+        '''
+        return seq[-1] != '*' and seq[-1] != 'N'
+
 
     def _is_performed(self):
         return len(self.clusters) != 0
