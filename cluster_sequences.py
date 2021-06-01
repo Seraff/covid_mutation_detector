@@ -15,7 +15,7 @@ ROOT_PATH = str(pathlib.Path(os.path.dirname(os.path.realpath(__file__))))
 
 
 def parse_arguments():
-    usage = "./detect_covid_mutation.py"
+    usage = "./cluster_sequences.py"
     description = """
     Sequence clustering with 100%.
     """

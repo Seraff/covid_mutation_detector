@@ -10,11 +10,11 @@ import pathlib
 import json
 
 from Bio import SeqIO
-from lib.nextaligner import Nextaligner
-from cluster_sequences import Clusterizer
-from lib.mutation_detector import MutationDetector
 from tqdm import tqdm
 
+from lib.nextaligner import Nextaligner
+from lib.clusterizer import Clusterizer
+from lib.mutation_detector import MutationDetector
 from lib.utils import *
 
 ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))))
