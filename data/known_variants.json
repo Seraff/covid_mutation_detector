@@ -62,6 +62,7 @@
             "id": "A.2.5",
             "mutations": [
                 "N:M234I",
+                "N:P365S",
                 "N:P383L",
                 "N:S197L",
                 "ORF1a:F3071Y",
@@ -224,8 +225,6 @@
             "id": "A.17",
             "mutations": [
                 "ORF3a:L53F",
-                "ORF3a:Q116H",
-                "ORF3a:Q185H",
                 "ORF8:L84S"
             ],
             "description": "French lineage"
@@ -254,7 +253,6 @@
             "mutations": [
                 "N:S202N",
                 "ORF1a:V3718F",
-                "ORF3a:A99S",
                 "ORF8:L84S",
                 "S:D614N"
             ],
@@ -940,11 +938,8 @@
         {
             "id": "B.1.1.63",
             "mutations": [
-                "N:A12G",
                 "N:G204R",
                 "N:R203K",
-                "ORF1a:A903V",
-                "ORF1b:A2282V",
                 "ORF1b:P314L",
                 "S:D614G",
                 "S:S12F"
@@ -1253,18 +1248,6 @@
             "description": "England"
         },
         {
-            "id": "B.1.1.101",
-            "mutations": [
-                "N:D371V",
-                "N:G204R",
-                "N:R203K",
-                "ORF1a:Q2702H",
-                "ORF1b:P314L",
-                "S:D614G"
-            ],
-            "description": "Indian lineage (two US)"
-        },
-        {
             "id": "B.1.1.109",
             "mutations": [
                 "N:G204R",
@@ -1357,6 +1340,7 @@
                 "N:G204R",
                 "N:R203K",
                 "ORF1b:P314L",
+                "S:A688V",
                 "S:D614G"
             ],
             "description": "South African some Argentina, now contains B.1.1.252"
@@ -1515,6 +1499,7 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1a:T2106I",
                 "ORF1b:P314L",
                 "S:D614G"
             ],
@@ -1616,9 +1601,7 @@
                 "ORF1a:E622V",
                 "ORF1a:L969F",
                 "ORF1a:S2024L",
-                "ORF1b:G2180V",
                 "ORF1b:P314L",
-                "ORF1b:T2165M",
                 "ORF7a:Q94*",
                 "S:D614G"
             ],
@@ -1852,6 +1835,10 @@
         {
             "id": "B.1.1.171",
             "mutations": [
+                "N:G204R",
+                "N:R203K",
+                "ORF1a:E57G",
+                "ORF1a:S391F",
                 "ORF1b:P314L",
                 "S:D614G"
             ],
@@ -1987,11 +1974,9 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
-                "ORF1a:A1043V",
                 "ORF1a:A1283V",
                 "ORF1a:T1881I",
                 "ORF1b:P314L",
-                "ORF3a:S60Y",
                 "S:D138H",
                 "S:D614G"
             ],
@@ -2155,7 +2140,10 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1a:T512K",
                 "ORF1b:P314L",
+                "ORF3a:E194K",
+                "ORF7b:W29C",
                 "S:D614G"
             ],
             "description": "England and Ecuador"
@@ -3130,7 +3118,6 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
-                "ORF1a:E2212G",
                 "ORF1b:P314L",
                 "ORF3a:K75N",
                 "S:D614G"
@@ -3380,7 +3367,10 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1a:G295C",
+                "ORF1a:L2572I",
                 "ORF1a:L3930F",
+                "ORF1a:T2087I",
                 "ORF1a:V3718F",
                 "ORF1b:P314L",
                 "ORF3a:G224R",
@@ -3488,6 +3478,7 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1b:N2695L",
                 "ORF1b:P314L",
                 "S:D614G"
             ],
@@ -3549,7 +3540,11 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1a:Y2141C",
+                "ORF1b:A302S",
                 "ORF1b:P314L",
+                "ORF3a:H78Y",
+                "ORF3a:M260I",
                 "S:D614G",
                 "S:E484K"
             ],
@@ -3579,6 +3574,7 @@
                 "ORF1a:S2193F",
                 "ORF1b:K2063N",
                 "ORF1b:P314L",
+                "ORF3a:V202L",
                 "S:D614G"
             ],
             "description": "Central Europe"
@@ -3589,7 +3585,6 @@
                 "N:G204R",
                 "N:R203K",
                 "N:S2Y",
-                "N:T366I",
                 "ORF1a:L1175F",
                 "ORF1a:V3718F",
                 "ORF1b:P314L",
@@ -3675,6 +3670,7 @@
                 "N:R209I",
                 "ORF1a:D3042N",
                 "ORF1b:P314L",
+                "S:D138Y",
                 "S:D614G"
             ],
             "description": "Singapore, malaysia, India, UAE, England"
@@ -3923,7 +3919,6 @@
                 "N:G204R",
                 "N:Q384H",
                 "N:R203K",
-                "ORF1a:G3278S",
                 "ORF1a:T1246I",
                 "ORF1b:P314L",
                 "ORF1b:S1187I",
@@ -4065,6 +4060,7 @@
                 "N:G204R",
                 "N:R203K",
                 "ORF1b:P314L",
+                "ORF3a:V121L",
                 "S:D614G"
             ],
             "description": "South African lineage"
@@ -4085,7 +4081,9 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1a:P1921S",
                 "ORF1b:P314L",
+                "ORF1b:T1404M",
                 "S:D614G"
             ],
             "description": "Columbian lineage"
@@ -4129,18 +4127,11 @@
             "id": "B.1.1.393",
             "mutations": [
                 "N:G204R",
-                "N:I292T",
                 "N:R203K",
-                "ORF1a:A2529V",
                 "ORF1a:F3605L",
-                "ORF1a:S2103F",
-                "ORF1b:K2063N",
                 "ORF1b:P314L",
                 "ORF6:I33T",
-                "ORF7b:E33A",
-                "ORF8:V114I",
-                "S:D614G",
-                "S:E484K"
+                "S:D614G"
             ],
             "description": "Brazilian lineage"
         },
@@ -4219,7 +4210,6 @@
         {
             "id": "B.1.1.400",
             "mutations": [
-                "E:L21F",
                 "N:G204R",
                 "N:R203K",
                 "ORF1b:P314L",
@@ -4232,6 +4222,7 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1a:S2285F",
                 "ORF1b:P314L",
                 "ORF3a:L95F",
                 "S:D614G"
@@ -4243,7 +4234,6 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
-                "ORF1a:C655R",
                 "ORF1b:P314L",
                 "ORF1b:T899I",
                 "S:D614G"
@@ -4279,10 +4269,6 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
-                "ORF10:V32L",
-                "ORF1a:M3669I",
-                "ORF1a:S911F",
-                "ORF1a:T3750I",
                 "ORF1b:P314L",
                 "S:D614G"
             ],
@@ -4462,6 +4448,7 @@
                 "N:G204R",
                 "N:R203K",
                 "ORF1b:P314L",
+                "ORF8:D35Y",
                 "S:D614G"
             ],
             "description": "UK lineage, includes some formally B.1.1.193 sequences"
@@ -4479,8 +4466,7 @@
                 "ORF1b:T76I",
                 "ORF3a:W149C",
                 "S:D614G",
-                "S:L18F",
-                "S:N440K"
+                "S:L18F"
             ],
             "description": "Western Europe, USA"
         },
@@ -4528,9 +4514,7 @@
             "id": "B.1.1.424",
             "mutations": [
                 "N:G204R",
-                "N:P6L",
                 "N:R203K",
-                "ORF1a:S443F",
                 "ORF1b:P314L",
                 "ORF7a:T14I",
                 "S:D614G"
@@ -4806,11 +4790,8 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
-                "ORF1b:D1848Y",
                 "ORF1b:P314L",
-                "ORF8:E110*",
-                "S:D614G",
-                "S:I1210T"
+                "S:D614G"
             ],
             "description": "Sweden lineage"
         },
@@ -4977,27 +4958,7 @@
                 "ORF1b:P314L",
                 "S:D614G"
             ],
-            "description": "Swiss Lineage"
-        },
-        {
-            "id": "B.1.1.464",
-            "mutations": [
-                "N:G204R",
-                "N:R203K",
-                "ORF1b:P314L",
-                "S:D614G"
-            ],
             "description": "US lineage"
-        },
-        {
-            "id": "B.1.1.464",
-            "mutations": [
-                "N:G204R",
-                "N:R203K",
-                "ORF1b:P314L",
-                "S:D614G"
-            ],
-            "description": "Canadian lineage"
         },
         {
             "id": "B.1.1.465",
@@ -5006,8 +4967,7 @@
                 "N:R203K",
                 "ORF1b:P314L",
                 "ORF3a:L15F",
-                "S:D614G",
-                "S:P681H"
+                "S:D614G"
             ],
             "description": "Japanese lineage"
         },
@@ -5095,7 +5055,6 @@
                 "N:G204R",
                 "N:R203K",
                 "ORF1b:A1643S",
-                "ORF1b:K2579N",
                 "ORF1b:P314L",
                 "S:D614G"
             ],
@@ -5133,7 +5092,6 @@
             "id": "B.1.1.487",
             "mutations": [
                 "N:G204R",
-                "N:G212C",
                 "N:R203K",
                 "ORF1a:L3606F",
                 "ORF1b:I2303V",
@@ -5205,9 +5163,7 @@
                 "N:G204R",
                 "N:R203K",
                 "ORF1a:G3334S",
-                "ORF1a:G4178V",
                 "ORF1b:P314L",
-                "ORF3a:E241Q",
                 "ORF3a:L106F",
                 "S:D614G"
             ],
@@ -5286,6 +5242,57 @@
                 "S:D614G"
             ],
             "description": "European lineage"
+        },
+        {
+            "id": "B.1.1.522",
+            "mutations": [
+                "N:G204R",
+                "N:R203K",
+                "ORF1a:H110Y",
+                "ORF1a:Q3729K",
+                "ORF1b:P314L",
+                "ORF3a:D173G",
+                "ORF3a:F28L",
+                "ORF6:I37T",
+                "ORF7a:G42D",
+                "ORF8:D119Y",
+                "S:D138N",
+                "S:D614G",
+                "S:P681H"
+            ],
+            "description": "Belgium lineage"
+        },
+        {
+            "id": "B.1.1.523",
+            "mutations": [
+                "M:I82T",
+                "N:G204R",
+                "N:G212C",
+                "N:R203K",
+                "ORF1a:M902V",
+                "ORF1a:N449D",
+                "ORF1a:R2115I",
+                "ORF1a:T4364I",
+                "ORF1a:V3566I",
+                "ORF1a:V3653F",
+                "ORF1b:L1378M",
+                "ORF1b:P1000L",
+                "ORF1b:P314L",
+                "ORF1b:S220N",
+                "ORF3a:S171L",
+                "ORF3a:V201F",
+                "S:D614G",
+                "S:D839V",
+                "S:E156-",
+                "S:E484K",
+                "S:E780A",
+                "S:F157-",
+                "S:F306L",
+                "S:R158-",
+                "S:S494P",
+                "S:T1027I"
+            ],
+            "description": "Lineage in multiple countries, predominantly Russia, from pango-designation issue #69"
         },
         {
             "id": "B.1.2",
@@ -5564,34 +5571,25 @@
             "id": "B.1.36.21",
             "mutations": [
                 "N:M234I",
-                "N:S194L",
-                "ORF1a:A1938S",
                 "ORF1a:K3353R",
-                "ORF1a:P286L",
-                "ORF1b:D131Y",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
-                "ORF7a:T14I",
-                "S:D614G",
-                "S:L54F"
+                "S:D614G"
             ],
             "description": "Norway lineage"
         },
         {
-            "id": "B.1.36.23",
+            "id": "B.1.36.22",
             "mutations": [
-                "N:P13L",
-                "N:R209S",
                 "N:S194L",
-                "ORF1a:T2016I",
-                "ORF1a:T4083M",
-                "ORF1b:G219C",
+                "ORF1a:K2761N",
+                "ORF1a:K3353R",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
-                "S:A522V",
-                "S:D614G"
+                "S:D614G",
+                "S:G181V"
             ],
-            "description": "Ireland/Finald (inc. now reassigned B.1.36.13)"
+            "description": "Lineage with sequences majoritively from Finland"
         },
         {
             "id": "B.1.36.23",
@@ -5942,7 +5940,6 @@
         {
             "id": "B.1.91",
             "mutations": [
-                "ORF1b:P314L",
                 "S:D614G",
                 "S:D839Y"
             ],
@@ -6280,7 +6277,6 @@
         {
             "id": "B.1.140",
             "mutations": [
-                "M:D3G",
                 "ORF1b:P314L",
                 "S:D614G"
             ],
@@ -6674,7 +6670,6 @@
                 "ORF1b:P314L",
                 "ORF1b:V767L",
                 "ORF3a:Q57H",
-                "S:D1260Y",
                 "S:D614G",
                 "S:S477N"
             ],
@@ -7008,6 +7003,7 @@
         {
             "id": "B.1.170",
             "mutations": [
+                "N:S235F",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
                 "S:D614G"
@@ -7288,7 +7284,8 @@
                 "ORF1b:V1271L",
                 "ORF7a:E121V",
                 "S:A222V",
-                "S:D614G"
+                "S:D614G",
+                "S:V90F"
             ],
             "description": "Swiss lineage"
         },
@@ -7392,14 +7389,6 @@
                 "S:N164T"
             ],
             "description": "England"
-        },
-        {
-            "id": "B.1.177.31",
-            "mutations": [
-                "ORF1b:P314L",
-                "S:D614G"
-            ],
-            "description": "Swiss lineage"
         },
         {
             "id": "B.1.177.32",
@@ -7611,7 +7600,8 @@
                 "ORF1a:L3711F",
                 "ORF1b:P314L",
                 "S:A222V",
-                "S:D614G"
+                "S:D614G",
+                "S:L18F"
             ],
             "description": "England"
         },
@@ -8349,7 +8339,6 @@
         {
             "id": "B.1.208",
             "mutations": [
-                "ORF1b:L1099F",
                 "ORF1b:P314L",
                 "S:D614G"
             ],
@@ -8424,16 +8413,6 @@
                 "ORF1a:T1881I",
                 "ORF1b:P314L",
                 "ORF1b:R574G",
-                "ORF3a:A23-",
-                "ORF3a:D22-",
-                "ORF3a:D27-",
-                "ORF3a:E19-",
-                "ORF3a:F28-",
-                "ORF3a:I20-",
-                "ORF3a:K21-",
-                "ORF3a:P25-",
-                "ORF3a:S26-",
-                "ORF3a:T24-",
                 "S:D614G",
                 "S:N450K",
                 "S:Q414K",
@@ -8484,6 +8463,7 @@
         {
             "id": "B.1.215",
             "mutations": [
+                "ORF1a:S1189N",
                 "ORF1b:P314L",
                 "S:D614G"
             ],
@@ -8661,12 +8641,10 @@
             "description": "UK lineage"
         },
         {
-            "id": "B.1.321",
+            "id": "B.1.231",
             "mutations": [
-                "N:D340N",
-                "ORF1a:T265I",
+                "N:S194L",
                 "ORF1b:P314L",
-                "ORF3a:Q57H",
                 "S:D614G"
             ],
             "description": "UK lineage"
@@ -8677,7 +8655,6 @@
                 "N:S194L",
                 "ORF1a:C1847R",
                 "ORF1a:P1862S",
-                "ORF1a:T2007I",
                 "ORF1b:P314L",
                 "ORF8:V32L",
                 "S:D614G"
@@ -8848,14 +8825,7 @@
             "id": "B.1.247",
             "mutations": [
                 "ORF1b:P314L",
-                "S:D614G"
-            ],
-            "description": "Indian lineage, some previously B.1.36"
-        },
-        {
-            "id": "B.1.247",
-            "mutations": [
-                "ORF1b:P314L",
+                "ORF3a:Q57H",
                 "S:D614G"
             ],
             "description": "India"
@@ -9316,13 +9286,6 @@
             "mutations": [
                 "ORF1b:P314L"
             ],
-            "description": "Saudi Arabia with activity in Switzerland as of 2021"
-        },
-        {
-            "id": "B.1.260",
-            "mutations": [
-                "ORF1b:P314L"
-            ],
             "description": "Saudi Arabian lineage"
         },
         {
@@ -9499,7 +9462,6 @@
                 "ORF1a:T265I",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
-                "ORF8:S24L",
                 "S:D614G"
             ],
             "description": "USA - Texas"
@@ -9517,6 +9479,7 @@
             "mutations": [
                 "ORF1a:T265I",
                 "ORF1b:P314L",
+                "ORF1b:S2363F",
                 "ORF3a:Q57H",
                 "S:D614G"
             ],
@@ -9647,6 +9610,7 @@
         {
             "id": "B.1.306",
             "mutations": [
+                "N:R209I",
                 "ORF1a:T265I",
                 "ORF1b:P314L",
                 "ORF3a:L129F",
@@ -9671,13 +9635,7 @@
         {
             "id": "B.1.309",
             "mutations": [
-                "ORF1a:I1667V",
-                "ORF1a:P892S",
-                "ORF1a:Q575H",
-                "ORF1a:S3884L",
-                "ORF1a:T265I",
                 "ORF1b:P314L",
-                "ORF1b:S997L",
                 "ORF3a:Q57H",
                 "S:D614G"
             ],
@@ -9716,7 +9674,9 @@
         {
             "id": "B.1.313",
             "mutations": [
+                "ORF1a:A498V",
                 "ORF1a:T265I",
+                "ORF1a:T4090I",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
                 "S:D253G",
@@ -9813,6 +9773,7 @@
         {
             "id": "B.1.324",
             "mutations": [
+                "N:S206F",
                 "ORF1a:T265I",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
@@ -10098,20 +10059,97 @@
             "description": "Lineage of concern detected in South Africa"
         },
         {
-            "id": "B.1.254",
+            "id": "B.1.351.1",
             "mutations": [
-                "M:I52T",
-                "ORF1a:N3537D",
+                "E:P71L",
+                "N:T205I",
+                "ORF1a:K3353R",
+                "ORF1a:T265I",
                 "ORF1b:P314L",
-                "ORF3a:V13L",
-                "S:D614G"
+                "ORF3a:Q57H",
+                "S:A701V",
+                "S:D215G",
+                "S:D614G",
+                "S:D80A",
+                "S:K417N"
             ],
-            "description": "Denmark"
+            "description": "Sublineage of B.1.351 circulating in Botswana"
+        },
+        {
+            "id": "B.1.351.2",
+            "mutations": [
+                "E:P71L",
+                "N:T205I",
+                "ORF1a:A3456V",
+                "ORF1a:F3677-",
+                "ORF1a:G3676-",
+                "ORF1a:K1655N",
+                "ORF1a:K3353R",
+                "ORF1a:N2596S",
+                "ORF1a:S3675-",
+                "ORF1a:T265I",
+                "ORF1b:P314L",
+                "ORF3a:Q57H",
+                "ORF3a:S171L",
+                "S:A243-",
+                "S:A701V",
+                "S:D215G",
+                "S:D614G",
+                "S:D80A",
+                "S:E484K",
+                "S:K417N",
+                "S:L18F",
+                "S:L241-",
+                "S:L242-",
+                "S:N501Y"
+            ],
+            "description": "Sublineage of B.1.351 circulating in Mayotte"
+        },
+        {
+            "id": "B.1.351.3",
+            "mutations": [
+                "E:P71L",
+                "N:T205I",
+                "ORF1a:F3677-",
+                "ORF1a:G3676-",
+                "ORF1a:K1655N",
+                "ORF1a:K3353R",
+                "ORF1a:N2596S",
+                "ORF1a:P2046L",
+                "ORF1a:S3675-",
+                "ORF1a:T265I",
+                "ORF1b:I1074V",
+                "ORF1b:P314L",
+                "ORF3a:Q57H",
+                "ORF3a:S171L",
+                "S:A243-",
+                "S:A701V",
+                "S:D215G",
+                "S:D614G",
+                "S:D80A",
+                "S:E484K",
+                "S:K417N",
+                "S:L18F",
+                "S:L241-",
+                "S:L242-",
+                "S:N501Y"
+            ],
+            "description": "Sublineage of B.1.351 predominantly in Bangladesh and Singapore with exports elsewhere"
         },
         {
             "id": "B.1.343",
             "mutations": [
                 "ORF1a:H1160Y",
+                "ORF1a:T265I",
+                "ORF1b:P314L",
+                "ORF3a:Q57H",
+                "S:D614G"
+            ],
+            "description": "Denmark"
+        },
+        {
+            "id": "B.1.354",
+            "mutations": [
                 "ORF1a:T265I",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
@@ -10406,7 +10444,8 @@
             "id": "B.1.379",
             "mutations": [
                 "ORF1b:P314L",
-                "S:D614G"
+                "S:D614G",
+                "S:R214L"
             ],
             "description": "UK"
         },
@@ -10702,13 +10741,8 @@
         {
             "id": "B.1.411",
             "mutations": [
-                "N:T205I",
-                "ORF1a:L3606F",
-                "ORF1a:T346I",
-                "ORF1b:M657I",
                 "ORF1b:P314L",
-                "S:D614G",
-                "S:H1159Y"
+                "S:D614G"
             ],
             "description": "Sri Lankan lineage"
         },
@@ -10952,13 +10986,10 @@
             "id": "B.1.429.1",
             "mutations": [
                 "N:P142S",
-                "ORF1a:F2827L",
                 "ORF1a:I4205V",
                 "ORF1a:T265I",
-                "ORF1a:V3367I",
                 "ORF1b:D1183Y",
                 "ORF1b:P314L",
-                "ORF3a:A23V",
                 "ORF3a:Q57H",
                 "ORF8:V100L",
                 "S:D614G",
@@ -11136,6 +11167,7 @@
             "id": "B.1.441",
             "mutations": [
                 "N:L139F",
+                "N:S194L",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
                 "S:D614G"
@@ -11146,9 +11178,7 @@
             "id": "B.1.442",
             "mutations": [
                 "ORF1b:P314L",
-                "ORF3a:A23S",
                 "ORF3a:Q57H",
-                "ORF3a:V55F",
                 "ORF8:A65S",
                 "S:D614G"
             ],
@@ -11270,6 +11300,8 @@
         {
             "id": "B.1.458",
             "mutations": [
+                "ORF1a:D1089Y",
+                "ORF1a:I2490T",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
                 "S:D614G",
@@ -11408,10 +11440,7 @@
                 "N:T198I",
                 "ORF1a:N3937S",
                 "ORF1b:K2557R",
-                "ORF1b:M2025I",
                 "ORF1b:P314L",
-                "ORF1b:V2117L",
-                "ORF3a:F105L",
                 "ORF3a:Q57H",
                 "S:D614G",
                 "S:P681H"
@@ -11442,7 +11471,6 @@
             "id": "B.1.473",
             "mutations": [
                 "ORF1b:P314L",
-                "ORF3a:Q57H",
                 "S:D614G"
             ],
             "description": "USA lineage"
@@ -11479,7 +11507,6 @@
         {
             "id": "B.1.476",
             "mutations": [
-                "ORF1a:Q2702H",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
                 "S:D614G"
@@ -11576,13 +11603,10 @@
         {
             "id": "B.1.488",
             "mutations": [
-                "N:T24I",
-                "ORF1a:K798N",
                 "ORF1a:T265I",
                 "ORF1b:P314L",
                 "ORF3a:Q57H",
-                "S:D614G",
-                "S:D936Y"
+                "S:D614G"
             ],
             "description": "Denmark and Sweden"
         },
@@ -11612,7 +11636,6 @@
         {
             "id": "B.1.491",
             "mutations": [
-                "E:R69I",
                 "ORF1a:Q946H",
                 "ORF1a:T265I",
                 "ORF1b:P314L",
@@ -11649,7 +11672,6 @@
         {
             "id": "B.1.494",
             "mutations": [
-                "N:T362I",
                 "ORF1a:S3884L",
                 "ORF1a:T265I",
                 "ORF1b:P314L",
@@ -11748,6 +11770,7 @@
         {
             "id": "B.1.501",
             "mutations": [
+                "ORF1a:L3606F",
                 "ORF1a:L3711I",
                 "ORF1a:M2259I",
                 "ORF1a:S3884L",
@@ -11968,7 +11991,6 @@
         {
             "id": "B.1.520",
             "mutations": [
-                "N:S202I",
                 "ORF1a:G445V",
                 "ORF1a:T265I",
                 "ORF1b:P314L",
@@ -12122,64 +12144,15 @@
         {
             "id": "B.1.526.3",
             "mutations": [
-                "N:A376-",
-                "N:A381-",
-                "N:A397-",
-                "N:A398-",
-                "N:A414-",
-                "N:A419-",
-                "N:D371-",
-                "N:D377-",
-                "N:D399-",
-                "N:D401-",
-                "N:D402-",
-                "N:D415-",
-                "N:E367-",
-                "N:E378-",
-                "N:F363-",
-                "N:F403-",
-                "N:K369-",
-                "N:K370-",
-                "N:K372-",
-                "N:K373-",
-                "N:K374-",
-                "N:K375-",
-                "N:K387-",
-                "N:K388-",
-                "N:K405-",
-                "N:L382-",
-                "N:L394-",
-                "N:L395-",
-                "N:L400-",
-                "N:L407-",
-                "N:M411-",
-                "N:P364-",
-                "N:P365-",
-                "N:P368-",
-                "N:P383-",
-                "N:P396-",
-                "N:Q380-",
-                "N:Q384-",
-                "N:Q386-",
-                "N:Q389-",
-                "N:Q390-",
-                "N:Q406-",
-                "N:Q408-",
-                "N:Q409-",
-                "N:Q418-",
-                "N:R385-",
-                "N:S404-",
-                "N:S410-",
-                "N:S412-",
-                "N:S413-",
-                "N:S416-",
-                "N:T362-",
-                "N:T366-",
-                "N:T379-",
-                "N:T391-",
-                "N:T393-",
-                "N:T417-",
-                "N:V392-"
+                "ORF1a:F3677-",
+                "ORF1a:G3676-",
+                "ORF1a:L3201P",
+                "ORF1a:S3675-",
+                "ORF1a:T265I",
+                "ORF1b:P314L",
+                "ORF3a:P42L",
+                "ORF3a:Q57H",
+                "S:D614G"
             ],
             "description": "Belgium and Luxembourg lineage"
         },
@@ -12231,8 +12204,10 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1a:A3571V",
                 "ORF1a:I2057T",
                 "ORF1a:K3353R",
+                "ORF1a:Q3036R",
                 "ORF1a:V862I",
                 "ORF1b:D837A",
                 "ORF1b:E735D",
@@ -12262,8 +12237,7 @@
                 "N:G204R",
                 "N:R203K",
                 "ORF1b:P314L",
-                "ORF3a:Q57H",
-                "S:D614G"
+                "ORF3a:Q57H"
             ],
             "description": "Saudi Arabia"
         },
@@ -12480,19 +12454,6 @@
             "description": "North American"
         },
         {
-            "id": "B.1.553",
-            "mutations": [
-                "ORF1a:I300F",
-                "ORF1a:P1786L",
-                "ORF1b:E245D",
-                "ORF1b:P314L",
-                "ORF1b:T2084I",
-                "ORF3a:T223I",
-                "S:D614G"
-            ],
-            "description": "UK"
-        },
-        {
             "id": "B.1.554",
             "mutations": [
                 "M:A2V",
@@ -12508,7 +12469,6 @@
             "id": "B.1.555",
             "mutations": [
                 "ORF1b:P314L",
-                "ORF1b:T243N",
                 "S:D614G"
             ],
             "description": "Sweden"
@@ -12684,7 +12644,11 @@
         {
             "id": "B.1.569",
             "mutations": [
+                "ORF1a:A872V",
+                "ORF1a:D223H",
+                "ORF1a:T265I",
                 "ORF1b:P314L",
+                "ORF3a:Q57H",
                 "S:D614G"
             ],
             "description": "USA (CA and TX)"
@@ -12811,6 +12775,7 @@
                 "ORF1a:L3352F",
                 "ORF1a:T265I",
                 "ORF1b:P314L",
+                "ORF1b:T1076I",
                 "ORF3a:Q57H",
                 "ORF8:S24L",
                 "S:D614G"
@@ -13159,8 +13124,7 @@
                 "ORF3a:L15F",
                 "ORF3a:Q57H",
                 "S:D614G",
-                "S:M153I",
-                "S:Q675H"
+                "S:M153I"
             ],
             "description": "USA, Canada (previously part of B.1.311 that jumped to a new part of the tree)"
         },
@@ -13242,11 +13206,9 @@
                 "ORF3a:T32I",
                 "S:A262S",
                 "S:D614G",
-                "S:D796Y",
                 "S:H49Y",
                 "S:L452R",
                 "S:N501Y",
-                "S:N978S",
                 "S:P681R",
                 "S:Q613H"
             ],
@@ -13261,6 +13223,8 @@
                 "ORF1b:T76I",
                 "ORF3a:Q57H",
                 "ORF6:M19I",
+                "ORF8:I47-",
+                "ORF8:Y46-",
                 "S:D614G",
                 "S:T1116N"
             ],
@@ -13288,17 +13252,6 @@
                 "S:D936Y"
             ],
             "description": "England (previously part of B.1.369 that jumped to a new part of the tree - could also be withdrawn)."
-        },
-        {
-            "id": "B.1.608",
-            "mutations": [
-                "ORF1a:T265I",
-                "ORF1b:P314L",
-                "ORF3a:Q57H",
-                "S:D614G",
-                "S:S943P"
-            ],
-            "description": "USA (TX)"
         },
         {
             "id": "B.1.609",
@@ -13428,14 +13381,28 @@
         {
             "id": "B.1.617",
             "mutations": [
-                "N:D377Y",
-                "N:R203M",
+                "M:I82S",
+                "N:G204-",
+                "N:G215-",
+                "ORF1a:A1698-",
+                "ORF1a:A1812D",
+                "ORF1a:S17-",
+                "ORF1b:A2306V",
+                "ORF1b:G1129-",
+                "ORF1b:H2583R",
+                "ORF1b:K1353-",
                 "ORF1b:P314L",
+                "ORF1b:T1545-",
+                "ORF3a:L96-",
                 "ORF3a:S26L",
-                "ORF7a:V82A",
+                "ORF8:E106Q",
+                "ORF8:I121-",
+                "ORF8:P93S",
                 "S:D614G",
+                "S:E1072-",
+                "S:E484Q",
                 "S:L452R",
-                "S:P681R"
+                "S:P681-"
             ],
             "description": "Predominantly India lineage with several spike mutations, pango-designation issue #38"
         },
@@ -13520,6 +13487,7 @@
                 "ORF1b:P314L",
                 "ORF1b:Y1200C",
                 "ORF3a:T151I",
+                "ORF7a:P34S",
                 "ORF7b:E33*",
                 "ORF8:Q29L",
                 "S:D614G",
@@ -13532,11 +13500,25 @@
         {
             "id": "B.1.619",
             "mutations": [
+                "M:I82T",
+                "N:P13L",
+                "N:S201I",
+                "N:T205I",
+                "ORF1a:A2123V",
+                "ORF1a:E2607K",
                 "ORF1a:F3677-",
                 "ORF1a:G3676-",
+                "ORF1a:M3752I",
                 "ORF1a:S3675-",
                 "ORF1b:P314L",
-                "S:D614G"
+                "ORF7a:E22D",
+                "S:D614G",
+                "S:D936N",
+                "S:E484K",
+                "S:I210T",
+                "S:N440K",
+                "S:S939F",
+                "S:T1027I"
             ],
             "description": "Lineage in multiple countries, potentially originated in Cameroon and introduced into Europe, pango-designation issue #44"
         },
@@ -13570,12 +13552,10 @@
             "id": "B.1.621",
             "mutations": [
                 "N:T205I",
-                "ORF1a:A1380T",
                 "ORF1a:Q3729R",
                 "ORF1a:T1055A",
                 "ORF1a:T1538I",
                 "ORF1a:T3255I",
-                "ORF1b:M620I",
                 "ORF1b:P1342S",
                 "ORF1b:P314L",
                 "ORF3a:N257-",
@@ -13590,9 +13570,49 @@
                 "S:N501Y",
                 "S:P681H",
                 "S:R346K",
-                "S:T95I"
+                "S:T95I",
+                "S:Y145N"
             ],
             "description": "Lineage predominantly in Colombia with several spike mutations, pango-designation issue #57"
+        },
+        {
+            "id": "B.1.622",
+            "mutations": [
+                "N:Q70R",
+                "N:S187L",
+                "ORF1a:H110Y",
+                "ORF1a:L3977V",
+                "ORF1a:M3621I",
+                "ORF1a:S428N",
+                "ORF1a:T2196N",
+                "ORF1b:P314L",
+                "ORF1b:S2312L",
+                "ORF3a:Q57H",
+                "ORF3a:S216P",
+                "ORF3a:T14I",
+                "S:D614G"
+            ],
+            "description": "Reunion lineage, pango-designation issue #58"
+        },
+        {
+            "id": "B.1.623",
+            "mutations": [
+                "N:M234I",
+                "ORF1a:H3580Q",
+                "ORF1a:P4197S",
+                "ORF1a:S4398L",
+                "ORF1a:T265I",
+                "ORF1a:T2952I",
+                "ORF1a:T3202M",
+                "ORF1b:P314L",
+                "ORF3a:Q57H",
+                "S:D614G",
+                "S:E1111K",
+                "S:N501Y",
+                "S:P681H",
+                "S:S494P"
+            ],
+            "description": "Predominantly USA lineage with mutations of interest, from pango-designation issue #25"
         },
         {
             "id": "B.1.9",
@@ -13847,15 +13867,6 @@
             "description": "Singapore lineage"
         },
         {
-            "id": "B.6.7",
-            "mutations": [
-                "ORF1b:P314L",
-                "S:D614G",
-                "S:S943P"
-            ],
-            "description": "USA/Texas"
-        },
-        {
             "id": "B.6.8",
             "mutations": [
                 "N:P13L",
@@ -14101,6 +14112,7 @@
         {
             "id": "B.47",
             "mutations": [
+                "ORF1a:D448-",
                 "ORF1a:K3573E"
             ],
             "description": "English lineage"
@@ -14569,9 +14581,6 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
-                "ORF1a:G3278S",
-                "ORF1a:T1246I",
-                "ORF1b:P2313L",
                 "ORF1b:P314L",
                 "ORF8:F3L",
                 "S:D614G"
@@ -14751,6 +14760,7 @@
                 "S:D614G",
                 "S:F490S",
                 "S:G252-",
+                "S:G75V",
                 "S:L249-",
                 "S:L452Q",
                 "S:P251-",
@@ -15108,6 +15118,7 @@
                 "N:I292T",
                 "N:R203K",
                 "ORF1a:A2529V",
+                "ORF1a:A872T",
                 "ORF1a:F3605L",
                 "ORF1b:P314L",
                 "ORF6:I33T",
@@ -15181,11 +15192,61 @@
         {
             "id": "P.1.1",
             "mutations": [
+                "N:G204R",
+                "N:P80R",
+                "N:R203K",
                 "ORF1a:F3677-",
                 "ORF1a:G3676-",
-                "ORF1a:S3675-"
+                "ORF1a:K1795Q",
+                "ORF1a:S1188L",
+                "ORF1a:S3675-",
+                "ORF1b:E1264D",
+                "ORF1b:P314L",
+                "ORF3a:S253P",
+                "ORF8:E92K",
+                "S:D138Y",
+                "S:D614G",
+                "S:E484K",
+                "S:H655Y",
+                "S:K417T",
+                "S:L18F",
+                "S:N501Y",
+                "S:P26S",
+                "S:R190S",
+                "S:T1027I",
+                "S:T20N"
             ],
             "description": "Alias of B.1.1.28.1.1, European lineage in Italy and Germany"
+        },
+        {
+            "id": "P.1.2",
+            "mutations": [
+                "N:G204R",
+                "N:P80R",
+                "N:R203K",
+                "ORF1a:F3677-",
+                "ORF1a:G3676-",
+                "ORF1a:K1795Q",
+                "ORF1a:S1188L",
+                "ORF1a:S3675-",
+                "ORF1b:E1264D",
+                "ORF1b:P314L",
+                "ORF3a:S253P",
+                "ORF8:E92K",
+                "S:D138Y",
+                "S:D614G",
+                "S:E484K",
+                "S:H655Y",
+                "S:K417T",
+                "S:L18F",
+                "S:N501Y",
+                "S:P26S",
+                "S:R190S",
+                "S:T1027I",
+                "S:T20N",
+                "S:V1176F"
+            ],
+            "description": "Alias of B.1.1.28.1.2, Netherlands/Brazil lineage. Imported into Netherlands, likely with local transmission here and continued circulation within and/or reintroduction into Brazil, pango-designation issue #56"
         },
         {
             "id": "P.2",
@@ -15221,13 +15282,10 @@
                 "S:D614G",
                 "S:E1092K",
                 "S:E484K",
-                "S:G142-",
                 "S:H1101Y",
-                "S:L141-",
                 "S:N501Y",
                 "S:P681H",
-                "S:V1176F",
-                "S:V143-"
+                "S:V1176F"
             ],
             "description": "Alias of B.1.1.28.3, Lineage predominantly in the Philippines with spike mutations E484K, N501Y, P681H, 141-143del. Described in Tablizo et al 2021: https://www.medrxiv.org/content/10.1101/2021.03.03.21252812v2"
         },
@@ -15684,10 +15742,7 @@
                 "N:G204R",
                 "N:R203K",
                 "ORF1a:A1812D",
-                "ORF1a:P927L",
-                "ORF1a:T3308I",
                 "ORF1b:P314L",
-                "ORF1b:S106A",
                 "S:D614G"
             ],
             "description": "Alias of B.1.1.306.4, Bahrain"
@@ -15749,7 +15804,14 @@
             "mutations": [
                 "N:G204R",
                 "N:R203K",
+                "ORF1a:A2891V",
+                "ORF1a:G989C",
+                "ORF1a:M2254I",
+                "ORF1a:V3718F",
+                "ORF1b:A1798S",
+                "ORF1b:N1188S",
                 "ORF1b:P314L",
+                "ORF3a:A110S",
                 "S:D614G"
             ],
             "description": "Alias of B.1.1.305.1, Switzerland"
@@ -15934,6 +15996,7 @@
                 "M:R107H",
                 "N:G204L",
                 "N:R203K",
+                "ORF1a:A3901V",
                 "ORF1a:K798N",
                 "ORF1b:I235T",
                 "ORF1b:P314L",
@@ -16075,7 +16138,136 @@
                 "S:Y144-"
             ],
             "description": "Alias of B.1.1.370.1, Russia and Finland lineage from pango-designation issue #47"
+        },
+        {
+            "id": "AU.1",
+            "mutations": [
+                "N:T205I",
+                "ORF10:P10S",
+                "ORF1a:A690V",
+                "ORF1a:A776V",
+                "ORF1a:P1640L",
+                "ORF1a:P804L",
+                "ORF1a:T1168I",
+                "ORF1b:P314L",
+                "ORF1b:R2308C",
+                "ORF3a:Q57H",
+                "S:D614G"
+            ],
+            "description": "Alias of B.1.466.2.1, predominantly Papua New Guinea with some Australia sequences"
+        },
+        {
+            "id": "AU.2",
+            "mutations": [
+                "N:T205I",
+                "ORF1a:I3618V",
+                "ORF1a:L3644F",
+                "ORF1a:P1640L",
+                "ORF1a:S944L",
+                "ORF1a:T1168I",
+                "ORF1b:D2179Y",
+                "ORF1b:P314L",
+                "ORF1b:S1182L",
+                "ORF3a:Q57H",
+                "S:D614G",
+                "S:G1251V",
+                "S:N439K",
+                "S:P681R"
+            ],
+            "description": "Alias of B.1.466.2.2, Malaysia lineage"
+        },
+        {
+            "id": "AU.3",
+            "mutations": [
+                "N:D348H",
+                "N:T205I",
+                "ORF1a:L3644F",
+                "ORF1a:P1640L",
+                "ORF1a:S944L",
+                "ORF1a:T1168I",
+                "ORF1a:T2615I",
+                "ORF1b:P314L",
+                "ORF1b:S1182L",
+                "ORF1b:T2040I",
+                "ORF3a:Q57H",
+                "S:D614G",
+                "S:N439K",
+                "S:P681R"
+            ],
+            "description": "Alias of B.1.466.2.3, predominantly Australia with some Papua New Guinea and Singapore sequences"
+        },
+        {
+            "id": "AV.1",
+            "mutations": [
+                "M:A63T",
+                "M:H125Y",
+                "N:G204R",
+                "N:I157V",
+                "N:R203K",
+                "ORF1a:A3209V",
+                "ORF1a:A591V",
+                "ORF1a:D75G",
+                "ORF1a:F3677-",
+                "ORF1a:G3676-",
+                "ORF1a:G519S",
+                "ORF1a:H1160Y",
+                "ORF1a:K1745I",
+                "ORF1a:N2405S",
+                "ORF1a:P1640L",
+                "ORF1a:S3675-",
+                "ORF1b:A1643V",
+                "ORF1b:P314L",
+                "ORF1b:S425A",
+                "ORF1b:T1404M",
+                "ORF3a:N257-",
+                "ORF3a:V256-",
+                "S:D1139H",
+                "S:D614G",
+                "S:D80G",
+                "S:E484K",
+                "S:G142D",
+                "S:I1130V",
+                "S:N439K",
+                "S:P681H",
+                "S:T95I",
+                "S:Y144-",
+                "S:Y145-"
+            ],
+            "description": "Alias of B.1.1.482.1, UK and France lineage with several VOC/VUI-like mutations, from pango-designation issue #73"
+        },
+        {
+            "id": "XA",
+            "mutations": [
+                "N:D3L",
+                "N:G204R",
+                "N:R203K",
+                "N:S235F",
+                "ORF1a:K3353R",
+                "ORF1a:L2609F",
+                "ORF1a:M585T",
+                "ORF1b:E2315K",
+                "ORF1b:P160S",
+                "ORF1b:P314L",
+                "ORF3a:D155Y",
+                "ORF8:K68*",
+                "ORF8:Q27*",
+                "ORF8:R52I",
+                "ORF8:Y73C",
+                "S:A570D",
+                "S:D1118H",
+                "S:D614G",
+                "S:H69-",
+                "S:N501Y",
+                "S:P681H",
+                "S:S982A",
+                "S:T549I",
+                "S:T716I",
+                "S:V70-",
+                "S:Y144-",
+                "S:Y145-"
+            ],
+            "description": "Recombinant lineage with parental lineages B.1.1.7 and B.1.177, UK lineage"
         }
     ],
-    "timestamp": "07/05/2021 16:09:54"
+    "timestamp": "08/06/2021 15:20:56"
 }

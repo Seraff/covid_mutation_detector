@@ -18,10 +18,34 @@ MUT_INFO_ACTION = "lineage-mutations"
 ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))))
 OUTPUT_PATH = os.path.join(ROOT_PATH, 'data', "known_variants.json")
 
-def assure_response_successful(response):
+def response_successful(response):
     if response.status_code != 200:
         print(f"ERROR: response failed: {response.url}")
-        exit(1)
+        return False
+    else:
+        return True
+
+def try_to_get(url, params={}):
+    success = False
+    response = None
+
+    while not success:
+        try:
+            response = requests.get(url, params=params, timeout=5)
+        except:
+            print("Connection problem, reconnecting...")
+            success = False
+            continue
+
+        if (response_successful(response)):
+            success = True
+        else:
+            print("Trying again...")
+
+    if response == None:
+        raise Exception(f'Something wrong happened with url {url}')
+
+    return response
 
 def process_indel_mutation(mutation, reference, type='deletion'):
     mutations = []
@@ -46,9 +70,7 @@ def process_indel_mutation(mutation, reference, type='deletion'):
 
 
 if __name__ == "__main__":
-    response = requests.get(VARIATS_LIST_URL)
-
-    assure_response_successful(response)
+    response = try_to_get(VARIATS_LIST_URL)
 
     variants = []
 
@@ -77,9 +99,10 @@ if __name__ == "__main__":
     reference.load()
 
     for var in tqdm(variants):
+        url = f"{API_URL}{MUT_INFO_ACTION}"
         payload = {'pangolin_lineage': var['id'], 'frequency': 0.75}
-        response = requests.get(f"{API_URL}{MUT_INFO_ACTION}", params=payload)
-        assure_response_successful(response)
+        response = try_to_get(url, payload)
+
         response_json = json.loads(response.text)
 
         for mut in response_json['results']:
