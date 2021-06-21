@@ -1,4 +1,5 @@
 .DS_Store
 tmp/*
+test/data/output/*
 __pycache__/
 lib/__pycache__/

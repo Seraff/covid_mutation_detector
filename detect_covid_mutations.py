@@ -114,6 +114,7 @@ def main():
 
     for _mut_code, data in stats.items():
         uniq_seq_ids = list(set(data['seq_ids']))
+        uniq_seq_ids.sort()
         data['seq_ids'] = uniq_seq_ids
         data['cnt'] = len(uniq_seq_ids)
 
