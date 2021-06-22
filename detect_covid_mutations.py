@@ -103,6 +103,7 @@ def main():
 
         for cluster in cluster_iter:
             cluster_iter.set_description(gene_name)
+
             for mutation in cluster['mutations']:
                 mut_code = mutation['code']
                 mut_seqs = cluster['all_seq_ids']
@@ -124,7 +125,7 @@ def main():
     report_json_path = os.path.join(args.output_folder, REPORT_JSON_NAME)
 
     with open(report_json_path, 'w') as f:
-        f.write(json.dumps(stats, indent=4))
+        f.write(json.dumps(stats, indent=4, sort_keys=True))
 
     report_csv_path = os.path.join(args.output_folder, REPORT_CSV_NAME)
     with open(report_csv_path, 'w') as f:

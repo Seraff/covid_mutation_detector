@@ -22,7 +22,7 @@ class Clusterizer:
             processed_seq_headers = []
 
             for record in SeqIO.parse(fasta_f, 'fasta'):
-                if record.id in processed_seq_headers:
+                if record.description in processed_seq_headers:
                     continue
 
                 if self._sequence_is_trimmed(record.seq):
@@ -44,7 +44,7 @@ class Clusterizer:
                 if not cluster_found:
                     self.clusters.append([record])
 
-                processed_seq_headers.append(record.id)
+                processed_seq_headers.append(record.description)
 
         self.clusters.sort(key=lambda x: len(x), reverse=True)
 
@@ -60,7 +60,7 @@ class Clusterizer:
             out_f.write("cluster_id,seq_id,seq")
             for i, cluster in enumerate(self.clusters):
                 for record in cluster:
-                    out_f.write(f"{i+1},{record.id},{str(record.seq)}\n")
+                    out_f.write(f"{i+1},{record.description},{str(record.seq)}\n")
 
         result = {'clusters': self.get_cluster_info_list()}
 
@@ -88,11 +88,11 @@ class Clusterizer:
                     if sec_X_cnt < str(min_X_seq.seq).count(MASK_SYMBOL):
                         min_X_seq = seq
 
-            all_seqs = [s.id for s in cluster]
+            all_seqs = [s.description for s in cluster]
 
             entry = {
                      'name': f"Cluster {i}",
-                     'seq_id': min_X_seq.id,
+                     'seq_id': min_X_seq.description,
                      'seq': self._remove_gaps(str(min_X_seq.seq)),
                      'orig_seq': str(min_X_seq.seq),
                      'all_seq_ids': all_seqs,

@@ -9,10 +9,6 @@ rm -rf "${OUTPUT_PATH}/*"
 
 $SCRIPT_DIR/../detect_covid_mutations.py -i $INPUT_PATH -o $OUTPUT_PATH
 
-cmp --silent $OUTPUT_PATH/report.csv $ORIG_OUTPUT_PATH/report.csv && \
-    echo 'report.csv files are similar' || \
-    echo 'report.csv files are NOT similar'
-
 cmp --silent $OUTPUT_PATH/report.json $ORIG_OUTPUT_PATH/report.json && \
     echo 'report.json files are similar' || \
     echo 'report.json files are NOT similar'

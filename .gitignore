@@ -1,5 +1,8 @@
 .DS_Store
 tmp/*
-test/data/output/*
+test/data/output/*.fasta
+test/data/output/*.json
+test/data/output/*.csv
+
 __pycache__/
 lib/__pycache__/
