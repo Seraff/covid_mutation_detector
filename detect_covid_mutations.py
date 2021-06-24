@@ -10,6 +10,9 @@ import pathlib
 import json
 
 from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+from Bio.SeqIO import FastaIO
 from tqdm import tqdm
 
 from lib.nextaligner import Nextaligner
@@ -79,18 +82,41 @@ def main():
     # Detect mutations
     print("Detecting mutations")
 
-    for gene_name, cluster in gene_clusters.items():
+    for gene_name, clusters in gene_clusters.items():
         ref_path = get_reference_path(gene_name)
         ref_record = SeqIO.read(ref_path, 'fasta')
         ref_seq = ref_record.seq
 
-        cluster_iter = tqdm(cluster)
+        cluster_iter = tqdm(clusters)
 
         for cl in cluster_iter:
             cluster_iter.set_description(gene_name)
             query_sec = cl['seq']
             mut_detector = MutationDetector(ref_seq, query_sec, gene_name)
             cl['mutations'] = mut_detector.get_mutations()
+            cl['aligned_seq'] = mut_detector.aligned_sequence
+
+
+    # Preparing the list of aligned sequences
+    print("Preparing the list of aligned sequences")
+
+    aligned_seqs = {}
+
+    for gene_name, clusters in gene_clusters.items():
+        aligned_seqs[gene_name] = []
+
+        for cl in clusters:
+            for header in cl['all_seq_ids']:
+                record = SeqRecord(Seq(cl['aligned_seq']),
+                                   id=header,
+                                   description='')
+                aligned_seqs[gene_name].append(record)
+
+    for gene_name, seq_recs in aligned_seqs.items():
+        path = os.path.join(args.output_folder, f"gene.{gene_name}.fasta")
+        with open(path, 'w') as out_f:
+            fasta_out = FastaIO.FastaWriter(out_f, wrap=None)
+            fasta_out.write_file(seq_recs)
 
 
     # collect per-mutation statistics

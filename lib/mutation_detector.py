@@ -19,6 +19,8 @@ class MutationDetector:
         self.query_seq = str(query_seq)
         self.prot_name = prot_name
 
+        self.aligned_sequence = None
+
 
     def get_mutations(self):
         alignment = self._align()
@@ -80,7 +82,11 @@ class MutationDetector:
                                           open_gap_score,
                                           extend_gap_score)
 
-        return [result[0].seqA, result[0].seqB]
+        result = [result[0].seqA, result[0].seqB]
+
+        self.aligned_sequence = result[1].strip()
+
+        return result
 
 
 if __name__ == '__main__':

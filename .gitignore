@@ -1,6 +1,8 @@
 .DS_Store
 tmp/*
 test/data/output/*.fasta
+test/data/output/nextalign/*.fasta
+test/data/output/nextalign/*.csv
 test/data/output/*.json
 test/data/output/*.csv
 

@@ -9,6 +9,7 @@ ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
 TMP_PATH = os.path.join(ROOT_PATH, "tmp")
 GENEMAP_PATH = os.path.join(ROOT_PATH, "data", "sars_cov_genemap.gff")
 REFERENCE_PATH = os.path.join(ROOT_PATH, "data", "sars_cov_reference.fasta")
+NEXTALIGN_OUTPUT_FOLDER_NAME = 'nextalign'
 
 class Nextaligner:
     def __init__(self, binary='nextalign'):
@@ -30,7 +31,7 @@ class Nextaligner:
                                     --reference={REFERENCE_PATH}\
                                     --genemap={GENEMAP_PATH}\
                                     --genes={genes}\
-                                    --output-dir={output_path}\
+                                    --output-dir={output_path}/{NEXTALIGN_OUTPUT_FOLDER_NAME}\
                                     --output-basename=nextalign'''
 
         command = re.sub('\s+', ' ', command)
@@ -52,7 +53,7 @@ class Nextaligner:
 
         for gene in self.genes:
             filename = f'nextalign.gene.{gene}.fasta'
-            path = os.path.join(self.output_path, filename)
+            path = os.path.join(self.output_path, NEXTALIGN_OUTPUT_FOLDER_NAME, filename)
 
             assure_file_exists(path)
             result[gene] = path
