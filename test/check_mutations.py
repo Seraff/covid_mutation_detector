@@ -20,7 +20,7 @@ def load_gene_seqs():
     result = {}
 
     for gene in GENE_LIST:
-        seqs = SeqIO.parse(os.path.join(OUTPUT_PATH, f"{gene}.fasta"), 'fasta')
+        seqs = SeqIO.parse(os.path.join(OUTPUT_PATH, f"gene.{gene}.fasta"), 'fasta')
         result[gene] = [str(seq.seq) for seq in seqs]
 
     return result

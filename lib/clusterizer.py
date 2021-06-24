@@ -10,6 +10,7 @@ from Bio import SeqIO
 
 MASK_SYMBOL = 'X'
 GAP_SYMBOL = '-'
+END_SYMBOL = '*'
 
 class Clusterizer:
     def __init__(self, fasta_path):
@@ -25,8 +26,7 @@ class Clusterizer:
                 if record.description in processed_seq_headers:
                     continue
 
-                if self._sequence_is_trimmed(record.seq):
-                    continue
+                record.seq = self._fix_incomplete_tail(record.seq)
 
                 seq_str = str(record.seq).upper()
 
@@ -121,13 +121,15 @@ class Clusterizer:
 
         return True
 
-    def _sequence_is_trimmed(self, seq):
+    def _fix_incomplete_tail(self, seq):
         '''
-        Checks, if sequence looks like
-        FPRGQGVPINTNSSPDD------------------------
+        Gets string sequence, replaces --- at the end with XXX
         '''
-        return seq[-1] != '*' and seq[-1] != 'N'
 
+        stripped = seq.rstrip(GAP_SYMBOL)
+        cnt = len(seq) - len(stripped)
+
+        return stripped + (MASK_SYMBOL*cnt)
 
     def _is_performed(self):
         return len(self.clusters) != 0
