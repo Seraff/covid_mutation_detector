@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
         response_json = json.loads(response.text)
 
-        for mut in response_json['results']:
+        for mut in response_json['results'][var['id']]:
             if mut['type'] == 'substitution':
                 name = f"{mut['gene']}:"
                 name += mut['ref_aa']
