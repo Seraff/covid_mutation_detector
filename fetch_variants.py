@@ -105,6 +105,10 @@ if __name__ == "__main__":
 
         response_json = json.loads(response.text)
 
+        if var['id'] not in response_json['results']:
+            print(f"{var['id']} is not in {response_json}")
+            continue
+
         for mut in response_json['results'][var['id']]:
             if mut['type'] == 'substitution':
                 name = f"{mut['gene']}:"
