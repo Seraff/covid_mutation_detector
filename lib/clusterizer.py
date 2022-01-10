@@ -103,23 +103,7 @@ class Clusterizer:
 
 
     def _belongs_to_one_cluster(self, query, target):
-        if query == target:
-            return True
-
-        if len(query) != len(target):
-            return False
-
-        for i, aa in enumerate(query):
-            query_aa = query[i].upper()
-            target_aa = target[i].upper()
-
-            if query_aa == MASK_SYMBOL or target_aa == MASK_SYMBOL:
-                continue
-
-            if query_aa != target_aa:
-                return False
-
-        return True
+        return query.strip().upper() == target.strip().upper()
 
     def _fix_incomplete_tail(self, seq):
         '''
