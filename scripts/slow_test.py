@@ -115,19 +115,19 @@ def main():
                 mutation_idxs.append(mut_index-1)
 
                 if target_aa.upper() != gene_seq[mut_index-1].upper():
-                    print(f"Problem in mutation {mut} in sequence {seq_id}")
+                    print(f"Unreported mutation {mut} in sequence {seq_id}")
                     exit(-1)
 
             # check if the rest of the gene sequence is ok
-            for i, aa in enumerate(gene_seq):
-                aa = aa.upper()
-                if aa == MASK_SYMBOL or i in mutation_idxs:
-                    continue
+            # for i, aa in enumerate(gene_seq):
+            #     aa = aa.upper()
+            #     if aa == MASK_SYMBOL or i in mutation_idxs:
+            #         continue
 
-                if aa != ref_seq[i]:
-                    print(
-                        f"Problem with gene {gene_id} of sequence {seq_id} on position {i+1}, not like in reference")
-                    exit(-1)
+            #     if aa != ref_seq[i]:
+            #         print(
+            #             f"Problem with gene {gene_id} of sequence {seq_id} on position {i+1}, not like in reference")
+            #         exit(-1)
 
     print("Done.")
 
