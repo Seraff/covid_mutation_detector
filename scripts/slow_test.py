@@ -125,7 +125,8 @@ def main():
                     continue
 
                 if aa != ref_seq[i]:
-                    print(f"Problem with sequence {seq_id} on position {i+1}, not like in reference")
+                    print(
+                        f"Problem with gene {gene_id} of sequence {seq_id} on position {i+1}, not like in reference")
                     exit(-1)
 
     print("Done.")
