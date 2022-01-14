@@ -29,13 +29,13 @@ def parse_arguments():
     parser.add_argument("-r", "--report",
                         required=True,
                         help="Report file (.json)")
-    parser.add_argument('-n', '--nextalign_ouput_folder',
+    parser.add_argument('-s', '--seq_folder',
                         required=True,
-                        help="Folder with nextalign sequences (per-gen files)")
+                        help="Folder with reported sequences (per-gen files, NOT nextalign one)")
     return parser.parse_args()
 
 
-def load_genes(dir_path, filename_prefix='nextalign.gene.'):
+def load_genes(dir_path, filename_prefix='gene.'):
     file_paths = glob.glob(os.path.join(
         dir_path, '', f"{filename_prefix}*.fasta"))
 
@@ -88,7 +88,7 @@ def main():
             per_seq_mutations[seq_id][gene].append(mut_str)
 
     # { 'SEQ0001': { 'ORF3a': 'MADSNGTI...', ...}, ...}
-    genes = load_genes(arguments.nextalign_ouput_folder)
+    genes = load_genes(arguments.seq_folder)
 
     ref_genes = load_genes('data/reference', '')
     ref_genes = ref_genes[list(ref_genes.keys())[0]]
@@ -116,6 +116,7 @@ def main():
 
                 if target_aa.upper() != gene_seq[mut_index-1].upper():
                     print(f"Problem in mutation {mut} in sequence {seq_id}")
+                    exit(-1)
 
             # check if the rest of the gene sequence is ok
             for i, aa in enumerate(gene_seq):
@@ -125,8 +126,7 @@ def main():
 
                 if aa != ref_seq[i]:
                     print(f"Problem with sequence {seq_id} on position {i+1}, not like in reference")
-
-
+                    exit(-1)
 
     print("Done.")
 
