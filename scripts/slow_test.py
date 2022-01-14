@@ -10,7 +10,7 @@ from Bio import SeqIO
 from tqdm import tqdm
 
 MUTATION_REGEX = re.compile(
-    '(?P<gene_name>\w+):(?P<source_aa>[a-zA-Z\-])(?P<index>\d+)(?P<target_aa>[a-zA-Z\-])')
+    '(?P<gene_name>\w+):(?P<source_aa>[a-zA-Z\-\*])(?P<index>\d+)(?P<target_aa>[a-zA-Z\-\*])')
 MASK_SYMBOL = 'X'
 
 def parse_arguments():
