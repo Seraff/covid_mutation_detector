@@ -76,26 +76,15 @@ class Clusterizer:
         result = []
 
         for i, cluster in enumerate(self.clusters):
-            min_X_seq = None
-
-            for seq in cluster:
-                seq_str = str(seq)
-                sec_X_cnt = str(seq.seq).count(MASK_SYMBOL)
-
-                if str(min_X_seq) == 'None':
-                    min_X_seq = seq
-                else:
-                    if sec_X_cnt < str(min_X_seq.seq).count(MASK_SYMBOL):
-                        min_X_seq = seq
-
-            all_seqs = [s.description for s in cluster]
+            seq = cluster[0]
+            all_seq_ids = [s.description for s in cluster]
 
             entry = {
                      'name': f"Cluster {i}",
-                     'seq_id': min_X_seq.description,
-                     'seq': self._remove_gaps(str(min_X_seq.seq)),
-                     'orig_seq': str(min_X_seq.seq),
-                     'all_seq_ids': all_seqs,
+                     'seq_id': seq.description,
+                     'unaligned_seq': self._remove_gaps(str(seq.seq)),
+                     'nextalign_seq': str(seq.seq),
+                     'all_seq_ids': all_seq_ids,
                      'size': len(cluster)}
             result.append(entry)
 

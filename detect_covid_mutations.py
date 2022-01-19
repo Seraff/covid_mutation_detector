@@ -24,8 +24,12 @@ ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))))
 TMP_PATH = os.path.join(ROOT_PATH, "tmp")
 REFERENCE_PATH = os.path.join(ROOT_PATH, "data", "sars_cov_reference_prot.fasta")
 NEXTALIGN_BIN_PATH = os.getenv('NEXTALIGN_PATH') or 'nextalign'
-REPORT_JSON_NAME = 'report.json'
-REPORT_CSV_NAME = 'report.csv'
+
+REPORTS_FOLDER_NAME = 'reports'
+REPORT_PER_MUT_JSON_NAME = 'per_mutation.json'
+REPORT_PER_MUT_CSV_NAME = 'per_mutation.csv'
+REPORT_PER_SEQ_JSON_NAME = 'per_sequence.json'
+REPORT_CONFLICTS_NAME = 'conflicts.json'
 
 def parse_arguments():
     usage = "./detect_covid_mutation.py"
@@ -59,19 +63,20 @@ def main():
 
     assure_file_exists(args.input)
 
-
     # Align sequences with Nextaligner
 
     aligner = Nextaligner()
     aligner.perform(args.input, args.output_folder)
+    nextalign_files = aligner.get_ouput_files()
 
+    # Create report folder
+    reports_path = os.path.join(args.output_folder, REPORTS_FOLDER_NAME)
+    create_dir_if_not_exists(reports_path)
 
     # Cluster sequences
     print("Clustering")
 
     gene_clusters = {}
-
-    nextalign_files = aligner.get_ouput_files()
 
     for gene_name, path in tqdm(nextalign_files.items()):
         clusterizer = Clusterizer(path)
@@ -91,10 +96,15 @@ def main():
 
         for cl in cluster_iter:
             cluster_iter.set_description(gene_name)
-            query_sec = cl['seq']
+            query_sec = cl['unaligned_seq']
+
             mut_detector = MutationDetector(ref_seq, query_sec, gene_name)
             cl['mutations'] = mut_detector.get_mutations()
             cl['aligned_seq'] = mut_detector.aligned_sequence
+
+            nextalign_seq = cl['nextalign_seq']
+            cl['nextalign_mutations'] = mut_detector.get_mutation_list(
+                ref_seq, nextalign_seq)
 
 
     # Preparing the list of aligned sequences
@@ -120,7 +130,7 @@ def main():
 
 
     # collect per-mutation statistics
-    print("Preparing statistics")
+    print("Preparing per-mutation statistics")
 
     stats = {}
 
@@ -148,17 +158,78 @@ def main():
 
     # Generate reports
     print("Generating reports")
-    report_json_path = os.path.join(args.output_folder, REPORT_JSON_NAME)
+    report_json_path = os.path.join(reports_path, REPORT_PER_MUT_JSON_NAME)
 
     with open(report_json_path, 'w') as f:
         f.write(json.dumps(stats, indent=4, sort_keys=True))
 
-    report_csv_path = os.path.join(args.output_folder, REPORT_CSV_NAME)
+    report_csv_path = os.path.join(reports_path, REPORT_PER_MUT_CSV_NAME)
     with open(report_csv_path, 'w') as f:
         for mut_id, data in stats.items():
             ids = ';'.join(data["seq_ids"])
             s = f'{mut_id},{ids}\n'
             f.write(s)
+
+
+    # Collect per-sequence statistics
+    print("Preparing per-sequence statistics & reports")
+    # { 'SEQ0001': { 'ORF3a': { ...data... }, ...}, ...}
+
+    per_seq_stats = {}
+
+    for gene_name, clusters in gene_clusters.items():
+        for cluster in clusters:
+            for seq_id in cluster['all_seq_ids']:
+                if seq_id not in per_seq_stats:
+                    per_seq_stats[seq_id] = {}
+
+                mut_data = {}
+                mut_data['unaligned_seq'] = cluster['unaligned_seq']
+                mut_data['aligned_seq'] = cluster['aligned_seq']
+                mut_data['nextalign_seq'] = cluster['nextalign_seq']
+                mut_data['mutations'] = [m['code'] for m in cluster['mutations']]
+                mut_data['nextalign_mutations'] = [m['code'] for m in cluster['nextalign_mutations']]
+
+                if gene_name not in per_seq_stats[seq_id]:
+                    per_seq_stats[seq_id][gene_name] = mut_data
+
+                pass
+
+    # Generate per-sequence report
+    report_per_seq_json_path = os.path.join(reports_path, REPORT_PER_SEQ_JSON_NAME)
+    with open(report_per_seq_json_path, 'w') as f:
+        f.write(json.dumps(per_seq_stats, indent=4, sort_keys=True))
+
+
+    # Generate report of mutation conflicts
+
+    conflicts = []
+
+    for seq_id, per_gene_data in per_seq_stats.items():
+        for gene_name, mut_data in per_gene_data.items():
+            if mut_data['mutations'] != mut_data['nextalign_mutations']:
+                conflict = {}
+                conflict['seq_id'] = seq_id
+                conflict['gene_name'] = gene_name
+
+                conflict['aligned_seq'] = mut_data['aligned_seq']
+                conflict['nextalign_seq'] = mut_data['nextalign_seq']
+
+                conflict['our_mutations'] = list(
+                    set(mut_data['mutations']) - set(mut_data['nextalign_mutations']))
+                conflict['nxt_mutations'] = list(set(mut_data['nextalign_mutations']
+                                                     ) - set(mut_data['mutations']))
+
+
+                conflicts.append(conflict)
+
+    print(f"{len(conflicts)} conflict(s) found.")
+
+    report_conflicts_json_path = os.path.join(
+        reports_path, REPORT_CONFLICTS_NAME)
+    with open(report_conflicts_json_path, 'w') as f:
+        f.write(json.dumps(conflicts, indent=4, sort_keys=False))
+
 
     print("Done")
 
