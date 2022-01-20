@@ -1,5 +1,8 @@
 .DS_Store
+.history
+
 tmp/*
+test/integration
 test/data/output/*.fasta
 test/data/output/nextalign/*.fasta
 test/data/output/nextalign/*.csv
