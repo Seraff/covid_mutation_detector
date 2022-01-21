@@ -6,6 +6,8 @@ import argparse
 import re
 import json
 
+from tqdm import tqdm
+
 AA_SUBSTITUTIONS_KEY = 'aaSubstitutions'
 AA_DELETIONS_KEY = 'aaDeletions'
 AA_INSERTIONS_KEY = 'aaInsertions'
@@ -48,7 +50,7 @@ def main():
 
     cog_report = {}
 
-    for seq_data in nextclade_report['results']:
+    for seq_data in tqdm(nextclade_report['results']):
         seq_id = seq_data['seqName']
 
         if AA_SUBSTITUTIONS_KEY in seq_data:
@@ -61,7 +63,13 @@ def main():
                 mut_code = f"{deletion['gene']}:{deletion['refAA']}{deletion['codon']}-"
                 append_mutation_to_report(cog_report, mut_code, seq_id)
 
-    with open(arguments.output_file, 'w') as f:
+    out_path = arguments.output_file
+
+    if not out_path:
+        dir_path = os.path.dirname(arguments.nextclade_json_path)
+        out_path = os.path.join(dir_path, 'report.json')
+
+    with open(out_path, 'w') as f:
         json.dump(cog_report, f, indent=4, sort_keys=True)
 
     print("Done.")
