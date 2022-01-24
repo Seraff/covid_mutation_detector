@@ -37,18 +37,21 @@ def main():
     with open(arguments.second) as f:
         second_report = json.load(f)
 
-    result = []
+    result = {}
+
     for mut_code, mut_data in first_report.items():
-        row = [mut_code, mut_data['cnt']]
-        if mut_code in second_report:
-            row.append(second_report[mut_code]['cnt'])
-        else:
-            row.append(0)
-        result.append(row)
+        if mut_code not in result:
+            result[mut_code] = {'first': 0, 'second': 0}
+        result[mut_code]['first'] = mut_data['cnt']
+
+    for mut_code, mut_data in second_report.items():
+        if mut_code not in result:
+            result[mut_code] = {'first': 0, 'second': 0}
+        result[mut_code]['second'] = mut_data['cnt']
 
     with open(arguments.output, 'w') as out_f:
-        for row in result:
-            out_f.write(','.join([str(e) for e in row]) + '\n')
+        for mut_code, mut_data in result.items():
+            out_f.write(f"{mut_code},{mut_data['first']},{mut_data['second']}\n")
 
 if __name__ == '__main__':
     main()
