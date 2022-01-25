@@ -55,12 +55,14 @@ def main():
 
         if AA_SUBSTITUTIONS_KEY in seq_data:
             for sub in seq_data[AA_SUBSTITUTIONS_KEY]:
-                mut_code = f"{sub['gene']}:{sub['refAA']}{sub['codon']}{sub['queryAA']}"
+                codon = int(sub['codon'])+1
+                mut_code = f"{sub['gene']}:{sub['refAA']}{codon}{sub['queryAA']}"
                 append_mutation_to_report(cog_report, mut_code, seq_id)
 
         if AA_DELETIONS_KEY in seq_data:
             for deletion in seq_data[AA_DELETIONS_KEY]:
-                mut_code = f"{deletion['gene']}:{deletion['refAA']}{deletion['codon']}-"
+                codon = int(deletion['codon'])+1
+                mut_code = f"{deletion['gene']}:{deletion['refAA']}{codon}-"
                 append_mutation_to_report(cog_report, mut_code, seq_id)
 
     out_path = arguments.output_file
