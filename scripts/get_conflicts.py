@@ -110,7 +110,8 @@ def main():
 
                     conflicts.append(conflict)
 
-    conflicts = sorted(conflicts, key=lambda x: (x['gene_name'], x['seq_cnt']), reverse=True)
+    conflicts = sorted(conflicts, key=lambda x: (
+        x['gene_name'], x['site_id']), reverse=True)
 
     with open(arguments.output, 'w') as out_f:
         for conflict in conflicts:
@@ -125,6 +126,9 @@ def main():
             out_f.write(f"{tp} this mutation in {conflict['seq_cnt']} sequence(s).\n")
             out_f.write('```\n')
             out_f.write(f"REF: {conflict['ref_seq']}\n")
+            before = int(conflict['site_id'])-1
+            after = len(conflict['ref_seq'])-before-1
+            out_f.write(f"{' '*5}{' '*before}^{' '*after}\n")
             out_f.write(f"OUR: {conflict['our_seq']}\n")
             out_f.write(f"NXT: {conflict['nxt_seq']}\n")
             out_f.write('```\n\n')
