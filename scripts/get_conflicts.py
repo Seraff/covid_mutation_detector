@@ -93,7 +93,7 @@ def main():
                 continue
 
             for group in [us_not_them, them_not_us]:
-                tp = 'ONLY_US' if group == us_not_them else 'ONLY_THEM'
+                tp = 'ONLY_US' if group == us_not_them else 'ONLY_NEXTCLADE'
 
                 if len(group) > 0:
                     example_seq_id = list(group)[0]
@@ -114,8 +114,16 @@ def main():
         x['gene_name'], x['site_id']), reverse=True)
 
     with open(arguments.output, 'w') as out_f:
+        top_conflicts = sorted(conflicts, key=lambda x: x['seq_cnt'], reverse=True)[:15]
+        out_f.write('## Top conflicts\n')
+        out_f.write('\n')
+        for c in top_conflicts:
+            out_f.write(f"* {c['mut_code']} ({c['type'].lower().replace('_', ' ')}) - {c['seq_cnt']} sequences \n")
+
+        out_f.write('\n')
+
         for conflict in conflicts:
-            out_f.write(f"## {conflict['mut_code']}\n")
+            out_f.write(f"## Mutation {conflict['mut_code']}\n")
             out_f.write('\n')
 
             if conflict['type'] == 'ONLY_US':
