@@ -5,9 +5,30 @@ import re
 import os
 import argparse
 from slow_test import load_genes
+from pathlib import Path
+from pprint import pprint
+
+from Bio import SeqIO
 
 MUTATION_REGEX = re.compile(
     '(?P<gene_name>\w+):(?P<source_aa>[a-zA-Z\-\*])(?P<index>\d+)(?P<target_aa>[a-zA-Z\-\*])')
+ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
+REF_AA_PATH = os.path.join(ROOT_PATH, 'data', 'reference')
+REF_NA_PATH = os.path.join(ROOT_PATH, 'data', 'sars_cov_reference.fasta')
+GENE_COORDS = {
+    "E": (26245, 26472),
+    "M": (26523, 27191),
+    "N": (28274, 29533),
+    "ORF1a": (266, 13468),
+    "ORF1b": (13468, 21555),
+    "ORF3a": (25393, 26220),
+    "ORF6": (27202, 27387),
+    "ORF7a": (27394, 27759),
+    "ORF7b": (27756, 27887),
+    "ORF8": (27894, 28259),
+    "ORF9b": (28284, 28577),
+    "S": (21563, 25384)
+}
 
 def parse_arguments():
     usage = "./generate_heatmap.py"
@@ -20,9 +41,6 @@ def parse_arguments():
     parser = argparse.ArgumentParser(usage,
                                      description=description,
                                      formatter_class=formatter)
-    parser.add_argument("-r", "--ref",
-                        required=True,
-                        help="Reference sequences folder")
     parser.add_argument("--our_rep",
                         required=True,
                         help="Our report .json")
@@ -39,10 +57,19 @@ def parse_arguments():
                         required=False,
                         default='seq.gene.',
                         help="Nextclade analysis sequences folder")
+    parser.add_argument("--nextclade_alignments_fasta",
+                        required=True,
+                        help="Nextclade analysis alignment fasta file")
     parser.add_argument('-o', '--output',
                         required=True,
                         help="Output report file in Markdown format")
     return parser.parse_args()
+
+def expand_aa_seq(seq):
+    '''
+    MVANAH ->   M  V  A  N  A  H
+    '''
+    return ' ' + '  '.join(list(seq)) + ' '
 
 def main():
     arguments = parse_arguments()
@@ -70,13 +97,29 @@ def main():
 
     # Getting sequences
     # { 'SEQ0001': { 'ORF3a': 'MADSNGTI...', ...}, ...}
-    ref_seqs = load_genes(arguments.ref, '')
-    ref_seqs = ref_seqs[list(ref_seqs.keys())[0]]
+    ref_aa_seqs = load_genes(REF_AA_PATH, '')
+    ref_aa_seqs = ref_aa_seqs[list(ref_aa_seqs.keys())[0]]
 
     our_seqs = load_genes(arguments.our_seqs, 'gene.')
     nextclade_seqs = load_genes(
         arguments.nextclade_seqs, arguments.nextclade_seq_prefix)
 
+    ref_na_seqs = {}
+    # Get reference NA sequences
+    ref_rec = SeqIO.read(REF_NA_PATH, "fasta")
+    for gene_name, coords in GENE_COORDS.items():
+        ref_na_seqs[gene_name] = str(ref_rec.seq[coords[0]-1:coords[1]])
+
+    nextclade_na_seqs = {}
+    for rec in SeqIO.parse(arguments.nextclade_alignments_fasta, 'fasta'):
+        if rec.id not in nextclade_na_seqs:
+            nextclade_na_seqs[rec.id] = {}
+
+        for gene_name, coords in GENE_COORDS.items():
+            sequence = str(rec.seq[coords[0]-1:coords[1]])
+            nextclade_na_seqs[rec.id][gene_name] = sequence
+
+    # Checking conflicts
 
     conflicts = []
 
@@ -104,9 +147,12 @@ def main():
                     conflict['seq_cnt'] = len(group)
                     conflict['gene_name'] = gene_name
                     conflict['site_id'] = mut_index
-                    conflict['ref_seq'] = ref_seqs[gene_name]
+                    conflict['ref_seq'] = ref_aa_seqs[gene_name]
                     conflict['our_seq'] = our_seqs[example_seq_id][gene_name]
                     conflict['nxt_seq'] = nextclade_seqs[example_seq_id][gene_name]
+
+                    conflict['ref_na_seq'] = ref_na_seqs[gene_name]
+                    conflict['nxt_na_seq'] = nextclade_na_seqs[example_seq_id][gene_name]
 
                     conflicts.append(conflict)
 
@@ -133,12 +179,15 @@ def main():
 
             out_f.write(f"{tp} this mutation in {conflict['seq_cnt']} sequence(s).\n")
             out_f.write('```\n')
-            out_f.write(f"REF: {conflict['ref_seq']}\n")
+            out_f.write(f"REF: {conflict['ref_na_seq']}\n")
+            out_f.write(f"REF: {expand_aa_seq(conflict['ref_seq'])}\n")
             before = int(conflict['site_id'])-1
             after = len(conflict['ref_seq'])-before-1
-            out_f.write(f"{' '*5}{' '*before}^{' '*after}\n")
-            out_f.write(f"OUR: {conflict['our_seq']}\n")
-            out_f.write(f"NXT: {conflict['nxt_seq']}\n")
+            out_f.write(f"{' '*5}{' '*before*3} ^ {' '*after*3}\n")
+            out_f.write(f"OUR: {expand_aa_seq(conflict['our_seq'])}\n")
+            out_f.write("\n")
+            out_f.write(f"NXT: {conflict['nxt_na_seq']}\n")
+            out_f.write(f"NXT: {expand_aa_seq(conflict['nxt_seq'])}\n")
             out_f.write('```\n\n')
 
 
