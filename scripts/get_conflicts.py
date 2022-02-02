@@ -146,7 +146,7 @@ def main():
                     conflict['seq_ids'] = list(group)
                     conflict['seq_cnt'] = len(group)
                     conflict['gene_name'] = gene_name
-                    conflict['site_id'] = mut_index
+                    conflict['site_id'] = int(mut_index)
                     conflict['ref_seq'] = ref_aa_seqs[gene_name]
                     conflict['our_seq'] = our_seqs[example_seq_id][gene_name]
                     conflict['nxt_seq'] = nextclade_seqs[example_seq_id][gene_name]
@@ -169,6 +169,11 @@ def main():
         out_f.write('\n')
 
         for conflict in conflicts:
+            left_cut_len = len(conflict['our_seq']) - len(conflict['our_seq'].lstrip('-'))
+
+            if left_cut_len > 0 and conflict['site_id'] <= left_cut_len and conflict['mut_code'][-1] == '-':
+                continue
+
             out_f.write(f"## Mutation {conflict['mut_code']}\n")
             out_f.write('\n')
 
@@ -181,8 +186,8 @@ def main():
             out_f.write('```\n')
             out_f.write(f"REF: {conflict['ref_na_seq']}\n")
             out_f.write(f"REF: {expand_aa_seq(conflict['ref_seq'])}\n")
-            before = int(conflict['site_id'])-1
-            after = len(conflict['ref_seq'])-before-1
+            before = conflict['site_id'] - 1
+            after = len(conflict['ref_seq']) - before - 1
             out_f.write(f"{' '*5}{' '*before*3} ^ {' '*after*3}\n")
             out_f.write(f"OUR: {expand_aa_seq(conflict['our_seq'])}\n")
             out_f.write("\n")
