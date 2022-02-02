@@ -157,7 +157,7 @@ def main():
                     conflicts.append(conflict)
 
     conflicts = sorted(conflicts, key=lambda x: (
-        x['gene_name'], x['site_id']), reverse=True)
+        x['gene_name'], x['seq_cnt']), reverse=True)
 
     with open(arguments.output, 'w') as out_f:
         top_conflicts = sorted(conflicts, key=lambda x: x['seq_cnt'], reverse=True)[:15]
