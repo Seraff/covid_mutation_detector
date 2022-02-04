@@ -69,7 +69,15 @@ def expand_aa_seq(seq):
     '''
     MVANAH ->   M  V  A  N  A  H
     '''
-    return ' ' + '  '.join(list(seq)) + ' '
+    return ' ' + '   '.join(list(seq)) + ' '
+
+def expand_na_seq(seq):
+    '''
+    GTACCT -> GTA CCT
+    '''
+    l = list(seq)
+    grouped = [l[i:i+3] for i in range(0, len(l), 3)]
+    return ' '.join([''.join(e) for e in grouped])
 
 def main():
     arguments = parse_arguments()
@@ -184,15 +192,31 @@ def main():
 
             out_f.write(f"{tp} this mutation in {conflict['seq_cnt']} sequence(s).\n")
             out_f.write('```\n')
-            out_f.write(f"REF: {conflict['ref_na_seq']}\n")
-            out_f.write(f"REF: {expand_aa_seq(conflict['ref_seq'])}\n")
+
+            radius = 10
+            site_id = conflict['site_id']
+            left_id = site_id-radius-1
+            if left_id < 0:
+                left_id = 0
+            ref_seq = conflict['ref_seq'][left_id:site_id+radius]
+            ref_na_seq = conflict['ref_na_seq'][left_id*3:(site_id+radius)*3]
+
+            nxt_seq = conflict['nxt_seq'][left_id:site_id+radius]
+            our_seq = conflict['our_seq'][left_id:site_id+radius]
+            nxt_na_seq = conflict['nxt_na_seq'][left_id*3:(site_id+radius)*3]
+
+            out_f.write(f"REF: {expand_na_seq(ref_na_seq)}\n")
+            out_f.write(f"REF: {expand_aa_seq(ref_seq)}\n")
+
             before = conflict['site_id'] - 1
             after = len(conflict['ref_seq']) - before - 1
-            out_f.write(f"{' '*5}{' '*before*3} ^ {' '*after*3}\n")
-            out_f.write(f"OUR: {expand_aa_seq(conflict['our_seq'])}\n")
+            out_f.write(f"{' '*5}{' '*radius*4} ^ {' '*radius*4}\n")
+
+            out_f.write(f"NXT: {expand_na_seq(nxt_na_seq)}\n")
+            out_f.write(f"NXT: {expand_aa_seq(nxt_seq)}\n")
             out_f.write("\n")
-            out_f.write(f"NXT: {conflict['nxt_na_seq']}\n")
-            out_f.write(f"NXT: {expand_aa_seq(conflict['nxt_seq'])}\n")
+
+            out_f.write(f"OUR: {expand_aa_seq(our_seq)}\n")
             out_f.write('```\n\n')
 
 
