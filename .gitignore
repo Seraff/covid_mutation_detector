@@ -11,3 +11,5 @@ test/data/output/*.csv
 
 __pycache__/
 lib/__pycache__/
+
+.snakemake/
