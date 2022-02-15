@@ -8,6 +8,9 @@ import json
 
 from tqdm import tqdm
 
+from lib.utils import load_nextclade_aa_genes
+from lib.utils import load_nextclade_na_alignments
+from lib.utils import load_reference_genes
 
 def parse_arguments():
     usage = "parse_nextclade_report.py"
@@ -27,6 +30,9 @@ def parse_arguments():
     parser.add_argument("-i", "--report_path",
                         required=True,
                         help="Report in COG json format.")
+    parser.add_argument("-d", "--nextclade_out_path",
+                        required=True,
+                        help="Path to nextclade output folder.")
     parser.add_argument('-o', '--output_path',
                         required=True,
                         help="Json file with a list of suspicious mutations")
@@ -34,6 +40,20 @@ def parse_arguments():
 
 MUTATION_REGEX = re.compile(
     '(?P<gene_name>\w+):(?P<source_aa>[a-zA-Z\-\*])(?P<index>\d+)(?P<target_aa>[a-zA-Z\-\*])')
+
+def expand_aa_seq(seq):
+    '''
+    MVANAH ->   M  V  A  N  A  H
+    '''
+    return ' ' + '   '.join(list(seq)) + ' '
+
+def expand_na_seq(seq):
+    '''
+    GTACCT -> GTA CCT
+    '''
+    l = list(seq)
+    grouped = [l[i:i+3] for i in range(0, len(l), 3)]
+    return ' '.join([''.join(e) for e in grouped])
 
 def main():
     arguments = parse_arguments()
@@ -101,8 +121,40 @@ def main():
 
                 last_id = site_id
 
+    ref_aa_genes = load_reference_genes()
+    aa_genes = load_nextclade_aa_genes(arguments.nextclade_out_path)
+    na_genes = load_nextclade_na_alignments(arguments.nextclade_out_path)
+
+    ## Adding sequences
+    for mut_code, data in susp_mutations.items():
+        mut_parsed = re.match(MUTATION_REGEX, mut_code)
+        gene_name = mut_parsed.group('gene_name')
+        site_id = int(mut_parsed.group('index'))
+        seq_id = data['seq_ids'][0]
+
+        result = {}
+
+        radius = 10
+        left_id = site_id - radius - 1
+        if left_id < 0:
+            left_id = 0
+
+        ref_aa_seq = ref_aa_genes[gene_name][left_id:site_id+radius]
+        aa_seq = aa_genes[seq_id][gene_name][left_id:site_id+radius]
+        na_seq = na_genes[seq_id][gene_name][left_id*3:(site_id+radius)*3]
+
+        result['ref'] = expand_aa_seq(ref_aa_seq)
+        result['gen'] = expand_aa_seq(aa_seq)
+        result['mut'] = f"{' '*radius*4} ^ {' '*radius*4}"
+        result['nuc'] = expand_na_seq(na_seq)
+
+        result['cnt'] = data['cnt']
+        result['seq_ids'] = data['seq_ids']
+        susp_mutations[mut_code] = result
+
+    ## Output
     with open(arguments.output_path, 'w') as out_f:
-        json.dump(susp_mutations, out_f, indent=4, sort_keys=True)
+        json.dump(susp_mutations, out_f, indent=4, sort_keys=False)
 
     print(f'Finished. {len(susp_mutations)} mutations found.')
 

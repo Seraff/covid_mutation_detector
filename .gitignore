@@ -13,3 +13,5 @@ __pycache__/
 lib/__pycache__/
 
 .snakemake/
+
+*.code-workspace
