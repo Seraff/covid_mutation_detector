@@ -32,9 +32,12 @@ MUTATION_REGEXP = re.compile((f"^({'|'.join(list(COVID_GENES.keys()))}):"
 
 ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
 REF_AA_PATH = os.path.join(ROOT_PATH, 'data', 'reference')
+REF_NA_PATH = os.path.join(ROOT_PATH, 'data', 'sars_cov_reference.fasta')
+
 
 def create_dir_if_not_exists(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
+
 
 def assure_file_exists(path):
     path = pathlib.Path(path)
@@ -46,6 +49,7 @@ def assure_file_exists(path):
     if not path.is_file():
         print(f"Fasta file is not a file: {path}")
         exit(1)
+
 
 def assure_mutation_correct(name):
     return re.match(MUTATION_REGEXP, name) != None
@@ -84,6 +88,7 @@ def load_nextclade_aa_genes(out_dir_path):
 
     return result
 
+
 def load_nextclade_na_alignments(out_dir_path):
     paths = glob.glob(os.path.join(out_dir_path, '', '*aligned.fasta'))
 
@@ -92,6 +97,12 @@ def load_nextclade_na_alignments(out_dir_path):
         exit(-1)
 
     path = paths[0]
+
+    return extract_genes_from_na_fasta(path)
+
+
+def extract_genes_from_na_fasta(path):
+    assure_file_exists(path)
 
     result = {}
     for rec in SeqIO.parse(path, 'fasta'):
@@ -104,7 +115,14 @@ def load_nextclade_na_alignments(out_dir_path):
 
     return result
 
-def load_reference_genes():
+
+def load_reference_aa_genes():
     ref_aa_seqs = load_nextclade_aa_genes(REF_AA_PATH)
     ref_aa_seqs = ref_aa_seqs[list(ref_aa_seqs.keys())[0]]
     return ref_aa_seqs
+
+
+def load_reference_na_genes():
+    ref_na_seqs = extract_genes_from_na_fasta(REF_NA_PATH)
+    ref_na_seqs = ref_na_seqs[list(ref_na_seqs.keys())[0]]
+    return ref_na_seqs

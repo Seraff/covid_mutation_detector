@@ -10,7 +10,8 @@ from tqdm import tqdm
 
 from lib.utils import load_nextclade_aa_genes
 from lib.utils import load_nextclade_na_alignments
-from lib.utils import load_reference_genes
+from lib.utils import load_reference_aa_genes
+from lib.utils import load_reference_na_genes
 
 def parse_arguments():
     usage = "parse_nextclade_report.py"
@@ -121,7 +122,8 @@ def main():
 
                 last_id = site_id
 
-    ref_aa_genes = load_reference_genes()
+    ref_aa_genes = load_reference_aa_genes()
+    ref_na_genes = load_reference_na_genes()
     aa_genes = load_nextclade_aa_genes(arguments.nextclade_out_path)
     na_genes = load_nextclade_na_alignments(arguments.nextclade_out_path)
 
@@ -140,13 +142,15 @@ def main():
             left_id = 0
 
         ref_aa_seq = ref_aa_genes[gene_name][left_id:site_id+radius]
+        ref_na_seq = ref_na_genes[gene_name][left_id*3:(site_id+radius)*3]
         aa_seq = aa_genes[seq_id][gene_name][left_id:site_id+radius]
         na_seq = na_genes[seq_id][gene_name][left_id*3:(site_id+radius)*3]
 
-        result['ref'] = expand_aa_seq(ref_aa_seq)
-        result['gen'] = expand_aa_seq(aa_seq)
-        result['mut'] = f"{' '*radius*4} ^ {' '*radius*4}"
-        result['nuc'] = expand_na_seq(na_seq)
+        result['ref_aa'] = expand_aa_seq(ref_aa_seq)
+        result['ref_na'] = expand_na_seq(ref_na_seq)
+        result['mut_id'] = f"{' '*radius*4} * {' '*radius*4}"
+        result['seq_aa'] = expand_aa_seq(aa_seq)
+        result['seq_na'] = expand_na_seq(na_seq)
 
         result['cnt'] = data['cnt']
         result['seq_ids'] = data['seq_ids']
