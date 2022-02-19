@@ -56,6 +56,30 @@ def expand_na_seq(seq):
     grouped = [l[i:i+3] for i in range(0, len(l), 3)]
     return ' '.join([''.join(e) for e in grouped])
 
+def group_numbers_by_neighbours(numbers):
+    groups = []
+
+    current_group = []
+    for i, current_num in enumerate(numbers):
+        # first item
+        if len(current_group) == 0:
+            current_group.append(current_num)
+            continue
+
+        if current_num == current_group[-1]+1:
+            current_group.append(current_num)
+        else:  # we met a new number
+            if len(current_group) > 1:
+                groups.append(current_group)
+
+            current_group = [current_num]
+
+        if i == len(numbers) - 1:
+            if len(current_group) > 1:
+                groups.append(current_group)
+
+    return groups
+
 def main():
     arguments = parse_arguments()
 
@@ -93,34 +117,45 @@ def main():
             by_seq_report[seq_id][gene_name][site_id] = {
                 'code': mut_code, 'type': mut_type}
 
+    ## Find suspicious mutations
     susp_mutations = {}
+
     # {'mut_code': {'cnt': N, 'seq_ids': [...]}, ...}
     for seq_id, data in tqdm(by_seq_report.items()):
         for gene_name, mutations in data.items():
             site_ids = sorted(list(mutations.keys()))
 
-            del_found = False
-            last_id = None
-            for site_id in site_ids:
-                mut_type = mutations[site_id]['type']
+            groups = group_numbers_by_neighbours(site_ids)
 
-                # If first or new cluster of mutations
-                if last_id == None or site_id != last_id+1:
-                    del_found = mut_type == 'DEL'
+            susp_groups = []
+            for group in groups:
+                del_found = False
+                sub_found = False
 
-                elif mut_type == 'DEL':
-                    del_found = True
+                for idx in group:
+                    mut_type = mutations[idx]['type']
+                    mut_code = mutations[idx]['code']
 
-                elif mut_type == 'SUB' and del_found:
-                    code = mutations[site_id]['code']
+                    if mut_type == 'DEL':
+                        del_found = True
 
-                    if code not in susp_mutations:
-                        susp_mutations[code] = {'cnt': 0, 'seq_ids': []}
+                    if mut_type == 'SUB' and del_found:
+                        sub_found = True
+                        break
 
-                    susp_mutations[code]['seq_ids'].append(seq_id)
-                    susp_mutations[code]['cnt'] += 1
+                if del_found and sub_found:
+                    susp_groups.append(group)
 
-                last_id = site_id
+            for susp_group in susp_groups:
+                key = ','.join([mutations[idx]['code'] for idx in susp_group])
+
+
+                if key not in susp_mutations:
+                    susp_mutations[key] = {'seq_ids': [], 'cnt': 0}
+
+                susp_mutations[key]['seq_ids'].append(seq_id)
+                susp_mutations[key]['cnt'] += 1
+
 
     ref_aa_genes = load_reference_aa_genes()
     ref_na_genes = load_reference_na_genes()
@@ -128,33 +163,51 @@ def main():
     na_genes = load_nextclade_na_alignments(arguments.nextclade_out_path)
 
     ## Adding sequences
-    for mut_code, data in susp_mutations.items():
-        mut_parsed = re.match(MUTATION_REGEX, mut_code)
-        gene_name = mut_parsed.group('gene_name')
-        site_id = int(mut_parsed.group('index'))
+    for mut_codes, data in susp_mutations.items():
+        mut_codes_str = mut_codes
+        mut_codes = mut_codes.split(',')
+
+        mut_left_parsed = re.match(MUTATION_REGEX, mut_codes[0])
+        mut_right_parsed = re.match(MUTATION_REGEX, mut_codes[-1])
+        gene_name = mut_left_parsed.group('gene_name')
+        left_mut_id = int(mut_left_parsed.group('index'))
+        right_mut_id = int(mut_right_parsed.group('index'))
+
         seq_id = data['seq_ids'][0]
 
         result = {}
 
-        radius = 10
-        left_id = site_id - radius - 1
+        radius = 5
+        left_id = left_mut_id - radius - 1
+
         if left_id < 0:
             left_id = 0
 
-        ref_aa_seq = ref_aa_genes[gene_name][left_id:site_id+radius]
-        ref_na_seq = ref_na_genes[gene_name][left_id*3:(site_id+radius)*3]
-        aa_seq = aa_genes[seq_id][gene_name][left_id:site_id+radius]
-        na_seq = na_genes[seq_id][gene_name][left_id*3:(site_id+radius)*3]
+        right_id = right_mut_id + radius
+
+        if right_id > len(aa_genes[seq_id][gene_name]):
+            right_id = len(aa_genes[seq_id][gene_name]) - 1
+
+        ref_aa_seq = ref_aa_genes[gene_name][left_id:right_id]
+        ref_na_seq = ref_na_genes[gene_name][left_id*3:right_id*3]
+        aa_seq = aa_genes[seq_id][gene_name][left_id:right_id]
+        na_seq = na_genes[seq_id][gene_name][left_id*3:right_id*3]
 
         result['ref_aa'] = expand_aa_seq(ref_aa_seq)
         result['ref_na'] = expand_na_seq(ref_na_seq)
-        result['mut_id'] = f"{' '*radius*4} * {' '*radius*4}"
+        stars = ['*' for _i in range(len(mut_codes))]
+
+        left_aa_num = left_mut_id - left_id - 1
+        right_aa_num = right_id - right_mut_id
+        result['mut_id'] = f"{ ' '*left_aa_num*4 } { (' '*3).join(stars) } { ' '*right_aa_num*4 }"
+
+
         result['seq_aa'] = expand_aa_seq(aa_seq)
         result['seq_na'] = expand_na_seq(na_seq)
 
         result['cnt'] = data['cnt']
         result['seq_ids'] = data['seq_ids']
-        susp_mutations[mut_code] = result
+        susp_mutations[mut_codes_str] = result
 
     ## Output
     with open(arguments.output_path, 'w') as out_f:
