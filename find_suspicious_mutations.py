@@ -162,6 +162,7 @@ def main():
     aa_genes = load_nextclade_aa_genes(arguments.nextclade_out_path)
     na_genes = load_nextclade_na_alignments(arguments.nextclade_out_path)
 
+    result = []
     ## Adding sequences
     for mut_codes, data in susp_mutations.items():
         mut_codes_str = mut_codes
@@ -175,7 +176,7 @@ def main():
 
         seq_id = data['seq_ids'][0]
 
-        result = {}
+        item = {}
 
         radius = 5
         left_id = left_mut_id - radius - 1
@@ -193,21 +194,24 @@ def main():
         aa_seq = aa_genes[seq_id][gene_name][left_id:right_id]
         na_seq = na_genes[seq_id][gene_name][left_id*3:right_id*3]
 
-        result['ref_aa'] = expand_aa_seq(ref_aa_seq)
-        result['ref_na'] = expand_na_seq(ref_na_seq)
+        item['predict'] = mut_codes_str
+        item['verdict'] = ''
+        item['ref_aa'] = expand_aa_seq(ref_aa_seq)
+        item['ref_na'] = expand_na_seq(ref_na_seq)
         stars = ['*' for _i in range(len(mut_codes))]
 
         left_aa_num = left_mut_id - left_id - 1
         right_aa_num = right_id - right_mut_id
-        result['mut_id'] = f"{ ' '*left_aa_num*4 } { (' '*3).join(stars) } { ' '*right_aa_num*4 }"
+        item['mut_id'] = f"{ ' '*left_aa_num*4 } { (' '*3).join(stars) } { ' '*right_aa_num*4 }"
 
 
-        result['seq_aa'] = expand_aa_seq(aa_seq)
-        result['seq_na'] = expand_na_seq(na_seq)
+        item['seq_aa'] = expand_aa_seq(aa_seq)
+        item['seq_na'] = expand_na_seq(na_seq)
 
-        result['cnt'] = data['cnt']
-        result['seq_ids'] = data['seq_ids']
-        susp_mutations[mut_codes_str] = result
+        item['notes'] = ''
+        item['cnt'] = data['cnt']
+        item['seq_ids'] = data['seq_ids']
+        result.append(item)
 
     ## Output
     with open(arguments.output_path, 'w') as out_f:
