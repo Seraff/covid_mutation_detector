@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
+# @Author  : Serafim Nenarokov (serafim.nenarokov@gmail.com)
 
-from ast import arguments
 import os
 import argparse
 import re

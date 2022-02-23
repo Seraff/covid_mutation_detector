@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 
 from Bio import SeqIO
+from tqdm import tqdm
 
 AA_ALPHABET = {'Y', 'V', 'P', 'C', 'A', 'M', 'G',
                'H', 'R', 'D', 'N', 'K', 'Q', 'W',
@@ -31,9 +32,14 @@ MUTATION_REGEXP = re.compile((f"^({'|'.join(list(COVID_GENES.keys()))}):"
                               f"[{''.join(AA_ALPHABET)}-]$"))
 
 ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
+MUT_REPLACEMENT_RULES_PATH = os.path.join(
+    ROOT_PATH, 'mut_replacement_rules.json')
+
 REF_AA_PATH = os.path.join(ROOT_PATH, 'data', 'reference')
 REF_NA_PATH = os.path.join(ROOT_PATH, 'data', 'sars_cov_reference.fasta')
 
+MUTATION_REGEX = re.compile(
+    '(?P<gene_name>\w+):(?P<source_aa>[a-zA-Z\-\*])(?P<index>\d+)(?P<target_aa>[a-zA-Z\-\*])')
 
 def create_dir_if_not_exists(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
@@ -52,7 +58,7 @@ def assure_file_exists(path):
 
 
 def assure_mutation_correct(name):
-    return re.match(MUTATION_REGEXP, name) != None
+    return re.match(MUTATION_REGEX, name) != None
 
 
 def load_nextclade_aa_genes(out_dir_path):
@@ -126,3 +132,120 @@ def load_reference_na_genes():
     ref_na_seqs = extract_genes_from_na_fasta(REF_NA_PATH)
     ref_na_seqs = ref_na_seqs[list(ref_na_seqs.keys())[0]]
     return ref_na_seqs
+
+
+def group_numbers_by_neighbours(numbers):
+    groups = []
+
+    current_group = []
+    for i, current_num in enumerate(numbers):
+        # first item
+        if len(current_group) == 0:
+            current_group.append(current_num)
+            continue
+
+        if current_num == current_group[-1]+1:
+            current_group.append(current_num)
+        else:  # we met a new number
+            if len(current_group) > 1:
+                groups.append(current_group)
+
+            current_group = [current_num]
+
+        if i == len(numbers) - 1:
+            if len(current_group) > 1:
+                groups.append(current_group)
+
+    return groups
+
+
+def by_mut_to_by_seq(by_mut_report):
+    '''
+    Receives report in COG format.
+
+    Returns report in format:
+
+    {'seq_id': {
+      'gene_id': { site_id: {
+                      code: "MUT_CODE",
+                      type: "DEL/SUB"}, ...},
+       ...},
+    ...}
+    '''
+
+    by_seq_report = {}
+
+    for mut_code, data in by_mut_report.items():
+        mut_parsed = re.match(MUTATION_REGEX, mut_code)
+
+        if not mut_parsed:
+            raise(f'Mutation `{mut_code}` cannot be parsed!')
+
+        site_id = int(mut_parsed.group('index'))
+        gene_name = mut_parsed.group('gene_name')
+
+        if mut_parsed.group('target_aa') == '-':
+            mut_type = 'DEL'
+        else:
+            mut_type = 'SUB'
+
+        for seq_id in data['seq_ids']:
+            if seq_id not in by_seq_report:
+                by_seq_report[seq_id] = {}
+
+            if gene_name not in by_seq_report[seq_id]:
+                by_seq_report[seq_id][gene_name] = {}
+
+            by_seq_report[seq_id][gene_name][site_id] = {
+                'code': mut_code, 'type': mut_type}
+
+    return by_seq_report
+
+
+def get_suspicious_mutations(by_mut_report):
+    '''
+    Receives report in COG format.
+
+    Returns the dict of suspicious mutations in format:
+    {'mut_code_1,mut_code_2,...': {'cnt': N, 'seq_ids': [...]}, ...}
+    '''
+
+    by_seq_report = by_mut_to_by_seq(by_mut_report)
+
+    susp_mutations = {}
+
+    for seq_id, data in tqdm(by_seq_report.items()):
+        for gene_name, mutations in data.items():
+            site_ids = sorted(list(mutations.keys()))
+
+            groups = group_numbers_by_neighbours(site_ids)
+
+            susp_groups = []
+            for group in groups:
+                del_found = False
+                sub_found = False
+
+                for idx in group:
+                    mut_type = mutations[idx]['type']
+                    mut_code = mutations[idx]['code']
+
+                    if mut_type == 'DEL':
+                        del_found = True
+
+                    if mut_type == 'SUB' and del_found:
+                        sub_found = True
+                        break
+
+                if del_found and sub_found:
+                    susp_groups.append(group)
+
+            for susp_group in susp_groups:
+                key = ','.join([mutations[idx]['code'] for idx in susp_group])
+
+                if key not in susp_mutations:
+                    susp_mutations[key] = {'seq_ids': [], 'cnt': 0}
+
+                susp_mutations[key]['seq_ids'].append(seq_id)
+                susp_mutations[key]['cnt'] += 1
+
+    return susp_mutations
