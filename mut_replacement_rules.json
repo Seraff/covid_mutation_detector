@@ -417,7 +417,7 @@
     },
     {
         "predict": "N:G30-,N:E31-,N:R32-,N:S33V",
-        "verdict": "",
+        "verdict": "N:G30V,N:E31-,N:R32-,N:S33-",
         "ref_aa": " G   S   N   Q   N   G   E   R   S   G   A   R   S   K ",
         "ref_na": "GGC AGT AAC CAG AAT GGA GAA CGC AGT GGG GCG CGA TCA AAA",
         "mut_id": "                     *   *   *   *                     ",
