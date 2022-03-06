@@ -358,5 +358,89 @@
         "seq_aa": " G   T   S   P   A   -   -   -   -   -   S   C   D   A   A   L   A ",
         "seq_na": "GGA ACT TCT CCT GCT A-- --- --- --- --- -GC TGT GAT GCT GCT CTT GCT",
         "notes": "N:R209S - 1,056, N:G214S - 965, N:G215C - 3,726,006"
+    },
+    {
+        "predict": "N:E31-,N:R32D",
+        "verdict": "N:E31D,N:R32-",
+        "ref_aa": " S   N   Q   N   G   E   R   S   G   A   R   S ",
+        "ref_na": "AGT AAC CAG AAT GGA GAA CGC AGT GGG GCG CGA TCA",
+        "mut_id": "                     *   *                     ",
+        "seq_aa": " S   N   Q   N   G   -   D   S   G   A   R   S ",
+        "seq_na": "AGT AAC CAG AAT GGA GA- --C AGT GGG GCG CGA TCA",
+        "notes": "N:E31D - 139, N:R32D - 0",
+        "cnt": 1,
+        "seq_ids": [
+            "EPI_ISL_9906311"
+        ]
+    },
+    {
+        "predict": "ORF9b:N28-,ORF9b:A29T",
+        "verdict": "ORF9b:N28T,ORF9b:A29-",
+        "ref_aa": " V   T   R   M   E   N   A   V   G   R   D   Q ",
+        "ref_na": "GTA ACC AGA ATG GAG AAC GCA GTG GGG CGC GAT CAA",
+        "mut_id": "                     *   *                     ",
+        "seq_aa": " V   T   R   M   E   -   T   V   G   R   D   Q ",
+        "seq_na": "GTA ACC AGA ATG GAG A-- -CA GTG GGG CGC GAT CAA",
+        "notes": "ORF9b:N28T - 0, ORF9b:A29T - 0",
+        "cnt": 1,
+        "seq_ids": [
+            "EPI_ISL_9906311"
+        ]
+    },
+    {
+        "predict": "ORF1a:T2264-,ORF1a:G2265S",
+        "verdict": "ORF1a:T2264-,ORF1a:G2265S",
+        "ref_aa": " M   P   S   Y   C   T   G   Y   R   E   G   Y ",
+        "ref_na": "ATG CCT TCT TAC TGT ACT GGT TAC AGA GAA GGC TAT",
+        "mut_id": "                     *   *                     ",
+        "seq_aa": " M   P   S   Y   C   -   S   Y   R   E   G   Y ",
+        "seq_na": "ATG CCT TCT TAC TGT A-- -GT TAC AGA GAA GGC TAT",
+        "notes": "ORF1a:T2264D - 0, ORF1a:G2265S - 1,722",
+        "cnt": 1,
+        "seq_ids": [
+            "EPI_ISL_9955179"
+        ]
+    },
+    {
+        "predict": "ORF1a:S3673-,ORF1a:L3674-,ORF1a:S3675-,ORF1a:G3676-,ORF1a:F3677I",
+        "verdict": "ORF1a:S3673I,ORF1a:L3674-,ORF1a:S3675-,ORF1a:G3676-,ORF1a:F3677-",
+        "ref_aa": " D   M   V   D   T   S   L   S   G   F   K   L   K   D   C ",
+        "ref_na": "GAT ATG GTT GAT ACT AGT TTG TCT GGT TTT AAG CTA AAA GAC TGT",
+        "mut_id": "                     *   *   *   *   *                     ",
+        "seq_aa": " D   M   V   D   T   -   -   -   -   I   K   L   K   D   C ",
+        "seq_na": "GAT ATG GTT GAT ACT A-- --- --- --- -TT AAG CTA AAA GAC TGT",
+        "notes": "ORF1a:S3673I - 251, ORF1a:F3677I - 38",
+        "cnt": 1,
+        "seq_ids": [
+            "EPI_ISL_10316574"
+        ]
+    },
+    {
+        "predict": "N:G30-,N:E31-,N:R32-,N:S33V",
+        "verdict": "",
+        "ref_aa": " G   S   N   Q   N   G   E   R   S   G   A   R   S   K ",
+        "ref_na": "GGC AGT AAC CAG AAT GGA GAA CGC AGT GGG GCG CGA TCA AAA",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " G   S   N   Q   N   -   -   -   V   G   A   R   S   K ",
+        "seq_na": "GGC AGT AAC CAG AAT G-- --- --- -TT GGG GCG CGA TCA AAA",
+        "notes": "N:G30V - 607, N:S33V - 0",
+        "cnt": 1,
+        "seq_ids": [
+            "EPI_ISL_10069258"
+        ]
+    },
+    {
+        "predict": "ORF9b:E27-,ORF9b:N28-,ORF9b:A29-,ORF9b:V30L",
+        "verdict": "ORF9b:E27-,ORF9b:N28-,ORF9b:A29-,ORF9b:V30L",
+        "ref_aa": " A   V   T   R   M   E   N   A   V   G   R   D   Q   N ",
+        "ref_na": "GCA GTA ACC AGA ATG GAG AAC GCA GTG GGG CGC GAT CAA AAC",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " A   V   T   R   M   -   -   -   L   G   R   D   Q   N ",
+        "seq_na": "GCA GTA ACC AGA ATG --- --- --- TTG GGG CGC GAT CAA AAC",
+        "notes": "ORF9b:E27L - 0, ORF9b:V30L - 0",
+        "cnt": 1,
+        "seq_ids": [
+            "EPI_ISL_10069258"
+        ]
     }
 ]
