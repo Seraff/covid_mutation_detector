@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @Author  : Serafim Nenarokov (serafim.nenarokov@gmail.com)
+
+# The script connects to outbreak.info API
+# and fetches the variants into known_variants.json file
 
 import os
 import json

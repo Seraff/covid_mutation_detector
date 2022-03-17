@@ -123,7 +123,7 @@ def main():
     with open(arguments.output_path, 'w') as out_f:
         json.dump(result, out_f, indent=4, sort_keys=False)
 
-    print(f'Finished. {len(susp_mutations)} mutations found.')
+    print(f'Finished. {len(susp_mutations)} situations found.')
 
 
 if __name__ == '__main__':

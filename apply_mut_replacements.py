@@ -25,9 +25,9 @@ def parse_arguments():
 
     parser.add_argument("-i", "--report_path",
                         required=True,
-                        help="Report in COG json format.")
+                        help="Report in COG json format")
     parser.add_argument("-r", "--rules_path",
-                        help="Report in COG json format.")
+                        help="Rules json file (optional)")
     parser.add_argument('-o', '--output_path',
                         required=True,
                         help="Modified report path")
@@ -87,14 +87,12 @@ def main():
                         report[mut]['seq_ids'].append(seq_id)
                         report[mut]['cnt'] += 1
 
-
-    with open(arguments.output_path, 'w') as out_f:
-        json.dump(report, out_f, indent=4, sort_keys=True)
-
     if len(undefined_rules) == 0:
         print('All the suspicions satisfied')
+        with open(arguments.output_path, 'w') as out_f:
+            json.dump(report, out_f, indent=4, sort_keys=True)
     else:
-        print(f'There are {len(undefined_rules)} unsatisfied suspicious patterns.')
+        print(f'There are {len(undefined_rules)} unsatisfied suspicious patterns. Please, check.')
         for mut_codes in undefined_rules:
             print(mut_codes)
 
