@@ -22,7 +22,7 @@ rule all:
         f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}_good/report_fixed.json',
         f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}/report_fixed.json'
     run:
-        shell(f'greadlink -f {" ".join(input)}')
+        shell(f'readlink -f {" ".join(input)}')
 
 ## Unpacking
 rule unxz:
