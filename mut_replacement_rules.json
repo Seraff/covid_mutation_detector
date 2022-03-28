@@ -478,5 +478,25 @@
         "seq_aa": " Q   T   L   L   A   -   F   R   S   Y   L   T ",
         "seq_na": "CAA ACT TTA CTT GCT TT- --T AGA AGT TAT TTG ACT",
         "notes": "S:H245F - 0, S:L244F - 254"
+    },
+    {
+        "predict": "N:G30-,N:E31-,N:R32-,N:S33C",
+        "verdict": "N:G30-,N:E31-,N:R32-,N:S33C",
+        "ref_aa": " G   S   N   Q   N   G   E   R   S   G   A   R   S   K ",
+        "ref_na": "GGC AGT AAC CAG AAT GGA GAA CGC AGT GGG GCG CGA TCA AAA",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " G   S   N   Q   N   -   -   -   C   G   A   R   S   K ",
+        "seq_na": "GGC AGT AAC CAG AAT T-- --- --- -GT GGG GCG CGA TCA AAA",
+        "notes": "N:G30C - 1, N:S33C - 645, see nucleotides (A->T)GT"
+    },
+    {
+        "predict": "ORF9b:M26-,ORF9b:E27-,ORF9b:N28-,ORF9b:A29I",
+        "verdict": "ORF9b:M26I,ORF9b:E27-,ORF9b:N28-,ORF9b:A29-",
+        "ref_aa": " L   A   V   T   R   M   E   N   A   V   G   R   D   Q ",
+        "ref_na": "CTG GCA GTA ACC AGA ATG GAG AAC GCA GTG GGG CGC GAT CAA",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " L   A   V   T   R   -   -   -   I   V   G   R   D   Q ",
+        "seq_na": "CTG GCA GTA ACC AGA ATT --- --- --- GTG GGG CGC GAT CAA",
+        "notes": "Weird behaviour of nexclade. ORF9b:M26I - 0, ORF9b:A29I - 0"
     }
 ]
