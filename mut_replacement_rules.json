@@ -498,5 +498,35 @@
         "seq_aa": " L   A   V   T   R   -   -   -   I   V   G   R   D   Q ",
         "seq_na": "CTG GCA GTA ACC AGA ATT --- --- --- GTG GGG CGC GAT CAA",
         "notes": "Weird behaviour of nexclade. ORF9b:M26I - 0, ORF9b:A29I - 0"
+    },
+    {
+        "predict": "S:N211-,S:L212I,S:V213G",
+        "verdict": "S:N211-,S:L212I,S:V213G",
+        "ref_aa": " K   H   T   P   I   N   L   V   R   D   L   P   Q ",
+        "ref_na": "AAG CAC ACG CCT ATT AAT TTA GTG CGT GAT CTC CCT CAG",
+        "mut_id": "                     *   *   *                     ",
+        "seq_aa": " K   H   T   P   I   -   I   G   R   D   L   P   Q ",
+        "seq_na": "AAG CAC ACG CCT ATT A-- -TA GGG CGT GAT CTC CCT CAG",
+        "notes": "ORF9b:M26I - 0, S:L212I - 778"
+    },
+    {
+        "predict": "S:G142-,S:V143-,S:Y144-,S:Y145N",
+        "verdict": "S:G142-,S:V143-,S:Y144-,S:Y145N",
+        "ref_aa": " N   D   P   F   L   G   V   Y   Y   H   K   N   N   K ",
+        "ref_na": "AAT GAT CCA TTT TTG GGT GTT TAT TAC CAC AAA AAC AAC AAA",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " N   D   P   F   L   -   -   -   N   H   K   N   N   K ",
+        "seq_na": "AAT GAT CCA TTT TTG --- --- --- AAC CAC AAA AAC AAC AAA",
+        "notes": "S:Y145N - 14,307"
+    },
+    {
+        "predict": "N:E31-,N:R32-,N:S33-,N:G34W",
+        "verdict": "N:E31-,N:R32-,N:S33-,N:G34W",
+        "ref_aa": " S   N   Q   N   G   E   R   S   G   A   R   S   K   Q ",
+        "ref_na": "AGT AAC CAG AAT GGA GAA CGC AGT GGG GCG CGA TCA AAA CAA",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " S   N   Q   N   G   -   -   -   W   A   R   S   K   Q ",
+        "seq_na": "AGT AAC CAG AAT G-- --- --- -GT TGG GCG CGA TCA AAA CAA",
+        "notes": "N:G34W - 5,970"
     }
 ]
