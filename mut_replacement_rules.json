@@ -528,5 +528,48 @@
         "seq_aa": " S   N   Q   N   G   -   -   -   W   A   R   S   K   Q ",
         "seq_na": "AGT AAC CAG AAT G-- --- --- -GT TGG GCG CGA TCA AAA CAA",
         "notes": "N:G34W - 5,970"
+    },
+    {
+        "predict": "N:G30-,N:E31-,N:R32-,N:S33D",
+        "verdict": "N:G30D,N:E31-,N:R32-,N:S33-",
+        "ref_aa": " G   S   N   Q   N   G   E   R   S   G   A   R   S   K ",
+        "ref_na": "GGC AGT AAC CAG AAT GGA GAA CGC AGT GGG GCG CGA TCA AAA",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " G   S   N   Q   N   -   -   -   D   G   A   R   S   K ",
+        "seq_na": "GGC AGT AAC CAG AAT G-- --- --- -AT GGG GCG CGA TCA AAA",
+        "notes": "N:G30D - 254, N:S33D - 3",
+        "cnt": 1
+    },
+    {
+        "predict": "ORF9b:E27-,ORF9b:N28-,ORF9b:A29-,ORF9b:V30M",
+        "verdict": "ORF9b:E27-,ORF9b:N28-,ORF9b:A29-,ORF9b:V30M",
+        "ref_aa": " A   V   T   R   M   E   N   A   V   G   R   D   Q   N ",
+        "ref_na": "GCA GTA ACC AGA ATG GAG AAC GCA GTG GGG CGC GAT CAA AAC",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " A   V   T   R   M   -   -   -   M   G   R   D   Q   N ",
+        "seq_na": "GCA GTA ACC AGA ATG --- --- --- ATG GGG CGC GAT CAA AAC",
+        "notes": "ORF9b:E27M - 0, ORF9b:V30M - 0",
+        "cnt": 1
+    },
+    {
+        "predict": "ORF1a:L18-,ORF1a:P19-,ORF1a:V20F",
+        "verdict": "ORF1a:L18F,ORF1a:P19-,ORF1a:V20-",
+        "ref_aa": " H   V   Q   L   S   L   P   V   L   Q   V   R   D ",
+        "ref_na": "CAC GTC CAA CTC AGT TTG CCT GTT TTA CAG GTT CGC GAC",
+        "mut_id": "                     *   *   *                     ",
+        "seq_aa": " H   V   Q   L   S   -   -   F   L   Q   V   R   D ",
+        "seq_na": "CAC GTC CAA CTC AGT T-- --- -TT TTA CAG GTT CGC GAC",
+        "notes": "ORF1a:L18F - 212, ORF1a:V20F - 0",
+        "cnt": 1
+    },
+    {
+        "predict": "N:E31-,N:R32-,N:S33-,N:G34V",
+        "verdict": "N:E31-,N:R32-,N:S33-,N:G34V",
+        "ref_aa": " S   N   Q   N   G   E   R   S   G   A   R   S   K   Q ",
+        "ref_na": "AGT AAC CAG AAT GGA GAA CGC AGT GGG GCG CGA TCA AAA CAA",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " S   N   Q   N   G   -   -   -   V   A   R   S   K   Q ",
+        "seq_na": "AGT AAC CAG AAT G-- --- --- -GT GTG GCG CGA TCA AAA CAA",
+        "notes": "Obvious situation according to nucleotides (N:G34V - 645)"
     }
 ]
