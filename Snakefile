@@ -30,8 +30,8 @@ rule unxz:
         f'{DIR_PREFIX}/seq/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}_good.fasta.xz',
         f'{DIR_PREFIX}/seq/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}.fasta.xz'
     output:
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_12_weeks_good.fasta',
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_12_weeks.fasta'
+        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_good.fasta',
+        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}.fasta'
     run:
         for i in range(2):
             cmd = f"unxz -c {input[i]} > {output[i]}"
@@ -40,8 +40,8 @@ rule unxz:
 ## Nextclading
 rule nextclade:
     input:
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_12_weeks_good.fasta',
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_12_weeks.fasta'
+        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_good.fasta',
+        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}.fasta'
     output:
         f'{ nextclade_good_output_path() }/nextclade.json',
         f'{ nextclade_all_output_path() }/nextclade.json'
