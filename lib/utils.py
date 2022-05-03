@@ -26,11 +26,6 @@ COVID_GENES = {
     "S": (21563, 25384)
 }
 
-MUTATION_REGEXP = re.compile((f"^({'|'.join(list(COVID_GENES.keys()))}):"
-                              f"[{''.join(AA_ALPHABET)}-]"
-                              f"\d+"
-                              f"[{''.join(AA_ALPHABET)}-]$"))
-
 ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
 MUT_REPLACEMENT_RULES_PATH = os.path.join(
     ROOT_PATH, 'mut_replacement_rules.json')
@@ -40,6 +35,7 @@ REF_NA_PATH = os.path.join(ROOT_PATH, 'data', 'sars_cov_reference.fasta')
 
 MUTATION_REGEX = re.compile(
     '(?P<gene_name>\w+):(?P<source_aa>[a-zA-Z\-\*])(?P<index>\d+)(?P<target_aa>[a-zA-Z\-\*])')
+
 
 def create_dir_if_not_exists(path):
     pathlib.Path(path).mkdir(parents=True, exist_ok=True)
@@ -249,3 +245,19 @@ def get_suspicious_mutations(by_mut_report):
                 susp_mutations[key]['cnt'] += 1
 
     return susp_mutations
+
+
+def pprint_na_seq(seq):
+    '''
+    GTACCT -> GTA CCT
+    '''
+    l = list(seq)
+    grouped = [l[i:i+3] for i in range(0, len(l), 3)]
+    return ' '.join([''.join(e) for e in grouped])
+
+
+def pprint_aa_seq(seq):
+    '''
+    MVANAH ->   M  V  A  N  A  H
+    '''
+    return ' ' + '   '.join(list(seq)) + ' '
