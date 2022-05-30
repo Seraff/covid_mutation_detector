@@ -601,5 +601,35 @@
         "seq_aa": " L   A   V   T   R   -   -   -   V   V   G   R   D   Q ",
         "seq_na": "CTG GCA GTA ACC AGA GTG --- --- --- GTG GGG CGC GAT CAA",
         "notes": "ORF9b:M26V - 0, ORF9b:A29V - 0"
+    },
+    {
+        "predict": "ORF1a:I1023-,ORF1a:E1024K",
+        "verdict": "ORF1a:I1023K,ORF1a:E1024-",
+        "ref_aa": " P   V   V   Q   T   I   E   V   N   S   F   S ",
+        "ref_na": "CCA GTT GTT CAG ACT ATT GAA GTG AAT AGT TTT AGT",
+        "mut_id": "                     *   *                     ",
+        "seq_aa": " P   V   V   Q   T   -   K   V   N   S   F   S ",
+        "seq_na": "CCA GTT GTT CAG ACT A-- -AA GTG AAT AGT TTT AGT",
+        "notes": "ORF1a:I1023K - 532, ORF1a:E1024K - 302"
+    },
+    {
+        "predict": "ORF1a:H81-,ORF1a:G82-,ORF1a:H83-,ORF1a:V84-,ORF1a:M85Q",
+        "verdict": "ORF1a:H81Q,ORF1a:G82-,ORF1a:H83-,ORF1a:V84-,ORF1a:M85-",
+        "ref_aa": " A   R   T   A   P   H   G   H   V   M   V   E   L   V   A ",
+        "ref_na": "GCT CGA ACT GCA CCT CAT GGT CAT GTT ATG GTT GAG CTG GTA GCA",
+        "mut_id": "                     *   *   *   *   *                     ",
+        "seq_aa": " A   R   T   A   P   -   -   -   -   Q   V   E   L   V   A ",
+        "seq_na": "GCT CGA ACT GCA CCT CA- --- --- --- --G GTT GAG CTG GTA GCA",
+        "notes": "ORF1a:H81Q - 514, ORF1a:M85Q - 12"
+    },
+    {
+        "predict": "ORF7a:F63-,ORF7a:A64-,ORF7a:F65-,ORF7a:A66-,ORF7a:C67-,ORF7a:P68-,ORF7a:D69-,ORF7a:G70-,ORF7a:V71-,ORF7a:K72-,ORF7a:H73-,ORF7a:V74-,ORF7a:Y75-,ORF7a:Q76L",
+        "verdict": "ORF7a:F63L,ORF7a:A64-,ORF7a:F65-,ORF7a:A66-,ORF7a:C67-,ORF7a:P68-,ORF7a:D69-,ORF7a:G70-,ORF7a:V71-,ORF7a:K72-,ORF7a:H73-,ORF7a:V74-,ORF7a:Y75-,ORF7a:Q76-",
+        "ref_aa": " C   F   S   T   Q   F   A   F   A   C   P   D   G   V   K   H   V   Y   Q   L   R   A   R   S ",
+        "ref_na": "TGC TTT AGC ACT CAA TTT GCT TTT GCT TGT CCT GAC GGC GTA AAA CAC GTC TAT CAG TTA CGT GCC AGA TCA",
+        "mut_id": "                     *   *   *   *   *   *   *   *   *   *   *   *   *   *                     ",
+        "seq_aa": " C   F   S   T   Q   -   -   -   -   -   -   -   -   -   -   -   -   -   L   L   R   A   R   S ",
+        "seq_na": "TGC TTT AGC ACT CAA TT- --- --- --- --- --- --- --- --- --- --- --- --- --G TTA CGT GCC AGA TCA",
+        "notes": "ORF7a:F63L - 2,492, ORF7a:Q76L - 543"
     }
 ]
