@@ -701,5 +701,15 @@
         "seq_aa": " H   G   L   A   A   -   D   S   V   P   W   D ",
         "seq_na": "CAT GGT TTA GCT GCT G-- -AT AGT GTC CCT TGG GAT",
         "notes": "ORF1a:V2130D - 632, ORF1a:N2131D - 166"
+    },
+    {
+        "predict": "ORF8:P38-,ORF8:I39C,ORF8:H40F",
+        "verdict": "ORF8:P38C,ORF8:I39F,ORF8:H40-",
+        "ref_aa": " V   D   D   P   C   P   I   H   F   Y   S   K   W ",
+        "ref_na": "GTT GAT GAC CCG TGT CCT ATT CAC TTC TAT TCT AAA TGG",
+        "mut_id": "                     *   *   *                     ",
+        "seq_aa": " V   H   D   P   C   -   C   F   X   X   X   X   X ",
+        "seq_na": "GTT CAT GAC CCG TGT TGT TTT AGN NNN NNN NNN NNN NNN",
+        "notes": "Weird. ORF8:P38C - 2, ORF8:I39F - 282"
     }
 ]
