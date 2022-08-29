@@ -711,5 +711,25 @@
         "seq_aa": " V   H   D   P   C   -   C   F   X   X   X   X   X ",
         "seq_na": "GTT CAT GAC CCG TGT TGT TTT AGN NNN NNN NNN NNN NNN",
         "notes": "Weird. ORF8:P38C - 2, ORF8:I39F - 282"
+    },
+    {
+        "predict": "S:H69-,S:V70-,S:S71F",
+        "verdict": "S:H69-,S:V70-,S:S71F",
+        "ref_aa": " W   F   H   A   I   H   V   S   G   T   N   G   T ",
+        "ref_na": "TGG TTC CAT GCT ATA CAT GTC TCT GGG ACC AAT GGT ACT",
+        "mut_id": "                     *   *   *                     ",
+        "seq_aa": " W   F   H   A   I   -   -   F   G   T   N   G   T ",
+        "seq_na": "TGG TTC CAT GCT A-- --- -TC TTT GGG ACC AAT GGT ACT",
+        "notes": "S:S71F - 4,538"
+    },
+    {
+        "predict": "ORF1a:V84-,ORF1a:M85-,ORF1a:V86-,ORF1a:E87D",
+        "verdict": "ORF1a:V84-,ORF1a:M85-,ORF1a:V86-,ORF1a:E87D",
+        "ref_aa": " A   P   H   G   H   V   M   V   E   L   V   A   E   L ",
+        "ref_na": "GCA CCT CAT GGT CAT GTT ATG GTT GAG CTG GTA GCA GAA CTC",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " A   P   H   G   H   -   -   -   D   L   V   A   E   L ",
+        "seq_na": "GCA CCT CAT GGT CAT --- --- --- GAT CTG GTA GCA GAA CTC",
+        "notes": "ORF1a:V84D - 16, ORF1a:E87D - 87,668"
     }
 ]
