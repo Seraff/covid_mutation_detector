@@ -2,8 +2,10 @@ import os
 import glob
 import pathlib
 import re
+import json
 from pathlib import Path
 
+import requests
 from Bio import SeqIO
 from tqdm import tqdm
 
@@ -52,10 +54,19 @@ def assure_file_exists(path):
         print(f"Fasta file is not a file: {path}")
         exit(1)
 
+# Mutation parsing
 
 def assure_mutation_correct(name):
     return re.match(MUTATION_REGEX, name) != None
 
+
+def mut_id_to_dict(mut_id):
+    if not assure_mutation_correct(mut_id):
+        return None
+
+    return re.match(MUTATION_REGEX, mut_id).groupdict()
+
+# Loading
 
 def load_nextclade_aa_genes(out_dir_path):
     file_paths = glob.glob(os.path.join(
@@ -247,6 +258,8 @@ def get_suspicious_mutations(by_mut_report):
     return susp_mutations
 
 
+# pretty print of Nucleotide & Amino acid sequences
+
 def pprint_na_seq(seq):
     '''
     GTACCT -> GTA CCT
@@ -261,3 +274,49 @@ def pprint_aa_seq(seq):
     MVANAH ->   M  V  A  N  A  H
     '''
     return ' ' + '   '.join(list(seq)) + ' '
+
+
+# External API connection methods
+
+def response_successful(response):
+    if response.status_code != 200:
+        print(f"ERROR: response failed: {response.url}")
+        return False
+    else:
+        return True
+
+def try_to_get(url, params={}, timeout=5):
+    success = False
+    response = None
+
+    while not success:
+        try:
+            response = requests.get(url, params=params, timeout=timeout)
+        except:
+            print("Connection problem, reconnecting...")
+            success = False
+            continue
+
+        if (response_successful(response)):
+            success = True
+        else:
+            print("Trying again...")
+
+    if response == None:
+        raise Exception(f'Something wrong happened with url {url}')
+
+    result = response.json()
+    return result
+
+# reports
+
+def invert_cog_report(report_json):
+    result = {}
+
+    for mut_id, data in report_json.items():
+        for seq_id in data['seq_ids']:
+            if seq_id not in result:
+                result[seq_id] = []
+            result[seq_id].append(mut_id)
+
+    return result

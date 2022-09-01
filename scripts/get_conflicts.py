@@ -12,6 +12,7 @@ from Bio import SeqIO
 
 MUTATION_REGEX = re.compile(
     '(?P<gene_name>\w+):(?P<source_aa>[a-zA-Z\-\*])(?P<index>\d+)(?P<target_aa>[a-zA-Z\-\*])')
+
 ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
 REF_AA_PATH = os.path.join(ROOT_PATH, 'data', 'reference')
 REF_NA_PATH = os.path.join(ROOT_PATH, 'data', 'sars_cov_reference.fasta')
