@@ -1,135 +1,101 @@
 ## Example:
-## DF_SHORT="df-20220114" DF_LONG="datafreeze-2022-01-14" snakemake -c1
+## INPUT_PATH="some/path.xz" OUTPUT_PATH="path/to/some/folder" snakemake -c1
+## Input can be either xz archive or fasta file
 
 import os
 import json
-
-DIR_PREFIX = "/storage/vestec1-elixir/projects/cogcz"
-COV_DATA_PATH = f"{DIR_PREFIX}/serafim/sars-cov-2"
-DETECTOR_PATH = f"{DIR_PREFIX}/serafim/covid_mutation_detector"
+import platform
+from pathlib import Path
 
 
 envvars:
-    "DF_SHORT",
-    "DF_LONG"
+    "INPUT_PATH",
+    "OUTPUT_PATH"
 
 
-def nextclade_12_weeks_all_output_path():
-    return f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}_12_weeks'
+INPUT_PATH = os.environ["INPUT_PATH"]
+OUTPUT_PATH = os.environ["OUTPUT_PATH"]
 
+MACOS = platform.system() == 'Darwin'
+ROOT_PATH = os.getcwd()
+COV_DATA_PATH = os.path.join(ROOT_PATH, 'data', 'nextclade_dataset')
 
-def nextclade_12_weeks_good_output_path():
-    return f'{nextclade_12_weeks_all_output_path()}_good'
-
-
-def nextclade_only_current_output_path():
-    return f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}'
+INPUT_FASTA_FILENAME = os.path.basename(INPUT_PATH).rsplit('.')[0]
+INPUT_FASTA_PATH = os.path.join(OUTPUT_PATH, 'data', f'{INPUT_FASTA_FILENAME}.fasta')
 
 
 rule all:
     input:
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}_12_weeks_good/report_fixed.json',
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}_12_weeks/report_fixed.json',
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}/report_fixed.json'
+        f'{OUTPUT_PATH}/report_fixed.json'
     run:
-        shell(f'readlink -f {" ".join(input)}')
+        readlink_cmd = 'greadlink' if MACOS else 'readlink'
+        shell(f'{readlink_cmd} -f {" ".join(input)}')
+
 
 ## Unpacking
 rule unxz:
     input:
-        f'{DIR_PREFIX}/seq/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}_12_weeks_good.fasta.xz',
-        f'{DIR_PREFIX}/seq/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}_12_weeks.fasta.xz',
-        f'{DIR_PREFIX}/seq/{os.environ["DF_SHORT"]}/{os.environ["DF_LONG"]}.fasta.xz'
+        INPUT_PATH
     output:
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_12_weeks_good.fasta',
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_12_weeks.fasta',
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}.fasta'
+        INPUT_FASTA_PATH
     run:
-        for i in range(3):
-            cmd = f"unxz -c {input[i]} > {output[i]}"
-            shell(cmd)
+        if INPUT_PATH.split('.')[-1] == 'xz':
+            shell(f"unxz -c {input} > {output}")
+        else:
+            shell(f"cp {input} {output}")
+
 
 ## Nextclading
 rule nextclade:
     input:
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_12_weeks_good.fasta',
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}_12_weeks.fasta',
-        f'{DIR_PREFIX}/serafim/{os.environ["DF_SHORT"]}/data/{os.environ["DF_LONG"]}.fasta'
+        INPUT_FASTA_PATH
     output:
-        f'{ nextclade_12_weeks_good_output_path() }/nextclade.json',
-        f'{ nextclade_12_weeks_all_output_path() }/nextclade.json',
-        f'{ nextclade_only_current_output_path() }/nextclade.json'
-    run:
-        for i, out_path in enumerate(output):
-            shell(f"echo working with file {i+1}...")
-            cmd = f"nextclade --in-order \
-                    --input-fasta {input[i]} --input-dataset {COV_DATA_PATH} \
-                    --output-dir {os.path.dirname(out_path)} \
-                    --output-json {output[i]}"
-            shell(cmd)
+        f'{OUTPUT_PATH}/nextclade.json'
+    shell:
+        "nextclade --in-order "
+        "--input-fasta {input} --input-dataset {COV_DATA_PATH} "
+        "--output-dir {OUTPUT_PATH}/nextclade "
+        "--output-json {output} "
 
 ## Converting reports
 rule report:
     input:
-        f'{ nextclade_12_weeks_good_output_path() }/nextclade.json',
-        f'{ nextclade_12_weeks_all_output_path() }/nextclade.json',
-        f'{ nextclade_only_current_output_path() }/nextclade.json'
+        f'{OUTPUT_PATH}/nextclade.json'
     output:
-        f'{ nextclade_12_weeks_good_output_path() }/report.json',
-        f'{ nextclade_12_weeks_all_output_path() }/report.json',
-        f'{ nextclade_only_current_output_path() }/report.json'
+        f'{OUTPUT_PATH}/report.json'
     run:
-        converter = f'{DETECTOR_PATH}/parse_nextclade_report.py'
+        converter = f'{ROOT_PATH}/parse_nextclade_report.py'
+        shell(f'{converter} -i {input} -o {output}')
 
-        for i in range(3):
-            shell(f'{converter} -i {input[i]} -o {output[i]}')
 
-## Finding suspicious mutations
+## Finding all suspicious mutations
 rule find_suspicious_mutations:
     input:
-        f'{ nextclade_12_weeks_good_output_path() }/report.json',
-        f'{ nextclade_12_weeks_all_output_path() }/report.json',
-        f'{ nextclade_only_current_output_path() }/report.json'
-
+        f'{OUTPUT_PATH}/report.json'
     output:
-        f'{ nextclade_12_weeks_good_output_path() }/all_suspicious.json',
-        f'{ nextclade_12_weeks_all_output_path() }/all_suspicious.json',
-        f'{ nextclade_only_current_output_path() }/all_suspicious.json'
+        f'{OUTPUT_PATH}/all_suspicious.json'
     run:
-        script = f'{DETECTOR_PATH}/find_suspicious_mutations.py'
+        script = f'{ROOT_PATH}/find_suspicious_mutations.py'
+        shell(f"{script} -i {input} -d {OUTPUT_PATH}/nextclade -o {output}")
 
-        for i, input_path in enumerate(input):
-            shell(f"{script} -i {input[i]} -d {os.path.dirname(input_path)} -o {output[i]}")
 
-## Finding suspicious mutations
+## Finding new suspicious mutations
 rule reporting_new_suspicious_mutations:
     input:
-        f'{ nextclade_12_weeks_good_output_path() }/all_suspicious.json',
-        f'{ nextclade_12_weeks_all_output_path() }/all_suspicious.json',
-        f'{ nextclade_only_current_output_path() }/all_suspicious.json'
+        f'{OUTPUT_PATH}/all_suspicious.json'
 
     output:
-        f'{ nextclade_12_weeks_good_output_path() }/suspicious_new.json',
-        f'{ nextclade_12_weeks_all_output_path() }/suspicious_new.json',
-        f'{ nextclade_only_current_output_path() }/suspicious_new.json'
+        f'{OUTPUT_PATH}/suspicious_new.json'
     run:
-        script = f'{DETECTOR_PATH}/report_new_suspicious_mutations.py'
+        script = f'{ROOT_PATH}/report_new_suspicious_mutations.py'
+        shell(f"{script} -s {input} -o {output}")
 
-        for i in range(3):
-            shell(f"{script} -s {input[i]} -o {output[i]}")
 
 rule fix_report:
     input:
-        f'{ nextclade_12_weeks_good_output_path() }/suspicious_new.json',
-        f'{ nextclade_12_weeks_all_output_path() }/suspicious_new.json',
-        f'{ nextclade_only_current_output_path() }/suspicious_new.json'
+        f'{OUTPUT_PATH}/suspicious_new.json'
     output:
-        f'{ nextclade_12_weeks_good_output_path() }/report_fixed.json',
-        f'{ nextclade_12_weeks_all_output_path() }/report_fixed.json',
-        f'{ nextclade_only_current_output_path() }/report_fixed.json'
+        f'{OUTPUT_PATH}/report_fixed.json'
     run:
-        script = f'{DETECTOR_PATH}/apply_mut_replacements.py'
-        reports = [os.path.join(os.path.dirname(e), 'report.json') for e in input]
-
-        for i in range(3):
-            shell(f"{script} -i {reports[i]} -o {output[i]}")
+        script = f'{ROOT_PATH}/apply_mut_replacements.py'
+        shell(f"{script} -i {OUTPUT_PATH}/report.json -o {output}")
