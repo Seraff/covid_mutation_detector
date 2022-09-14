@@ -731,5 +731,25 @@
         "seq_aa": " A   P   H   G   H   -   -   -   D   L   V   A   E   L ",
         "seq_na": "GCA CCT CAT GGT CAT --- --- --- GAT CTG GTA GCA GAA CTC",
         "notes": "ORF1a:V84D - 16, ORF1a:E87D - 87,668"
+    },
+    {
+        "predict": "ORF1a:S3675-,ORF1a:G3676-,ORF1a:F3677-,ORF1a:K3678N",
+        "verdict": "ORF1a:S3675-,ORF1a:G3676-,ORF1a:F3677-,ORF1a:K3678N",
+        "ref_aa": " V   D   T   S   L   S   G   F   K   L   K   D   C   V ",
+        "ref_na": "GTT GAT ACT AGT TTG TCT GGT TTT AAG CTA AAA GAC TGT GTT",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " V   D   T   S   L   -   -   -   N   L   K   D   C   V ",
+        "seq_na": "GTT GAT ACT AGT TTG --- --- --- AAT CTA AAA GAC TGT GTT",
+        "notes": "ORF1a:S3675N - 17, ORF1a:K3678N - 1,468"
+    },
+    {
+        "predict": "N:G30-,N:E31-,N:R32-,N:S33A",
+        "verdict": "N:G30A,N:E31-,N:R32-,N:S33-",
+        "ref_aa": " G   S   N   Q   N   G   E   R   S   G   A   R   S   K ",
+        "ref_na": "GGC AGT AAC CAG AAT GGA GAA CGC AGT GGG GCG CGA TCA AAA",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " G   S   N   Q   N   -   -   -   A   G   A   R   S   K ",
+        "seq_na": "GGC AGT AAC CAG AAT G-- --- --- -CT GGG GCG CGA TCA AAA",
+        "notes": "N:G30A - 1,246, N:S33A - 2"
     }
 ]
