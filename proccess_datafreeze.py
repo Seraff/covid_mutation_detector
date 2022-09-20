@@ -42,7 +42,7 @@ def main():
     for i, input_path in enumerate(input_paths):
         output_path = output_paths[i]
 
-        cmd = f"INPUT_PATH={input_path} OUTPUT_PATH={output_path} Snakemake -c1"
+        cmd = f"INPUT_PATH={input_path} OUTPUT_PATH={output_path} snakemake -c1"
         print(cmd)
         rtn = subprocess.call(cmd, shell=True)
 
