@@ -1,6 +1,30 @@
 # COVID-19 Mutation Detector
 
-## cluster_sequences.py
+## Main Pipeline
+
+### Generating Per-mutation Statistics
+
+The main pipeline takes fasta file and generates mutation statistics JSON file in the following format:
+
+```
+{
+    "E:N66K": {
+        "cnt": 2,
+        "seq_ids": [
+            "EPI_ISL_4882657",
+            "EPI_ISL_4882659"
+        ]
+    },
+    ...
+}
+```
+
+
+
+
+## Additional Utilities
+
+### cluster_sequences.py
 
 Example:
 
