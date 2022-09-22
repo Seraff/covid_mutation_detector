@@ -73,7 +73,7 @@ rule find_suspicious_mutations:
     input:
         f'{OUTPUT_PATH}/report.json'
     output:
-        f'{OUTPUT_PATH}/all_suspicious.json'
+        f'{OUTPUT_PATH}/suspicious_all.json'
     run:
         script = f'{ROOT_PATH}/find_suspicious_mutations.py'
         shell(f"{script} -i {input} -d {OUTPUT_PATH}/nextclade -o {output}")
@@ -82,7 +82,7 @@ rule find_suspicious_mutations:
 ## Finding new suspicious mutations
 rule reporting_new_suspicious_mutations:
     input:
-        f'{OUTPUT_PATH}/all_suspicious.json'
+        f'{OUTPUT_PATH}/suspicious_all.json'
 
     output:
         f'{OUTPUT_PATH}/suspicious_new.json'
