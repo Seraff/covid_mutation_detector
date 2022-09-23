@@ -17,7 +17,7 @@ def parse_arguments():
     usage = "./slow_test.py"
     description = """
     The script checks report json file and nextalign sequences
-    for correctness of mutation prediction.
+    for correctness of mutation predictions.
     """
     description = re.sub(r"(?<=\w)\n(?=\w)", "\n", description)
     formatter = argparse.RawTextHelpFormatter

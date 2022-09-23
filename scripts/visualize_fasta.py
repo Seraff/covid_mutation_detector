@@ -35,6 +35,7 @@ def parse_arguments():
                         required=True,
                         help="Path to output image")
     return parser.parse_args()
+
 COLORS = ['#A1C9F4',
           '#FFB482',
           '#8DE5A1',

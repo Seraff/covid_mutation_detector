@@ -39,7 +39,7 @@ Example:
 INPUT_PATH="/home/alice/covid/samples.fasta" OUTPUT_PATH="/home/alice/covid/analysis" snakemake -c1
 ```
 
-As input you can also provide an archived `xz` fasta file (i.e. `/home/alice/covid/samples.fasta.xz`). 
+As input you can also provide an archived `xz` fasta file (i.e. `/home/alice/covid/samples.fasta.xz`).
 
 ##### 3. Fix Suspisious Mutations (if they appear)
 
@@ -53,7 +53,7 @@ Example:
 Positions:                          156  157  158  159  160
 Reference AA:    S    W    M    E    S    E    F    R    V    Y    S    S    A
 Reference NA:   AGT  TGG  ATG  GAA  AGT  GAG  TTC  AGA  GTT  TAT  TCT  AGT  GCG
-Mutations:                                *    *    *                    
+Mutations:                                *    *    *
 Sequence AA      X    W    M    E    S    -    -    G    V    Y    S    S    A
 Sequence NA     NGT  TGG  ATG  GAA  AGT  G--  ---  -GA  GTT  TAT  TCT  AGT  GCG
 ```
@@ -94,7 +94,7 @@ The format of a suspicious situation is presented in the follwing format:
 
 Our software already contains the list of the most common suspicious situation in the file `mut_replacement_rules.json`.
 
-However, if new suspicious situation is found, user should resolve it. 
+However, if new suspicious situation is found, user should resolve it.
 
 * Open `suspicious_new.json`
 * Analyze all the situations and fill `verdict` fields
@@ -176,7 +176,7 @@ The output folder will contain the following files
 Example:
 
 ```
-./cluster_sequences.py -f tmp/all_output/gene.S.fasta -o tmp/gene_s_output
+scripts/cluster_sequences.py -f tmp/all_output/gene.S.fasta -o tmp/gene_s_output
 ```
 
 Notes:
@@ -189,7 +189,7 @@ Notes:
 Get pretty print of `S` gene for `datafreeze-2022-04-22_12_weeks` data for the sequence with id `EPI_ISL_10132849`:
 
 ```
-./print_nextclade_result.py -r /auto/vestec1-elixir/projects/cogcz/serafim/df-20220422/datafreeze-2022-04-22_12_weeks/ -g S -s EPI_ISL_10132849
+scripts/print_nextclade_result.py -r /auto/vestec1-elixir/projects/cogcz/serafim/df-20220422/datafreeze-2022-04-22_12_weeks/ -g S -s EPI_ISL_10132849
 ```
 
 Example of output:

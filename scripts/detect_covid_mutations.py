@@ -35,6 +35,8 @@ def parse_arguments():
     usage = "./detect_covid_mutation.py"
     description = """
     The script filters finds COVID mutation in sequence from fasta file.
+    Deprecated.
+    Currently replaced by Snakemake&Nextclade approach.
     """
     description = re.sub(r"(?<=\w)\n(?=\w)", "\n", description)
     formatter = argparse.RawTextHelpFormatter

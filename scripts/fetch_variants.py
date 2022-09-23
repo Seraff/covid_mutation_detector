@@ -19,7 +19,7 @@ VARIATS_LIST_URL = "https://raw.githubusercontent.com/cov-lineages/pango-designa
 API_URL = "https://api.outbreak.info/genomics/"
 MUT_INFO_ACTION = "lineage-mutations"
 
-ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))))
+ROOT_PATH = str(Path(os.path.dirname(os.path.realpath(__file__))).parent)
 OUTPUT_PATH = os.path.join(ROOT_PATH, 'data', "known_variants.json")
 
 def response_successful(response):
