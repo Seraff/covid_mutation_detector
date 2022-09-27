@@ -751,5 +751,15 @@
         "seq_aa": " G   S   N   Q   N   -   -   -   A   G   A   R   S   K ",
         "seq_na": "GGC AGT AAC CAG AAT G-- --- --- -CT GGG GCG CGA TCA AAA",
         "notes": "N:G30A - 1,246, N:S33A - 2"
+    },
+    {
+        "predict": "S:I68-,S:H69-,S:V70T",
+        "verdict": "S:I68T,S:H69-,S:V70-",
+        "ref_aa": " T   W   F   H   A   I   H   V   S   G   T   N   G ",
+        "ref_na": "ACT TGG TTC CAT GCT ATA CAT GTC TCT GGG ACC AAT GGT",
+        "mut_id": "                     *   *   *                     ",
+        "seq_aa": " T   W   F   H   A   -   -   T   S   G   T   N   G ",
+        "seq_na": "ACT TGG TTC CAT GCT A-- --- -CC TCT GGG ACC AAT GGT",
+        "notes": "S:I68T - 19,945, S:V70T - 2"
     }
 ]
