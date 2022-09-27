@@ -52,7 +52,7 @@ rule nextclade:
     output:
         f'{OUTPUT_PATH}/nextclade.json'
     shell:
-        "nextclade --in-order "
+        "nextclade run --in-order "
         "--input-fasta {input} --input-dataset {COV_DATA_PATH} "
         "--output-dir {OUTPUT_PATH}/nextclade "
         "--output-json {output} "
