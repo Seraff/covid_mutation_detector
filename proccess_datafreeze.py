@@ -54,7 +54,7 @@ def main():
     print('Everything finished successfully')
     print('Reports:')
     for p in output_paths:
-        print(f"{p}/report_fixed.json")
+        print(f"{p}/report.json")
 
 
 
