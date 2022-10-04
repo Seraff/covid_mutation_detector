@@ -31,7 +31,6 @@ def parse_options():
 
 
 if __name__ == '__main__':
-    Mutations_To_keep = []
     options = parse_options()
     infile = open(options.metadata_path)
     lines = infile.readlines()
@@ -39,9 +38,7 @@ if __name__ == '__main__':
     added_seqs = []
 
     for line in lines:
-        if line.split('\t')[0] in added_seqs:
-            pass
-        else:
+        if line.split('\t')[0] not in added_seqs:
             added_seqs.append(line.split('\t')[0])
             new_lines.append(line)
 
@@ -58,12 +55,9 @@ if __name__ == '__main__':
         else:
             Date_Seqs[Date] = [line.split('\t')[0]]
 
-    print(len(Date_Seqs))
-    print(len(SeqId_Date))
-
     with open(options.json_path) as f:
         guys = json.loads(f.read())
-        new_d1	 = {}
+        new_d1 = {}
         for mut_id, mut_data in guys.items():
             if len(set(mut_data['seq_ids'])) >= 1:
                 new_d1[mut_id] = mut_data['seq_ids']
@@ -86,10 +80,6 @@ if __name__ == '__main__':
                 missing_seqs_inmeta.append(seq)
                 SeqId_Date[seq] = ''
                 Date_Seqs[''].append(seq)
-
-    print(len(Date_Seqs))
-    print(len(SeqId_Date))
-    print(len(set(missing_seqs_inmeta)))
 
     out = open(options.output_path, 'w')
 
@@ -114,17 +104,14 @@ if __name__ == '__main__':
 
         for date in sorted(Date_Seqs):
             if date in dates_d:
-                if int(dates_d[date]) >= 3:
-                    Mutations_To_keep.append(mutation)
                 out.write('%s, ' % (float(dates_d[date])/float(len(set(Date_Seqs[date])))))
             else:
                 out.write('0,')
-            #	print(date)
+
         out.write('%s, ' % (len(new_d[mutation])))
         out.write('\n')
-    out.close()
 
-    print(len(set(Mutations_To_keep)))
+    out.close()
 
     Mutations_recorded = []
 
@@ -144,8 +131,6 @@ if __name__ == '__main__':
             print(regions[index])
             if float(value.strip()) >= 0.1 and (float(value)*int(regions[index].split('_')[1])) >= 3:
                 c = c + 1
-            else:
-                pass
 
         if c >= 1:
             out.write(line)
@@ -153,6 +138,7 @@ if __name__ == '__main__':
 
     d = {}
     d2 = {}
+
     for mut in new_d:
         if mut not in Mutations_recorded:
             for seq in new_d[mut]:

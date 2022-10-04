@@ -24,7 +24,7 @@ def parse_options():
     parser.add_argument("-d", "--date_column",
                         required=True,
                         type=int,
-                        help="Sampling data column in metadata file")
+                        help="Sampling date column in metadata file")
     parser.add_argument("-o", "--output_path",
                         required=True,
                         help="Output table csv file")
@@ -69,7 +69,6 @@ def date_to_week(date):
 
 
 if __name__ == '__main__':
-
     options = parse_options()
     infile = open(options.metadata_path)
     lines = infile.readlines()
@@ -85,6 +84,7 @@ if __name__ == '__main__':
     infile.close()
     SeqId_Date = {}
     Date_Seqs = {}
+
     for line in lines[1:]:
         Date = line.split('\t')[options.date_column - 1]
         SeqId_Date[line.split('\t')[0]] = date_to_week(Date)
@@ -115,14 +115,15 @@ if __name__ == '__main__':
     for mut in new_d:
         for seq in new_d[mut]:
             if seq not in SeqId_Date:
-                print(seq)
                 missing_seqs_inmeta.append(seq)
                 SeqId_Date[seq] = 'NA'
                 Date_Seqs['NA'].append(seq)
 
     out = open(options.output_path, 'w')
+
     for date in sorted(Date_Seqs):
         out.write(',%s_%s' % (date, len(Date_Seqs[date])))
+
     out.write(',pocet')
     out.write('\n')
 
@@ -142,7 +143,6 @@ if __name__ == '__main__':
 
         out.write('%s, ' % (mutation))
 
-        print(dates_d)
         for date in sorted(Date_Seqs):
             if date in dates_d:
                 ratio = float(dates_d[date])/float(len(set(Date_Seqs[date])))
@@ -162,10 +162,12 @@ if __name__ == '__main__':
 
     out = open('%s_reduced.csv' % (options.output_path), 'w')
     out.write(lines[0])
+
     for line in lines[1:]:
         regions = lines[0].split(',')[1:]
         values = line.split(',')[1:-1]
         c = 0
+
         for index, value in enumerate(values[:-1]):
             print(index)
             print(regions[index])
@@ -189,7 +191,6 @@ if __name__ == '__main__':
 
             for seq in new_d[mut]:
                 d2[SeqId_Date[seq]] = float(len(d[SeqId_Date[seq]]))/float(len(set(Date_Seqs[SeqId_Date[seq]])))
-                d2[SeqId_Date[seq]] = round(d2[SeqId_Date[seq]], 15)  # for compatibility with old version
 
     out.write('other, ')
     for date in sorted(Date_Seqs):

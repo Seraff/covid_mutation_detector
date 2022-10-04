@@ -26,7 +26,7 @@ INPUT_FASTA_PATH = os.path.join(OUTPUT_PATH, 'data', f'{INPUT_FASTA_FILENAME}.fa
 
 rule all:
     input:
-        f'{OUTPUT_PATH}/report_fixed.json'
+        f'{OUTPUT_PATH}/report.json'
     run:
         readlink_cmd = 'greadlink' if MACOS else 'readlink'
         shell(f'{readlink_cmd} -f {" ".join(input)}')
@@ -62,7 +62,7 @@ rule report:
     input:
         f'{OUTPUT_PATH}/nextclade.json'
     output:
-        f'{OUTPUT_PATH}/report.json'
+        f'{OUTPUT_PATH}/report_raw.json'
     run:
         converter = f'{ROOT_PATH}/parse_nextclade_report.py'
         shell(f'{converter} -i {input} -o {output}')
@@ -71,7 +71,7 @@ rule report:
 ## Finding all suspicious mutations
 rule find_suspicious_mutations:
     input:
-        f'{OUTPUT_PATH}/report.json'
+        f'{OUTPUT_PATH}/report_raw.json'
     output:
         f'{OUTPUT_PATH}/suspicious_all.json'
     run:
@@ -91,11 +91,28 @@ rule reporting_new_suspicious_mutations:
         shell(f"{script} -s {input} -o {output}")
 
 
-rule fix_report:
+rule add_suspicious_mutations:
     input:
         f'{OUTPUT_PATH}/suspicious_new.json'
     output:
-        f'{OUTPUT_PATH}/report_fixed.json'
+        f'{OUTPUT_PATH}/report_with_suspicious.json'
     run:
         script = f'{ROOT_PATH}/apply_mut_replacements.py'
-        shell(f"{script} -i {OUTPUT_PATH}/report.json -o {output}")
+        shell(f"{script} -i {OUTPUT_PATH}/report_raw.json -o {output}")
+
+rule add_unknown_sequences:
+    input:
+        f'{OUTPUT_PATH}/report_with_suspicious.json'
+    output:
+        f'{OUTPUT_PATH}/report_with_suspicious_with_unknown.json'
+    run:
+        script = f'{ROOT_PATH}/add_unknown_to_report.py'
+        shell(f"{script} -r {input} -n {OUTPUT_PATH}/nextclade -o {output}")
+
+rule finalize_report:
+    input:
+        f'{OUTPUT_PATH}/report_with_suspicious_with_unknown.json'
+    output:
+        f'{OUTPUT_PATH}/report.json'
+    shell:
+        "cp {input} {output}"
