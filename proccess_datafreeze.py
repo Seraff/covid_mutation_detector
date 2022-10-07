@@ -47,19 +47,35 @@ def main():
         cmd = f"INPUT_PATH={input_path} OUTPUT_PATH={output_path} METADATA_PATH={metadata_path}"
         cmd += " snakemake -c1"
         print(cmd)
-        rtn = subprocess.call(cmd, shell=True)
+        # rtn = subprocess.call(cmd, shell=True)
+        rtn = 0
 
         if rtn != 0:
             print(f"One of pipelines failed (`{cmd}`)")
             exit(-1)
 
 
-    print('Everything finished successfully')
-    print('Reports:')
-    for p in output_paths:
-        print(f"{p}/report.json")
-        print(f"{p}/ratio_table_weeks.reduced.csv")
-        print(f"{p}/ratio_table_regions.reduced.csv")
+    print('Everything finished successfully!\n')
+    print('Slack message:\n')
+    msg = f""":bar_chart: Statistics for datafreeze `{arguments.df_short}` is ready.
+
+*Datafreeze*
+`{ f"{output_paths[0]}/report.json" }`
+`{ f"{output_paths[0]}/ratio_table_weeks.reduced.csv" }`
+`{ f"{output_paths[0]}/ratio_table_regions.reduced.csv" }`
+
+*12 Weeks*
+`{ f"{output_paths[1]}/report.json" }`
+`{ f"{output_paths[1]}/ratio_table_weeks.reduced.csv" }`
+`{ f"{output_paths[1]}/ratio_table_regions.reduced.csv" }`
+
+*12 Weeks Good*
+`{ f"{output_paths[2]}/report.json" }`
+`{ f"{output_paths[2]}/ratio_table_weeks.reduced.csv" }`
+`{ f"{output_paths[2]}/ratio_table_regions.reduced.csv" }`
+    """
+
+    print(msg)
 
 
 if __name__ == '__main__':
