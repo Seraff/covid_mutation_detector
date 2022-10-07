@@ -10,10 +10,12 @@ from pathlib import Path
 
 envvars:
     "INPUT_PATH",
+    "METADATA_PATH",
     "OUTPUT_PATH"
 
 
 INPUT_PATH = os.environ["INPUT_PATH"]
+METADATA_PATH = os.environ["METADATA_PATH"]
 OUTPUT_PATH = os.environ["OUTPUT_PATH"]
 
 MACOS = platform.system() == 'Darwin'
@@ -26,7 +28,9 @@ INPUT_FASTA_PATH = os.path.join(OUTPUT_PATH, 'data', f'{INPUT_FASTA_FILENAME}.fa
 
 rule all:
     input:
-        f'{OUTPUT_PATH}/report.json'
+        f'{OUTPUT_PATH}/report.json',
+        f'{OUTPUT_PATH}/ratio_table_weeks.reduced.csv',
+        f'{OUTPUT_PATH}/ratio_table_regions.reduced.csv'
     run:
         readlink_cmd = 'greadlink' if MACOS else 'readlink'
         shell(f'{readlink_cmd} -f {" ".join(input)}')
@@ -116,3 +120,15 @@ rule finalize_report:
         f'{OUTPUT_PATH}/report.json'
     shell:
         "cp {input} {output}"
+
+rule make_table:
+    input:
+        f'{OUTPUT_PATH}/report.json'
+    output:
+        f'{OUTPUT_PATH}/ratio_table_weeks.reduced.csv',
+        f'{OUTPUT_PATH}/ratio_table_regions.reduced.csv'
+    run:
+        script = f'{ROOT_PATH}/scripts/make_ratio_table.py'
+
+        shell(f"{script} -r {input} -m {METADATA_PATH} -d 5 -o {output[0]} --to_week_format")
+        shell(f"{script} -r {input} -m {METADATA_PATH} -d 10 -o {output[1]}")

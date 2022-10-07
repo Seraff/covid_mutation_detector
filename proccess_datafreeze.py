@@ -34,6 +34,7 @@ def main():
     postfixes = ('', '_12_weeks', '_12_weeks_good')
 
     input_paths = [f"{df_path_prefix}{pfx}.fasta.xz" for pfx in postfixes]
+    metadata_paths = [f"{df_path_prefix}{pfx}.tsv" for pfx in postfixes]
 
     out_root = "/auto/vestec1-elixir/projects/cogcz/serafim"
     out_prefix = f"{out_root}/{arguments.df_short}/{arguments.df_long}"
@@ -41,13 +42,15 @@ def main():
 
     for i, input_path in enumerate(input_paths):
         output_path = output_paths[i]
+        metadata_path = metadata_paths[i]
 
-        cmd = f"INPUT_PATH={input_path} OUTPUT_PATH={output_path} snakemake -c1"
+        cmd = f"INPUT_PATH={input_path} OUTPUT_PATH={output_path} METADATA_PATH={metadata_path}"
+        cmd += " snakemake -c1"
         print(cmd)
         rtn = subprocess.call(cmd, shell=True)
 
         if rtn != 0:
-            print(f"One of pipelines failed")
+            print(f"One of pipelines failed (`{cmd}`)")
             exit(-1)
 
 
@@ -55,7 +58,8 @@ def main():
     print('Reports:')
     for p in output_paths:
         print(f"{p}/report.json")
-
+        print(f"{p}/ratio_table_weeks.reduced.csv")
+        print(f"{p}/ratio_table_regions.reduced.csv")
 
 
 if __name__ == '__main__':

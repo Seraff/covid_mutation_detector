@@ -130,6 +130,8 @@ if __name__ == '__main__':
         for seq_id in seq_ids:
             if seq_id not in dates_by_seq_ids:
                 dates_by_seq_ids[seq_id] = 'NA'
+                if 'NA' not in seq_ids_by_date:
+                    seq_ids_by_date['NA'] = []
                 seq_ids_by_date['NA'].append(seq_id)
 
     # Making the main statistics
