@@ -47,8 +47,7 @@ def main():
         cmd = f"INPUT_PATH={input_path} OUTPUT_PATH={output_path} METADATA_PATH={metadata_path}"
         cmd += " snakemake -c1"
         print(cmd)
-        # rtn = subprocess.call(cmd, shell=True)
-        rtn = 0
+        rtn = subprocess.call(cmd, shell=True)
 
         if rtn != 0:
             print(f"One of pipelines failed (`{cmd}`)")
