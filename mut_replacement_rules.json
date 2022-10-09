@@ -761,5 +761,15 @@
         "seq_aa": " T   W   F   H   A   -   -   T   S   G   T   N   G ",
         "seq_na": "ACT TGG TTC CAT GCT A-- --- -CC TCT GGG ACC AAT GGT",
         "notes": "S:I68T - 19,945, S:V70T - 2"
+    },
+    {
+        "predict": "ORF7a:A66-,ORF7a:C67G",
+        "verdict": "ORF7a:A66G,ORF7a:C67-",
+        "ref_aa": " T   Q   F   A   F   A   C   P   D   G   V   K ",
+        "ref_na": "ACT CAA TTT GCT TTT GCT TGT CCT GAC GGC GTA AAA",
+        "mut_id": "                     *   *                     ",
+        "seq_aa": " T   Q   F   A   F   -   G   P   D   G   V   K ",
+        "seq_na": "ACT CAA TTT GCT TTT G-- -GT CCT GAC GGC GTA AAA",
+        "notes": "ORF7a:A66G - 85, ORF7a:C67G - 43"
     }
 ]
