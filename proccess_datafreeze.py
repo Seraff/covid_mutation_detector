@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-# @Author  : Serafim Nenarokov (serafim.nenarokov@gmail.com)
+# @Author: Serafim Nenarokov (serafim.nenarokov@gmail.com)
 
 from ast import arguments
 import os
 import argparse
 import subprocess
+import json
 
 def parse_arguments():
     usage = "proccess_datafreeze.py"
     description = """
-    Proccess specified datafreeze.
+    Proccess specified datafreeze. Exits with error is any of the pipelines fails.
     """
     formatter = argparse.RawTextHelpFormatter
 
@@ -22,8 +23,21 @@ def parse_arguments():
                         help="Short datafreeze name (i.e. df-20220826)")
     parser.add_argument("--df-long",
                         required=True,
-                        help="Short datafreeze name (i.e. datafreeze-2022-08-26)")
+                        help="Long datafreeze name (i.e. datafreeze-2022-08-26)")
     return parser.parse_args()
+
+
+def try_to_print_suspicious(output_path):
+    suspicious_new_path = os.path.join(output_path, f'suspicious_new.json')
+
+    if os.path.exists(suspicious_new_path):
+        with open(suspicious_new_path) as f:
+            raw_content = f.read()
+            content = json.loads(raw_content)
+
+        if len(content) > 0:
+            print("Suspicious mutations found. Please resolve the following situations.\n")
+            print(raw_content)
 
 
 def main():
@@ -46,17 +60,17 @@ def main():
 
         cmd = f"INPUT_PATH={input_path} OUTPUT_PATH={output_path} METADATA_PATH={metadata_path}"
         cmd += " snakemake -c1"
-        print(cmd)
         rtn = subprocess.call(cmd, shell=True)
 
         if rtn != 0:
-            print(f"One of pipelines failed (`{cmd}`)")
+            print(f"One of the pipelines failed (`{cmd}`)")
+            try_to_print_suspicious(output_path)
             exit(-1)
 
 
-    print('Everything finished successfully!\n')
+    print('Everything finished successfully!')
     print('Slack message:\n')
-    msg = f""":bar_chart: Statistics for datafreeze `{arguments.df_short}` is ready.
+    msg = f""":bar_chart: Statistics for the datafreeze `{arguments.df_short}` is ready.
 
 *Datafreeze*
 `{ f"{output_paths[0]}/report.json" }`
