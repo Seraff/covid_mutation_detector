@@ -179,8 +179,6 @@ if __name__ == '__main__':
                 else:
                     ratio = float(cnt)/float(all_cnt - unknown_cnt)
 
-                ratio = float(cnt)/float(all_cnt)
-
                 out.write(f"{ratio},")
             else:
                 out.write('0,')
