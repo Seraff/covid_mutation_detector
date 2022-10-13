@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# @Date    : 2022-10-12
-# @Author  : Serafim Nenarokov (serafim.nenarokov@gmail.com)
+# @Date       : 2022-10-12
+# @Author     : Serafim Nenarokov (serafim.nenarokov@gmail.com)
+# @Description: Simple wrapper around outbreak.info API for our purposes
 
 import os
 import pathlib
@@ -22,6 +23,11 @@ class OutbreakRequestError(Exception):
         super().__init__(f"Outbreak API returns a bad status: {message}")
 
 
+class OutbreakApiError(Exception):
+    def __init__(self, message):
+        super().__init__(f"Outbreak API usage error: {message}")
+
+
 class OutbreakApi:
     BASE_URL = "https://api.outbreak.info/genomics"
     AUTH_METHOD_NAME = "get-auth-token"
@@ -29,6 +35,31 @@ class OutbreakApi:
 
     def __init__(self):
         self.auth_key = None
+
+
+    def prevalence(self, pangolin_lineage=None, location=None, mutations=None, cumulative=False):
+        if pangolin_lineage == None and mutations == None:
+            raise OutbreakApiError("Either pangolin_lineage or mutations should be specified.")
+
+        cumulative = str(cumulative).lower()
+
+        params = [['pangolin_lineage', pangolin_lineage],
+                  ['location', location],
+                  ['mutations', mutations],
+                  ['cumulative', cumulative]]
+
+        params = [p for p in params if p[1] != None]
+        params = dict(params)
+
+        return self.get_data('prevalence-by-location', params)
+
+
+    def mutations_by_lineage(self, pangolin_lineage, frequency=0.75):
+        params = {
+            'pangolin_lineage': pangolin_lineage,
+            'frequency': frequency
+        }
+        return self.get_data('lineage-mutations', params)
 
 
     def get_data(self, method_name, params):
@@ -40,7 +71,10 @@ class OutbreakApi:
 
         url = f"{self.BASE_URL}/{method_name}"
 
-        return OutbreakApi.__raw_request(url, params=params, headers=headers)
+        result = OutbreakApi.__raw_request(url, params=params, headers=headers)
+
+        if result and result['success'] == True:
+            return result['results']
 
 
     def __authorize(self):

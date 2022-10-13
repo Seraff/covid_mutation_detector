@@ -17,6 +17,7 @@ from lib.outbreak_api import OutbreakApi
 API_URL = "https://api.outbreak.info/genomics"
 API_METHOD = "prevalence-by-location"
 
+
 def parse_arguments():
     usage = "./get_mutation_prevalence.py"
     description = """
@@ -36,21 +37,19 @@ def parse_arguments():
 
 
 def get_prevalence(mut_id):
-    params = {
-        'cumulative': 'true',
-        'mutations': mut_id
-    }
-
     api = OutbreakApi()
-    result = api.get_data('prevalence-by-location', params=params)
-    return result
+
+    result = api.prevalence(mutations=mut_id, cumulative=True)
+
+    if result:
+        return result[mut_id]['lineage_count']
+
 
 def main():
     arguments = parse_arguments()
-    data = get_prevalence(arguments.mutation)
+    prevalence = get_prevalence(arguments.mutation)
 
-    if data:
-        print(data['results'][arguments.mutation]['lineage_count'])
+    print(prevalence)
 
 
 if __name__ == "__main__":
