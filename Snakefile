@@ -17,6 +17,7 @@ envvars:
 INPUT_PATH = os.environ["INPUT_PATH"]
 METADATA_PATH = os.environ["METADATA_PATH"]
 OUTPUT_PATH = os.environ["OUTPUT_PATH"]
+OUTPUT_NEXTCLADE_PATH = os.path.join(OUTPUT_PATH, 'nextclade')
 
 MACOS = platform.system() == 'Darwin'
 ROOT_PATH = os.getcwd()
@@ -29,8 +30,8 @@ INPUT_FASTA_PATH = os.path.join(OUTPUT_PATH, 'data', f'{INPUT_FASTA_FILENAME}.fa
 rule all:
     input:
         f'{OUTPUT_PATH}/report.json',
-        f'{OUTPUT_PATH}/ratio_table_weeks.reduced.csv',
-        f'{OUTPUT_PATH}/ratio_table_regions.reduced.csv'
+        f'{OUTPUT_PATH}/ratio_table_weeks.csv',
+        f'{OUTPUT_PATH}/ratio_table_regions.csv'
     run:
         readlink_cmd = 'greadlink' if MACOS else 'readlink'
         shell(f'{readlink_cmd} -f {" ".join(input)}')
@@ -54,17 +55,18 @@ rule nextclade:
     input:
         INPUT_FASTA_PATH
     output:
-        f'{OUTPUT_PATH}/nextclade.json'
+        f'{OUTPUT_NEXTCLADE_PATH}/nextclade.json'
     shell:
         "nextclade run --in-order "
-        "--input-fasta {input} --input-dataset {COV_DATA_PATH} "
-        "--output-dir {OUTPUT_PATH}/nextclade "
-        "--output-json {output} "
+        "--input-dataset {COV_DATA_PATH} "
+        "--output-basename nextclade "
+        "--output-all {OUTPUT_NEXTCLADE_PATH} "
+        "{input} "
 
 ## Converting reports
 rule report:
     input:
-        f'{OUTPUT_PATH}/nextclade.json'
+        f'{OUTPUT_NEXTCLADE_PATH}/nextclade.json'
     output:
         f'{OUTPUT_PATH}/report_raw.json'
     run:
@@ -125,8 +127,8 @@ rule make_table:
     input:
         f'{OUTPUT_PATH}/report.json'
     output:
-        f'{OUTPUT_PATH}/ratio_table_weeks.reduced.csv',
-        f'{OUTPUT_PATH}/ratio_table_regions.reduced.csv'
+        f'{OUTPUT_PATH}/ratio_table_weeks.csv',
+        f'{OUTPUT_PATH}/ratio_table_regions.csv'
     run:
         script = f'{ROOT_PATH}/scripts/make_ratio_table.py'
 
