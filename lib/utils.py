@@ -73,7 +73,7 @@ def load_nextclade_aa_genes(out_dir_path):
         out_dir_path, '', f"*.fasta"))
 
     genes = list(COVID_GENES.keys())
-    GENE_FILENAME_REGEX = re.compile(f".*({ '|'.join(genes) })\.fasta")
+    GENE_FILENAME_REGEX = re.compile(f".*({ '|'.join(genes) })(\.translation)?\.fasta")
 
     file_paths = [p for p in file_paths if re.match(GENE_FILENAME_REGEX, p)]
 
