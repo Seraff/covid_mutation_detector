@@ -781,5 +781,35 @@
         "seq_aa": " T   L   K   R   K   -   K ",
         "seq_na": "ACA CTC AAA AGA AAG A-- -AA",
         "notes": "ORF7a:T120K - 99, ORF7a:E121K - 305"
+    },
+    {
+        "predict": "ORF1a:S3673-,ORF1a:L3674-,ORF1a:S3675-,ORF1a:G3676-,ORF1a:F3677M",
+        "verdict": "ORF1a:S3673M,ORF1a:L3674-,ORF1a:S3675-,ORF1a:G3676-,ORF1a:F3677-",
+        "ref_aa": " D   M   V   D   T   S   L   S   G   F   K   L   K   D   C ",
+        "ref_na": "GAT ATG GTT GAT ACT AGT TTG TCT GGT TTT AAG CTA AAA GAC TGT",
+        "mut_id": "                     *   *   *   *   *                     ",
+        "seq_aa": " D   M   V   D   T   -   -   -   -   M   K   L   K   D   C ",
+        "seq_na": "GAT ATG GTT GAT ACT A-- --- --- --- -TG AAG CTA AAA GAC TGT",
+        "notes": "ORF1a:S3673M - 2170, ORF1a:F3677M - 1"
+    },
+    {
+        "predict": "S:H69-,S:V70-,S:S71Y",
+        "verdict": "S:H69Y,S:V70-,S:S71-",
+        "ref_aa": " W   F   H   A   I   H   V   S   G   T   N   G   T ",
+        "ref_na": "TGG TTC CAT GCT ATA CAT GTC TCT GGG ACC AAT GGT ACT",
+        "mut_id": "                     *   *   *                     ",
+        "seq_aa": " W   F   H   A   I   -   -   Y   G   T   N   G   T ",
+        "seq_na": "TGG TTC CAT GCT A-- --- -TC TAT GGG ACC AAT GGT ACT",
+        "notes": "S:H69Y - 7617, S:S71Y - 300"
+    },
+    {
+        "predict": "ORF9b:M26-,ORF9b:E27-,ORF9b:N28-,ORF9b:A29I,ORF9b:V30L,ORF9b:G31E",
+        "verdict": "ORF9b:M26I,ORF9b:E27-,ORF9b:N28-,ORF9b:A29-,ORF9b:V30L,ORF9b:G31E",
+        "ref_aa": " L   A   V   T   R   M   E   N   A   V   G   R   D   Q   N   N ",
+        "ref_na": "CTG GCA GTA ACC AGA ATG GAG AAC GCA GTG GGG CGC GAT CAA AAC AAC",
+        "mut_id": "                     *   *   *   *   *   *                     ",
+        "seq_aa": " L   A   V   T   R   -   -   -   I   L   E   R   D   Q   N   N ",
+        "seq_na": "CTG GCA GTA ACC AGA ATT --- --- --- TTG GAG CGC GAT CAA AAC AAC",
+        "notes": "Prevalence is 0 for all the cases"
     }
 ]
