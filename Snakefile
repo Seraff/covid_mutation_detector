@@ -18,6 +18,7 @@ INPUT_PATH = os.environ["INPUT_PATH"]
 METADATA_PATH = os.environ["METADATA_PATH"]
 OUTPUT_PATH = os.environ["OUTPUT_PATH"]
 OUTPUT_NEXTCLADE_PATH = os.path.join(OUTPUT_PATH, 'nextclade')
+OUTPUT_PANGOLIN_PATH = os.path.join(OUTPUT_PATH, 'pangolin')
 
 MACOS = platform.system() == 'Darwin'
 ROOT_PATH = os.getcwd()
@@ -63,15 +64,32 @@ rule nextclade:
         "--output-all {OUTPUT_NEXTCLADE_PATH} "
         "{input} "
 
+
+## Pangolining
+rule pangolin:
+    input:
+        INPUT_FASTA_PATH
+    output:
+        f"{OUTPUT_PANGOLIN_PATH}/lineage_report.csv"
+    conda:
+        "envs/pangolin.yaml"
+    shell:
+        "pangolin --analysis-mode 'usher' "
+        "--threads 8 "
+        "--outdir {OUTPUT_PANGOLIN_PATH} "
+        "{input} "
+
+
 ## Converting reports
 rule report:
     input:
-        f'{OUTPUT_NEXTCLADE_PATH}/nextclade.json'
+        f'{OUTPUT_NEXTCLADE_PATH}/nextclade.json',
+        f"{OUTPUT_PANGOLIN_PATH}/lineage_report.csv"
     output:
         f'{OUTPUT_PATH}/report_raw.json'
     run:
         converter = f'{ROOT_PATH}/parse_nextclade_report.py'
-        shell(f'{converter} -i {input} -o {output}')
+        shell(f'{converter} -i {input[0]} -o {output}')
 
 
 ## Finding all suspicious mutations
