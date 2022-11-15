@@ -28,13 +28,25 @@ class OutbreakApiError(Exception):
         super().__init__(f"Outbreak API usage error: {message}")
 
 
+class OutbreakUnauthorizedError(Exception):
+    def __init__(self):
+        super().__init__(f"Unauthorized")
+
+
 class OutbreakApi:
+    CURATED_LINEAGES_URL = "https://raw.githubusercontent.com/outbreak-info/outbreak.info/master/web/src/assets/genomics/curated_lineages.json"
     BASE_URL = "https://api.outbreak.info/genomics"
     AUTH_METHOD_NAME = "get-auth-token"
 
 
-    def __init__(self):
+    def __init__(self, timeout=5, quiet=True):
         self.auth_key = None
+        self.timeout = timeout
+        self.quiet = quiet
+
+
+    def auth_user(self):
+        return self.__authorize()
 
 
     def prevalence(self, pangolin_lineage=None, location=None, mutations=None, cumulative=False):
@@ -62,6 +74,11 @@ class OutbreakApi:
         return self.get_data('lineage-mutations', params)
 
 
+    def get_curated_lineages(self):
+        url = OutbreakApi.CURATED_LINEAGES_URL
+        return OutbreakApi.__raw_request(url, timeout=self.timeout, quiet=self.quiet)
+
+
     def get_data(self, method_name, params):
         if not self.__authorize():
             return None
@@ -71,7 +88,7 @@ class OutbreakApi:
 
         url = f"{self.BASE_URL}/{method_name}"
 
-        result = OutbreakApi.__raw_request(url, params=params, headers=headers)
+        result = OutbreakApi.__raw_request(url, params=params, headers=headers, timeout=self.timeout, quiet=self.quiet)
 
         if result and result['success'] == True:
             return result['results']
@@ -99,7 +116,7 @@ class OutbreakApi:
         """Request new bearer token"""
 
         auth_url = f"{self.BASE_URL}/{self.AUTH_METHOD_NAME}"
-        response = OutbreakApi.__raw_request(auth_url, method='post', timeout=5)
+        response = OutbreakApi.__raw_request(auth_url, method='post', timeout=self.timeout, quiet=self.quiet)
 
         token = response['authn_token']
         url = response['authn_url']
@@ -112,12 +129,20 @@ class OutbreakApi:
 
 
     @staticmethod
-    def __raw_request(url, method='get', params={}, headers={}, timeout=5):
+    def __raw_request(url, method='get', params={}, headers={}, timeout=5, quiet=True):
+        # standard params arg doesn't work with long values
+        if len(params) != 0:
+            params_str = '&'.join([f'{k}={v}' for k, v in params.items()])
+            url = '?'.join([url, params_str])
+
+        if not quiet:
+            print(f"Requesting {method.upper()} `{url}`, timeout={timeout}, headers=`{headers}`")
+
         try:
             if method == 'get':
-                response = requests.get(url, params=params, headers=headers, timeout=timeout)
+                response = requests.get(url, headers=headers, timeout=timeout)
             elif method == 'post':
-                response = requests.post(url, params=params, headers=headers, timeout=timeout)
+                response = requests.post(url, headers=headers, timeout=timeout)
         except ConnectionError:
             raise OutbreakConnectionError()
 
