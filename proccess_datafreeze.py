@@ -59,7 +59,7 @@ def main():
         metadata_path = metadata_paths[i]
 
         cmd = f"INPUT_PATH={input_path} OUTPUT_PATH={output_path} METADATA_PATH={metadata_path}"
-        cmd += " snakemake -c1"
+        cmd += " snakemake -c1 --use-conda"
         rtn = subprocess.call(cmd, shell=True)
 
         if rtn != 0:
