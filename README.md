@@ -22,7 +22,7 @@ The main pipeline takes **FASTA file** with multiple sequences and generates **J
 
 1. Install [Conda](https://docs.conda.io/en/latest/)
 
-2. Install Mamba
+2. Install [Mamba](https://github.com/mamba-org/mamba)
 
 ```bash
 conda install -n base -c conda-forge mamba
