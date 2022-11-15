@@ -1,11 +1,11 @@
+## Author: Michal Kolář
+
 cmdArgs <- commandArgs()
 
 self_rel_path <- unlist(strsplit(cmdArgs[grep('^--file', cmdArgs)][1], split='='))[2]
 self_abs_path <- file.path(getwd(), self_rel_path)
+self_dir_path <- dirname(self_abs_path)
 root_path <- dirname(dirname(dirname(self_abs_path)))
-print( root_path )
-
-stop('END')
 
 sink("mutationTable.Rout", split = TRUE)
 
@@ -28,11 +28,14 @@ paths["ratio_table_weeks"] <- file.path(args[1], 'ratio_table_weeks.reduced.csv'
 paths["ratio_table_regions"] <- file.path(args[1], 'ratio_table_regions.reduced.csv')
 
 paths["variant_signatures_dir"] <- file.path(root_path, 'data', 'variant_signatures')
+paths["palettes_xls"] <- file.path(root_path, 'data', 'plotting', 'palettes.xls')
+paths["variant_glyco_sig_dir"] <- file.path(root_path, 'data', 'plotting', 'variant_glyco_sig')
 
 
-dir.create(paths["output_pdf_dir"])
-dir.create(paths["output_png_dir"])
-dir.create(paths["output_tables_dir"])
+dir.create(paths["output_dir"], showWarnings=FALSE)
+dir.create(paths["output_pdf_dir"], showWarnings=FALSE)
+dir.create(paths["output_png_dir"], showWarnings=FALSE)
+dir.create(paths["output_tables_dir"], showWarnings=FALSE)
 
 library(gdata)
 library(seqinr)
@@ -215,16 +218,13 @@ summarizeWeekLevelsToShow <- function(w, factorTable, factorSel) {
 ##-- variant definition from outbreak.info
 
 ## list of detected variants, VOC, VOI and VUM (tazbyk-joCpy5-jycqet)
-detected <- system("cut -f2 -d',' datafreeze-*_12_weeks_good.pangolin-*-UShER-*.csv | sort -u | grep -v lineage | grep -v None", intern = TRUE)
+cmd <- paste0("cut -f2 -d',' ", paths["pangolin_csv"], " | sort -u | grep -v lineage | grep -v None")
+detected <- system(cmd, intern = TRUE)
 
-detected <- setdiff(detected,
-                    c("BA.4.1.5", "BA.4.1.8",
-                      "BA.2.75.2",
-                      "BA.5.1.10", "BA.5.1.5", "BA.5.1.9", "BA.5.10", "BA.5.8", "BA.5.9",
-                      "BF.10", "BF.11", "BF.12", "BF.14", "BF.15","BF.6","BF.7", "BF.8",
-                      "BK.1",
-                      "XAJ", "XAN",
-                      "Unassigned"))
+##-- run this in second round of the script only
+cmd <- paste0("find ", paths["variant_signatures_dir"], " -size 0 | cut -d '/' -f3 | sed 's/.tsv//g'")
+undefined <- system(cmd, intern = TRUE)
+detected <- setdiff(detected, c(undefined, "Unassigned"))
 
 ## https://outbreak.info/situation-reports
 VOC <- c("Delta", "Omicron", "Alpha", "Beta", "Gamma", "BA.1", "BA.2", "BA.4", "BA.5")
@@ -236,15 +236,27 @@ MUI   <- c()
 
 variant <- sort(unique(c(detected, VOC, VOI, VUM)))
 
-if (! (dir.exists("VariantSignatures/") & all(variant %in% gsub(".tsv$", "", dir("VariantSignatures/")))) ) {
-    missingVariant <- setdiff(variant, gsub(".tsv$", "", dir("VariantSignatures/")))
+parsed_vars <- gsub(".tsv$", "", dir(paths["variant_signatures_dir"]))
+
+if (! (dir.exists(paths["variant_signatures_dir"]) & all(variant %in% parsed_vars)) ) {
+    missingVariant <- setdiff(variant, parsed_vars)
+    print(missingVariant)
     ## use web scraper to download characteristic mutations for each missing variant
-    system(paste("export PYTHONPATH=/Users/kolarmi/opt/miniconda3/lib/python3.9/site-packages; python3 scrape.py", paste(missingVariant, collapse = " ")))
+    cmd <- paste0("python3 ", self_dir_path, "/new_scrape.py --verbose -o ", paths["variant_signatures_dir"])
+    cmd <- paste(cmd, paste(missingVariant, collapse = " "))
+
+    print("Running:")
+    print(cmd)
+
+    ret <- system(cmd)
+
+    if (ret != 0) {
+        stop("Unable to fetch variant signatures: the command returned non-zero status")
+    }
 }
 
 t2 <- lapply(variant, function(v) {
-    v1 <- read.delim(paste0("./VariantSignatures/", v, ".tsv"), sep = "\t", header = FALSE)
-
+    v1 <- read.delim(paste0(paths["variant_signatures_dir"], '/', v, ".tsv"), sep = "\t", header = FALSE)
     if (as.numeric(gsub(",", "", strsplit(v1[1, 3], "/")[[1]][2])) < 500)
         warning(paste("Variant", v, "has less than 500 isolates.\n"))
 
@@ -355,7 +367,7 @@ if (length(MUC) | length(MUI)) {
 }
 
 ##-- read the data in
-metadata <- read.csv("datafreeze-2022-09-23_12_weeks_good.tsv", sep = "\t")
+metadata <- read.csv(paths["metadata_tsv"], sep = "\t")
 
 ##-- order by fasta_id
 metadata <- metadata[order(metadata$fasta_id), ]
@@ -364,7 +376,7 @@ metadata <- metadata[order(metadata$fasta_id), ]
 metadata <- metadata[!is.na(metadata$fasta_id), ]
 
 ##-- mutations from nextclade output
-nextclade <- read.delim("datafreeze-2022-09-23_12_weeks_good.nextclade.2.6.0.tsv", sep = "\t")
+nextclade <- read.delim(paths["nextclade_tsv"], sep = "\t")
 
 selFasta <- (nextclade$seqName %in% metadata$fasta_id)
 table(selFasta)
@@ -388,7 +400,7 @@ mutation <- mutation[!duplicated(mutation$id), ]
 rownames(mutation) <- mutation$id
 
 ##-- pangolin lineage from pangolin UShER output
-pangolin <- read.delim("datafreeze-2022-09-23_12_weeks_good.pangolin-4.1.2-UShER-.csv", sep = ",")[, 1:3]
+pangolin <- read.delim(paths["pangolin_csv"], sep = ",")[, 1:3]
 
 selFasta <- (pangolin$taxon %in% metadata$fasta_id)
 table(selFasta)
@@ -439,17 +451,25 @@ lineageSummary <- lapply(region, summarizeLevelsToShow, factorTable = lineageTab
 lineageSummary <- do.call(rbind, lineageSummary)
 colnames(lineageSummary)[1] <- "Lineage"
 
-t1 <- read.xls("palettes.xls", sheet = "palette variant anotation")
+t1 <- read.xls(paths["palettes_xls"], sheet = "palette variant anotation")
 colVariant <- t1[, "Colour"]
 
 t2 <- setdiff(lineageSel, t1[, "Variant"])
+
+if (length(t2) > 9){
+    message("\nThere are too many new variants, cannot define colors for them. Please, do it manually in `palettes.xls`.")
+    message("New variants:")
+    message(paste0(t2, collapse=", "))
+    stop()
+}
+
 colVariant <- c(colVariant, brewer.pal(length(t2), "Greys"))
 
 names(colVariant) <- c(t1[, "Variant"], t2)
 colVariant <- colVariant[levels(lineageSummary$Lineage)]
 rm(t1, t2)
 
-pdf("./Pdf/plotLineage.pdf", width = 8.25, height = 5.7)
+pdf(file.path(paths["output_pdf_dir"], "plotLineage.pdf"), width = 8.25, height = 5.7)
 ggplot(data=lineageSummary, aes(x = Region, y = Prob, fill = Lineage)) +
     geom_col(colour="white", size = 0.1) +
     geom_text(aes(x = Region, y = 0.025, hjust = 1, label = Count)) +
@@ -474,9 +494,10 @@ lineageWrite   <- data.frame(Lineage = lineageSel,
                                   return(x1)
                               }), check.names = FALSE)
 colnames(lineageWrite)[ncol(lineageWrite)] <- "Total"
-write.table(lineageWrite, file = "./Tables/tableLineage.tsv", sep = "\t", col.names = TRUE, row.names = FALSE)
+table_lineage_path <- file.path(paths["output_tables_dir"], "tableLineage.tsv")
+write.table(lineageWrite, file = table_lineage_path, sep = "\t", col.names = TRUE, row.names = FALSE)
 cat(c("\"Count\"", sapply(lineageSummary, function(x) x[1, "Count"])[colnames(lineageWrite)[-c(1, ncol(lineageWrite))]], "\n"),
-    sep = "\t", append = TRUE, file = "./Tables/tableLineage.tsv")
+    sep = "\t", append = TRUE, file = table_lineage_path)
 
 ##-- all lineages in the Czech republic
 lineageAll        <- selectLevelsToShow(lineageTable, minFreq = 0, minProb = 0)
@@ -498,9 +519,10 @@ lineageAllWrite <- data.frame(Lineage = lineageAll,
                               }), check.names = FALSE)
 colnames(lineageAllWrite)[ncol(lineageAllWrite)] <- "Total"
 lineageAllWrite[nrow(lineageAllWrite), "Total"] <- ""
-write.table(lineageAllWrite, file = "./Tables/tableAllLineage.tsv", sep = "\t", col.names = TRUE, row.names = FALSE)
+table_all_lineage_path <- file.path(paths["output_tables_dir"], "tableAllLineage.tsv")
+write.table(lineageAllWrite, file = table_all_lineage_path, sep = "\t", col.names = TRUE, row.names = FALSE)
 cat(c("\"Count\"", sapply(lineageAllSummary, function(x) x[1, "Count"])[colnames(lineageAllWrite)[-c(1, ncol(lineageAllWrite))]], "\n"),
-    sep = "\t", append = TRUE, file = "./Tables/tableAllLineage.tsv")
+    sep = "\t", append = TRUE, file = table_all_lineage_path)
 
 
 ##-- time course of the mutations
@@ -523,7 +545,7 @@ lineageSummary <- lapply(week, summarizeWeekLevelsToShow, factorTable = lineageT
 lineageSummary <- do.call(rbind, lineageSummary)
 colnames(lineageSummary)[1] <- "Lineage"
 
-t1 <- read.xls("palettes.xls", sheet = "palette variant anotation")
+t1 <- read.xls(paths["palettes_xls"], sheet = "palette variant anotation")
 colVariant <- t1[, "Colour"]
 
 t2 <- setdiff(lineageSel, t1[, "Variant"])
@@ -533,7 +555,7 @@ names(colVariant) <- c(t1[, "Variant"], t2)
 colVariant <- colVariant[levels(lineageSummary$Lineage)]
 rm(t1, t2)
 
-pdf("./Pdf/plotLineageWeek.pdf", width = 8.25, height = 5.7)
+pdf(file.path(paths["output_pdf_dir"], "plotLineageWeek.pdf"), width = 8.25, height = 5.7)
 ggplot(data=lineageSummary, aes(x = Week, y = Prob, fill = Lineage)) +
     geom_col(colour="white", size = 0.1) +
     geom_text(aes(x = Week, y = 0.025, hjust = 1, label = Count)) +
@@ -559,9 +581,10 @@ lineageWrite   <- data.frame(Lineage = lineageSel,
                              }), check.names = FALSE)
 colnames(lineageWrite)[ncol(lineageWrite)] <- "Total"
 ##lineageWrite[nrow(lineageWrite), "Total"] <- ""
-write.table(lineageWrite, file = "./Tables/tableLineageWeek.tsv", sep = "\t", col.names = TRUE, row.names = FALSE)
+table_lineage_week_path <- file.path(paths["output_tables_dir"], "tableLineageWeek.tsv")
+write.table(lineageWrite, file = table_lineage_week_path, sep = "\t", col.names = TRUE, row.names = FALSE)
 cat(c("\"Count\"", sapply(lineageSummary, function(x) x[1, "Count"])[colnames(lineageWrite)[-c(1, ncol(lineageWrite))]], "\n"),
-    sep = "\t", append = TRUE, file = "./Tables/tableLineageWeek.tsv")
+    sep = "\t", append = TRUE, file = table_lineage_week_path)
 
 ##-- all lineages in the Czech republic
 lineageAll        <- selectWeekLevelsToShow(lineageTableWeek, minFreq = 0, minProb = 0)
@@ -583,13 +606,14 @@ lineageAllWrite <- data.frame(Lineage = lineageAll,
                               }), check.names = FALSE)
 colnames(lineageAllWrite)[ncol(lineageAllWrite)] <- "Total"
 ##lineageAllWrite[nrow(lineageAllWrite), "Total"] <- ""
-write.table(lineageAllWrite, file = "./Tables/tableAllLineageWeek.tsv", sep = "\t", col.names = TRUE, row.names = FALSE)
+table_all_lineage_week_path <- file.path(paths["output_tables_dir"], "tableAllLineageWeek.tsv")
+write.table(lineageAllWrite, file = table_all_lineage_week_path, sep = "\t", col.names = TRUE, row.names = FALSE)
 cat(c("\"Count\"", sapply(lineageAllSummary, function(x) x[1, "Count"])[colnames(lineageAllWrite)[-c(1, ncol(lineageAllWrite))]], "\n"),
-    sep = "\t", append = TRUE, file = "./Tables/tableAllLineageWeek.tsv")
+    sep = "\t", append = TRUE, file = table_all_lineage_week_path)
 
 ##-- create output from Martin's data files in subdir mkolisko
 ##-- by region
-aaMutationSummaryWide  <- as.matrix(read.csv("mkolisko/table_regions.reduced.csv", row.names = 1, sep = ","))
+aaMutationSummaryWide  <- as.matrix(read.csv(paths["ratio_table_regions"], row.names = 1, sep = ","))
 
 ##-- remove Orf9b
 aaMutationSummaryWide <- aaMutationSummaryWide[!grepl("ORF9b:", rownames(aaMutationSummaryWide)), ]
@@ -635,7 +659,7 @@ positionInProtein <- as.numeric(sapply(strsplit(rownames(aaMutationSummaryWide),
 aaMutationSummaryOrder <- order(protein, positionInProtein)
 names(protein) <- names(positionInProtein) <- names(aaMutationSummaryOrder) <- rownames(aaMutationSummaryWide)
 
-t1 <- read.xls("palettes.xls", sheet = "palette protein anotation")
+t1 <- read.xls(paths["palettes_xls"], sheet = "palette protein anotation")
 colProtein <- t1[, "Colour"]
 t2 <- setdiff(levels(protein), t1[, "Protein"])
 colProtein <- c(colProtein, brewer.pal(length(t2), "Greys"))
@@ -654,12 +678,10 @@ variantHeatmap <- as.matrix(variantHeatmap)
 storage.mode(variantHeatmap) <- "numeric"
 
 ##-- sort in a more meaningfull manner
-variantHeatmap <- variantHeatmap[, c("BA.2","BA.2.9", "BA.2.12.1",
-                                     "BA.4", "BA.4.1", "BA.4.6",
-                                     "BA.5", "BA.5.1", "BA.5.1.2", "BA.5.1.3", "BA.5.2", "BA.5.2.1", "BF.1", "BF.5", "BA.5.2.3",
-                                     "BA.5.3.1", "BE.1", "BE.1.1")]
+t1 <- hclust(dist(t(variantHeatmap)))
+variantHeatmap <- variantHeatmap[, t1$labels[t1$order]]
 
-pdf("./Pdf/heatmapAAMutation.pdf", height = 25, width = 11.7)
+pdf(file.path(paths["output_pdf_dir"], "heatmapAAMutation.pdf"), height = 25, width = 11.7)
 Heatmap(aaMutationSummaryWide, name = "Frekvence", rect_gp = gpar(col = "white", lwd = 2), na_col = "white", col = colFun,
         cluster_columns = FALSE,
         row_order = aaMutationSummaryOrder,
@@ -676,7 +698,7 @@ dev.off()
 glyco <- c("FUL","BMA","XYL","SIA","NDG","NAG","MAN","FUC","GAL")
 
 t2 <- lapply(glyco, function(v) {
-    v1 <- read.delim(paste0("./VariantGlycoSig/", v, ".tsv"), sep = "\t", header = FALSE)
+    v1 <- read.delim(paste0(paths["variant_glyco_sig_dir"], '/', v, ".tsv"), sep = "\t", header = FALSE)
     v2 <- data.frame(position = v1[, 1], glycosylation = v, occurence = as.numeric(v1[, 2]))
 })
 
@@ -718,7 +740,8 @@ variantHeatmap_glyco <- as.matrix(variantHeatmap_glyco[,ncol(variantHeatmap_glyc
 
 sel <- grep("S:", rownames(aaMutationSummaryWide), value = TRUE)
 
-pdf("./Pdf/heatmapAAMutation_Spike_glyco.pdf", height = 8.4, width = 11.7)
+pdf_path <- file.path(paths["output_pdf_dir"], "heatmapAAMutation_Spike_glyco.pdf")
+pdf(pdf_path, height = 8.4, width = 11.7)
 Heatmap(aaMutationSummaryWide[sel, ], name = "Frekvence", rect_gp = gpar(col = "white", lwd = 2), na_col = "white", col = colFun,
         cluster_columns = FALSE,
         row_order = order(as.numeric(gsub("S:.(\\d+).", "\\1",  sel))),
@@ -734,7 +757,7 @@ Heatmap(aaMutationSummaryWide[sel, ], name = "Frekvence", rect_gp = gpar(col = "
 dev.off()
 
 ##-- by week
-aaMutationSummaryWide  <- as.matrix(read.csv("mkolisko/table_weeks.reduced.csv", row.names = 1, sep = ","))
+aaMutationSummaryWide  <- as.matrix(read.csv(paths["ratio_table_weeks"], row.names = 1, sep = ","))
 
 ##-- remove Orf9b
 aaMutationSummaryWide <- aaMutationSummaryWide[!grepl("ORF9b:", rownames(aaMutationSummaryWide)), ]
@@ -768,7 +791,7 @@ positionInProtein <- as.numeric(sapply(strsplit(rownames(aaMutationSummaryWide),
 aaMutationSummaryOrder <- order(protein, positionInProtein)
 names(protein) <- names(positionInProtein) <- names(aaMutationSummaryOrder) <- rownames(aaMutationSummaryWide)
 
-t1 <- read.xls("palettes.xls", sheet = "palette protein anotation")
+t1 <- read.xls(paths["palettes_xls"], sheet = "palette protein anotation")
 colProtein <- t1[, "Colour"]
 t2 <- setdiff(levels(protein), t1[, "Protein"])
 colProtein <- c(colProtein, brewer.pal(length(t2), "Greys"))
@@ -787,13 +810,11 @@ variantHeatmap <- as.matrix(variantHeatmap)
 storage.mode(variantHeatmap) <- "numeric"
 
 ##-- sort in a more meaningfull manner
-variantHeatmap <- variantHeatmap[, c("BA.2","BA.2.9", "BA.2.12.1",
-                                     "BA.4", "BA.4.1", "BA.4.6",
-                                     "BA.5", "BA.5.1", "BA.5.1.2", "BA.5.1.3", "BA.5.2", "BA.5.2.1", "BF.1", "BF.5", "BA.5.2.3",
-                                     "BA.5.3.1", "BE.1", "BE.1.1")]
+t1 <- hclust(dist(t(variantHeatmap)))
+variantHeatmap <- variantHeatmap[, t1$labels[t1$order]]
 
-
-pdf("./Pdf/heatmapAAMutationWeek.pdf", height = 21, width = 11.7)
+pdf_path <- file.path(paths["output_pdf_dir"], "heatmapAAMutationWeek.pdf")
+pdf(pdf_path, height = 21, width = 11.7)
 Heatmap(aaMutationSummaryWide, name = "Frekvence", rect_gp = gpar(col = "white", lwd = 2), na_col = "white", col = colFun,
         cluster_columns = FALSE,
         row_order = aaMutationSummaryOrder,
@@ -822,7 +843,8 @@ variantHeatmap_glyco <- as.matrix(variantHeatmap_glyco[,ncol(variantHeatmap_glyc
 
 sel <- grep("S:", rownames(aaMutationSummaryWide), value = TRUE)
 
-pdf("./Pdf/heatmapAAMutationWeek_Spike_glyco_week.pdf", height = 8.4, width = 11.7)
+pdf_path <- file.path(paths["output_pdf_dir"], "heatmapAAMutationWeek_Spike_glyco_week.pdf")
+pdf(pdf_path, height = 8.4, width = 11.7)
 Heatmap(aaMutationSummaryWide[sel, ], name = "Frekvence", rect_gp = gpar(col = "white", lwd = 2), na_col = "white", col = colFun,
         cluster_columns = FALSE,
         row_order = order(as.numeric(gsub("S:.(\\d+).", "\\1",  sel))),
@@ -840,7 +862,8 @@ dev.off()
 ##-- Spike
 sel <- grep("S:", rownames(aaMutationSummaryWide), value = TRUE)
 
-pdf("./Pdf/heatmapAAMutationWeek_Spike.pdf", height = 8.4, width = 11.7)
+pdf_path <- file.path(paths["output_pdf_dir"], "heatmapAAMutationWeek_Spike.pdf")
+pdf(pdf_path, height = 8.4, width = 11.7)
 Heatmap(aaMutationSummaryWide[sel, ], name = "Frekvence", rect_gp = gpar(col = "white", lwd = 2), na_col = "white", col = colFun,
         cluster_columns = FALSE,
         row_order = order(as.numeric(gsub("S:.(\\d+).", "\\1",  sel))),
@@ -853,8 +876,10 @@ Heatmap(aaMutationSummaryWide[sel, ], name = "Frekvence", rect_gp = gpar(col = "
 dev.off()
 
 ##-- session info
-save.image("mutationTable.RData")
+save.image(file.path(paths["output_dir"], "mutationTable.RData"))
 sessionInfo()
 warnings()
 traceback()
 sink()
+
+message("\nDone Beautifully!")
