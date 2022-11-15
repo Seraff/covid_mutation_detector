@@ -17,6 +17,7 @@ envvars:
 INPUT_PATH = os.environ["INPUT_PATH"]
 METADATA_PATH = os.environ["METADATA_PATH"]
 OUTPUT_PATH = os.environ["OUTPUT_PATH"]
+
 OUTPUT_NEXTCLADE_PATH = os.path.join(OUTPUT_PATH, 'nextclade')
 OUTPUT_PANGOLIN_PATH = os.path.join(OUTPUT_PATH, 'pangolin')
 
@@ -24,9 +25,8 @@ MACOS = platform.system() == 'Darwin'
 ROOT_PATH = os.getcwd()
 COV_DATA_PATH = os.path.join(ROOT_PATH, 'data', 'nextclade_dataset')
 
-INPUT_FASTA_FILENAME = os.path.basename(INPUT_PATH).rsplit('.')[0]
-INPUT_FASTA_PATH = os.path.join(OUTPUT_PATH, 'data', f'{INPUT_FASTA_FILENAME}.fasta')
-
+OUTPUT_FASTA_PATH = os.path.join(OUTPUT_PATH, 'data', f'sequences.fasta')
+OUTPUT_METADATA_PATH = os.path.join(OUTPUT_PATH, 'data', f'metadata.tsv')
 
 rule all:
     input:
@@ -43,18 +43,20 @@ rule unxz:
     input:
         INPUT_PATH
     output:
-        INPUT_FASTA_PATH
+        OUTPUT_FASTA_PATH
     run:
         if INPUT_PATH.split('.')[-1] == 'xz':
             shell(f"unxz -c {input} > {output}")
         else:
             shell(f"cp {input} {output}")
 
+        shell(f"cp {METADATA_PATH} {OUTPUT_METADATA_PATH}")
+
 
 ## Nextclading
 rule nextclade:
     input:
-        INPUT_FASTA_PATH
+        OUTPUT_FASTA_PATH
     output:
         f'{OUTPUT_NEXTCLADE_PATH}/nextclade.json'
     shell:
@@ -68,7 +70,7 @@ rule nextclade:
 ## Pangolining
 rule pangolin:
     input:
-        INPUT_FASTA_PATH
+        OUTPUT_FASTA_PATH
     output:
         f"{OUTPUT_PANGOLIN_PATH}/lineage_report.csv"
     conda:
