@@ -18,6 +18,15 @@ The main pipeline takes **FASTA file** with multiple sequences and generates **J
     ...
 }
 ```
+#### Preparation
+
+1. Install [Conda](https://docs.conda.io/en/latest/)
+
+2. Install [Mamba](https://github.com/mamba-org/mamba)
+
+```bash
+conda install -n base -c conda-forge mamba
+```
 
 #### How To Run
 
@@ -30,13 +39,13 @@ cd covid_mutation_detector
 ##### 2. Run the pipeline in the following format
 
 ```bash
-INPUT_PATH="<path_to_fasta_file>" OUTPUT_PATH="<output_folder_path>" snakemake -c1
+INPUT_PATH="<path_to_fasta_file>" OUTPUT_PATH="<output_folder_path>" snakemake -c1 --use-conda
 ```
 
 Example:
 
 ```bash
-INPUT_PATH="/home/alice/covid/samples.fasta" OUTPUT_PATH="/home/alice/covid/analysis" snakemake -c1
+INPUT_PATH="/home/alice/covid/samples.fasta" OUTPUT_PATH="/home/alice/covid/analysis" snakemake -c1 --use-conda
 ```
 
 As input you can also provide an archived `xz` fasta file (i.e. `/home/alice/covid/samples.fasta.xz`).
