@@ -811,5 +811,20 @@
         "seq_aa": " L   A   V   T   R   -   -   -   I   L   E   R   D   Q   N   N ",
         "seq_na": "CTG GCA GTA ACC AGA ATT --- --- --- TTG GAG CGC GAT CAA AAC AAC",
         "notes": "Prevalence is 0 for all the cases"
+    },
+    {
+        "predict": "ORF9b:E27-,ORF9b:N28-,ORF9b:A29-,ORF9b:V30A",
+        "verdict": "ORF9b:E27A,ORF9b:N28-,ORF9b:A29-,ORF9b:V30-",
+        "ref_aa": " A   V   T   R   M   E   N   A   V   G   R   D   Q   N ",
+        "ref_na": "GCA GTA ACC AGA ATG GAG AAC GCA GTG GGG CGC GAT CAA AAC",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " A   V   T   R   M   -   -   -   A   G   R   D   Q   N ",
+        "seq_na": "GCA GTA ACC AGA ATG --- --- --- GCG GGG CGC GAT CAA AAC",
+        "notes": "ORF9b:E27A - 0, ORF9b:V30A - 0",
+        "cnt": 2,
+        "seq_ids": [
+            "EPI_ISL_15527167",
+            "EPI_ISL_15527172"
+        ]
     }
 ]
