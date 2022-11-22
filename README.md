@@ -28,6 +28,19 @@ The main pipeline takes **FASTA file** with multiple sequences and generates **J
 conda install -n base -c conda-forge mamba
 ```
 
+3. For plots run `R` and execute:
+
+```R
+install.packages(c("BiocManager", "gdata", "seqinr", "ggplot2", "RColorBrewer", "circlize", "jsonlite", "stringr"))
+BiocManager::install("ComplexHeatmap")
+```
+
+If you use `R` in `conda` and have problems with installing `stringr` package via `R`, install it using `conda`:
+
+```
+conda install r-stringi
+```
+
 #### How To Run
 
 ##### 1. Navigate to the repository folder
