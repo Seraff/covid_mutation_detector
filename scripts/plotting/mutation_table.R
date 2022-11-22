@@ -242,7 +242,7 @@ if (! (dir.exists(paths["variant_signatures_dir"]) & all(variant %in% parsed_var
     missingVariant <- setdiff(variant, parsed_vars)
     print(missingVariant)
     ## use web scraper to download characteristic mutations for each missing variant
-    cmd <- paste0("python3 ", self_dir_path, "/new_scrape.py --verbose -o ", paths["variant_signatures_dir"])
+    cmd <- paste0("python3 ", self_dir_path, "/scrape.py --verbose -o ", paths["variant_signatures_dir"])
     cmd <- paste(cmd, paste(missingVariant, collapse = " "))
 
     print("Running:")

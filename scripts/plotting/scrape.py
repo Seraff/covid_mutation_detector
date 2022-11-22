@@ -7,9 +7,6 @@ import sys
 import pathlib
 from pprint import pprint
 import argparse
-from tabnanny import verbose
-
-from click import argument
 
 ROOT_PATH = str(pathlib.Path(os.path.dirname(os.path.realpath(__file__))).parent.parent)
 sys.path.append(ROOT_PATH)
@@ -18,7 +15,7 @@ from lib.outbreak_api import OutbreakApi
 
 
 def parse_arguments():
-    usage = "./new_scrape.py"
+    usage = "./scrape.py"
     description = """
 
     """
