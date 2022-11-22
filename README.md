@@ -32,7 +32,10 @@ conda install -n base -c conda-forge mamba
 
 ```R
 install.packages(c("BiocManager", "gdata", "seqinr", "ggplot2", "RColorBrewer", "circlize", "jsonlite", "stringr"))
+install.packages(c("multcomp", "lattice"))
+
 BiocManager::install("ComplexHeatmap")
+BiocManager::install("BiocParallel")
 ```
 
 If you use `R` in `conda` and have problems with installing `stringr` package via `R`, install it using `conda`:
