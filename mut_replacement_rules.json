@@ -820,11 +820,36 @@
         "mut_id": "                     *   *   *   *                     ",
         "seq_aa": " A   V   T   R   M   -   -   -   A   G   R   D   Q   N ",
         "seq_na": "GCA GTA ACC AGA ATG --- --- --- GCG GGG CGC GAT CAA AAC",
-        "notes": "ORF9b:E27A - 0, ORF9b:V30A - 0",
-        "cnt": 2,
-        "seq_ids": [
-            "EPI_ISL_15527167",
-            "EPI_ISL_15527172"
-        ]
+        "notes": "ORF9b:E27A - 0, ORF9b:V30A - 0"
+    },
+    {
+        "predict": "S:I210-,S:N211V,S:L212I,S:V213G",
+        "verdict": "S:I210V,S:N211I,S:L212-,S:V213G",
+        "ref_aa": " S   K   H   T   P   I   N   L   V   R   D   L   P   Q ",
+        "ref_na": "TCT AAG CAC ACG CCT ATT AAT TTA GTG CGT GAT CTC CCT CAG",
+        "mut_id": "                     *   *   *   *                     ",
+        "seq_aa": " S   K   H   T   P   -   V   I   G   R   D   L   P   Q ",
+        "seq_na": "TCT AAG CAC ACG CCT GTT A-- -TA GGG CGT GAT CTC CCT CAG",
+        "notes": "S:I210V - 85677, S:N211I - 2119143, S:V213G - 4365803"
+    },
+    {
+        "predict": "ORF1a:T2093-,ORF1a:D2094-,ORF1a:L2095I",
+        "verdict": "ORF1a:T2093I,ORF1a:D2094-,ORF1a:L2095-",
+        "ref_aa": " E   E   V   G   H   T   D   L   M   A   A   Y   V ",
+        "ref_na": "GAA GAG GTT GGC CAC ACA GAT CTA ATG GCT GCT TAT GTA",
+        "mut_id": "                     *   *   *                     ",
+        "seq_aa": " E   E   V   G   H   -   -   I   M   A   A   Y   V ",
+        "seq_na": "GAA GAG GTT GGC CAC A-- --- -TA ATG GCT GCT TAT GTA",
+        "notes": "ORF1a:T2093I - 12959, ORF1a:L2095I - 817"
+    },
+    {
+        "predict": "S:L24-,S:P25-,S:P26-,S:A27S,S:Y28H",
+        "verdict": "S:L24S,S:P25-,S:P26-,S:A27-,S:Y28H",
+        "ref_aa": " T   T   R   T   Q   L   P   P   A   Y   T   N   S   F   T ",
+        "ref_na": "ACA ACC AGA ACT CAA TTA CCC CCT GCA TAC ACT AAT TCT TTC ACA",
+        "mut_id": "                     *   *   *   *   *                     ",
+        "seq_aa": " I   T   R   T   Q   -   -   -   S   H   T   N   S   F   T ",
+        "seq_na": "ATA ACC AGA ACT CAA T-- --- --- -CA CAC ACT AAT TCT TTC ACA",
+        "notes": "S:L24S - 4249636, S:A27S - 23779, S:Y28H - 2513"
     }
 ]
