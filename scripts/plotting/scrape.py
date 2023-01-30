@@ -15,7 +15,7 @@ from lib.outbreak_api import OutbreakApi
 
 
 def parse_arguments():
-    usage = "./new_scrape.py"
+    usage = "./scrape.py"
     description = """
 
     """
