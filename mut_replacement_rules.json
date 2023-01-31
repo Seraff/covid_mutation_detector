@@ -851,5 +851,15 @@
         "seq_aa": " I   T   R   T   Q   -   -   -   S   H   T   N   S   F   T ",
         "seq_na": "ATA ACC AGA ACT CAA T-- --- --- -CA CAC ACT AAT TCT TTC ACA",
         "notes": "S:L24S - 4249636, S:A27S - 23779, S:Y28H - 2513"
+    },
+    {
+        "predict": "ORF8:M1-,ORF8:K2-,ORF8:F3-,ORF8:L4-,ORF8:V5-,ORF8:F6-,ORF8:L7-,ORF8:G8*",
+        "verdict": "ORF8:M1-,ORF8:K2-,ORF8:F3-,ORF8:L4-,ORF8:V5-,ORF8:F6-,ORF8:L7-,ORF8:G8*",
+        "ref_aa": " M   K   F   L   V   F   L   G   I   I   T   T   V ",
+        "ref_na": "ATG AAA TTT CTT GTT TTC TTA GGA ATC ATC ACA ACT GTA",
+        "mut_id": " *   *   *   *   *   *   *   *                     ",
+        "seq_aa": " -   -   -   -   -   -   -   *   I   I   T   T   V ",
+        "seq_na": "--- --- --- --- --- --- --- TGA ATC ATC ACA ACT GTA",
+        "notes": "ORF8:G8* - 33310"
     }
 ]
